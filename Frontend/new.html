@@ -167,12 +167,12 @@ $("#submitemail").on("submit", function (ev) {
   ev.preventDefault();
   $.ajax({
     type: "GET",
-    url: "http://localhost:3000" + "/marketing/newemail",
+    url: "https://inqora2.herokuapp.com" + "/marketing/newemail",
     data: {
       Email: $("#emailaddress").val()
     },
     success: function (data) {
-      console.log(data);
+      alert("Thank you for signing up!");
     },
     xhrFields: {withCredentials: true},
     error:function(){

@@ -1,5 +1,24 @@
+
 var express = require('express');
 var router = express.Router();
+
+router.use(function (req, res, next) {
+    res.header('Access-Control-Allow-Credentials', true);
+   if (req.headers.origin.indexOf("https") > -1 && req.headers.origin.indexOf("www") > -1)
+      res.header('Access-Control-Allow-Origin', 'https://www.inqora.com');
+    else if (req.headers.origin.indexOf("https") > -1)
+      res.header('Access-Control-Allow-Origin', 'https://inqora.com');
+    else if (req.headers.origin.indexOf("http") > -1 && req.headers.origin.indexOf("www") > -1)
+      res.header('Access-Control-Allow-Origin', 'http://www.inqora.com');
+    else if (req.headers.origin.indexOf("http") > -1)
+      res.header('Access-Control-Allow-Origin', 'http://inqora.com');
+    res.header('Access-Control-Allow-Methods',     'GET,PUT,POST,DELETE');
+     res.header('Access-Control-Allow-Headers',     'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, Origin');
+    next();
+});
+
+
+
 email = require('emailjs');
 server  = email.server.connect({
     user: "prithvi@inqora.com",
