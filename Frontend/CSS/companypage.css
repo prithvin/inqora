@@ -1,0 +1,39 @@
+.daychoose {
+			color:#59ABE3;position:relative;top:-10px;width:12.5% !IMPORTANT;display:inline;float:left;cursor:pointer;
+		}
+		.daychooseactive {
+			color:#6C7A89 !IMPORTANT;
+		}
+		.tinystockbad {
+			font-size:0.7em !IMPORTANT;color:red;
+		}
+		.tinystockgood {
+			font-size:0.7em !IMPORTANT;color:green;
+		}
+		.header {
+			text-transform:capitalize !IMPORTANT;font-size:2em !IMPORTANT;text-align:center;color:black;border:0px !IMPORTANT;
+		}
+		.headertiny {
+			text-transform:capitalize !IMPORTANT;font-size:1.25em !IMPORTANT;text-align:center;color:black;border:0px !IMPORTANT;
+		}
+		.upperdiv {
+			width:30% !IMPORTANT;margin-left:10px;padding-right:20px;
+		}
+		.companypanel {
+			box-shadow: 1px 1px 3px #888888;margin-top:10px;
+		}
+		.mainstockprice {
+			text-align:center;font-size:1.35em;
+		}
+		.profilepicwrapper {
+			padding-top:10px;color:#22313F;font-size:3em;text-align:center;
+		}
+		#yahoochart {
+			width:100% !IMPORTANT;
+		}
+		.virtport {
+			background-color:2C3E50;margin:5px 0px;width:95%;
+		}
+		.subnow {
+			width:95%;
+		}

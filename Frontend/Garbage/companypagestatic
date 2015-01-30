@@ -1,0 +1,54 @@
+	<div class="container-fluid" style="min-width:900px !IMPORTANT;background-color: #DADFE1;">
+
+				<div id="navsearchmainsearch" class="row  navbar-fixed-top navbar" style="min-width:900px !IMPORTANT;background-color:#22313F;">
+					<p></p>
+						<div class="col-xs-3 col-md-3 col-sm-3" style="text-align:center;margin-top:7px;">
+							<a href="newsfeed.html"><img src="logo.png" class="col-xs-10 col-sm-10 col-md-offset-2 col-md-10 col-md-offset-2" style="max-height:50px;max-width:200px;"></img></a>
+						</div>
+						<div class="col-xs-6 col-md-6 col-sm-6" style="margin-top:10px;">
+							<form class="pure-form">
+								<input id="project" placeholder="Search for Companies, Groups and People" class="col-xs-* center-block" style="width:100%;">
+							</form>
+						</div>
+
+						<div class="col-xs-3 col-md-3 col-sm-3" style="margin-top:10px;text-align:center;">
+							<a onclick="document.getElementById('accountsettingsbutton').click()" class="pure-button button greenparty" ><i class="fa fa-cog"></i></a>
+							<a id="myprof" class="pure-button button"><i class="fa fa-user" title="My Profile"></i></a>
+							<a id=""  href="messaging.html" class="pure-button pure-button-primary button"><i class="fa fa-comment" title="My Profile"></i></a>
+							<a onclick="logout()" class="hidden-xs hidden-sm  pure-button button-error"> Log out</a>
+							<a onclick="logout()" class="hidden-md hidden-lg pure-button button-error"><i class="fa fa-sign-out"></i></a>
+							<br>
+
+
+						</div>
+						<iframe id="logout" style="height:0;width:0;" frameborder="0" hidden></iframe>
+						<div style="padding: 0 0 0 0 ;" class="col-xs-12 col-md-12">
+							<br>
+							<a id="notloggedin" href="loginpage.html" class="col-xs-12 col-md-12 col-sm-12  pure-button button-error" style="display:none;">Not Logged In. Limited Functionality.</a>
+						</div>
+				</div>
+		
+		<div class="row fixedtop" style="width:99%;">
+			<div class="col-xs-3 col-sm-3 col-md-3" id="info">
+				<div  style="width:100%; margin-left:10px; margin-top:10px"> 
+					<div class="pure-menu pure-menu-open  panel list-group">
+					    <a class="pure-menu-heading">Company Information</a>
+					    <ul>
+					        <li style="margin-top:15px;margin-bottom:5px;max-width:100%;text-align:center;width:100%;" ><a   style="font-size:2em; overflow-x: auto; /* Use horizontal scroller if needed */white-space: pre-wrap; /* css-3 */white-space: -moz-pre-wrap !important; /* Mozilla, since 1999 */word-wrap: break-word; /* Internet Explorer 5.5+ */white-space : normal;" id="header"  ></a></li>
+					        <li style="text-align:center;margin-top:5px;margin-bottom:5px;"><a href="" ><span style="font-size:1.5em;" id="username"></span></a></li>
+					        <li style="text-align:center;margin-top:5px; margin-bottom:5px"><center><a style="margin-left:auto;margin-right:auto;" href=""><img id="pic" height="150" style="max-width:100%;margin-left:auto;margin-right:auto;text-align:center;"></img></a></center></li><hr>
+					        <li style="text-align:center;margin-top:5px; margin-bottom:5px"><center style="font-size:1.2em; overflow-x: auto; /* Use horizontal scroller if needed */white-space: pre-wrap; /* css-3 */white-space: -moz-pre-wrap !important; /* Mozilla, since 1999 */word-wrap: break-word; /* Internet Explorer 5.5+ */white-space : normal;"> <span id="numfollowers"></span> Followers</center></li>
+					        <li style="text-align:center;margin-top:5px; margin-bottom:5px"><center style="font-size:1.2em; overflow-x: auto; /* Use horizontal scroller if needed */white-space: pre-wrap; /* css-3 */white-space: -moz-pre-wrap !important; /* Mozilla, since 1999 */word-wrap: break-word; /* Internet Explorer 5.5+ */white-space : normal;">Industry:  <span id="industry"></span></center></li>
+					        <li style="text-align:left;margin-left:15px;margin-top:5px; margin-bottom:5px;font-size:1.2em"> <span id="description"></span></li>
+					        <li style="text-align:center;margin-top:5px;margin-bottom:5px"><center><img id="stockchart" height="150" style="margin-left:auto;margin-right:auto;text-align:center;"></img></center></li>
+					         <li style="text-align:center;margin-top:5px;margin-bottom:5px"><center><span id="stockticker" height="150" style="margin-left:auto;margin-right:auto;text-align:center;"></span></center></li><hr>
+					        <li><center><a id="onclickbuttonsecond" class="pure-button pure-button-primary" style="width:75%;color:white;" data-toggle="modal" data-target="#secondmodal"/>Create New Post</a></center></li><br>
+					        <li><a id="subme" style="color:white;" class="pure-button pure-button-primary">Subscribe</a></li>  
+					    </ul>
+					</div><br>
+					<div class="pure-menu pure-menu-open panel list-group">
+						<a class ="pure-menu-heading"> Stock Information</a>
+						<ul><li style="text-align:center;margin-top:5px;margin-bottom:5px;"id="moreinfo"></li></ul>
+					</div>
+				</div>
+			</div>

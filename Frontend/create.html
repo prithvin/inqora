@@ -1,0 +1,60 @@
+<html>
+	<head>
+		<title> Inqora - Create Account </title>
+	</head>
+	<body>
+		<form id="createaccount"><br>
+			Invited By:<input type="text" id="invitedby" placeholder="Invited By (_id)"></input><br><br>
+			URL: <input type="text" id="profilepic" placeholder="Profile Pic"></input><br><br>
+			Thumbnail: <input type="text" id="thumbnail" placeholder="Thumbnail"></input><br><br>
+			Name: <input type="text" id="name" placeholder="Name"></input><br><br>
+			Username: <input type="text" id="username" placeholder="Username"></input><br><br>
+			Email: <input type="email" id="email" placeholder="Email"></input><br><br>
+			Password: <input id="password" type="password" placeholder="Password"></input><br><br>
+			Confirm Password: <input id="confirmpassword" type="password" placeholder="Confirm Password"></input><br><br>
+			<input type="submit"></input>
+		</form>
+	</body>
+	<footer>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+		<script src="manager.js"></script>
+		<script>
+		$("#createaccount").on("submit", function (ev) {
+			ev.preventDefault();
+			console.log("HEY");
+			if ($("#password").val() != $("#confirmpassword").val()) 
+				alert("Passwords do not match");
+			else {
+				if ($("#email").val().toLowerCase().indexOf("mailinator") > -1)
+					alert("Invalid email address. Please refrain from using fake identities");
+				else {
+					var request = {
+						InvitedBy: $("#invitedby").val(),
+						URL: $("#profilepic").val(),
+						Thumbnail: $("#thumbnail").val(),
+						Name: $("#name").val(),
+						Username: $("#username").val(),
+						Email: $("#email").val(),
+						Password: $("#password").val()
+					};
+					callAJAX("POST", "/users/create", request, function (data) {
+						alert(data);
+					});
+				}	
+			}
+		});
+
+
+		/*
+		InvitedBy
+URL (profile pic)
+Thumbnail
+Name
+Username
+Email
+Password
+*/
+
+		</script>
+	</footer>
+</html>

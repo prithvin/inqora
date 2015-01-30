@@ -1,0 +1,22 @@
+.wrap {
+	white-space: pre-wrap !IMPORTANT;      /* CSS3 */   
+	white-space: -moz-pre-wrap !IMPORTANT; /* Firefox */    
+	white-space: -pre-wrap !IMPORTANT;     /* Opera <7 */   
+	white-space: -o-pre-wrap !IMPORTANT;   /* Opera 7 */    
+	word-wrap: break-word !IMPORTANT;      /* IE */
+	 white-space: pre !IMPORTANT;           /* CSS 2.0 */
+	white-space: pre-wrap !IMPORTANT;       /* CSS 2.1 */
+	white-space: pre-line !IMPORTANT;      /* CSS 3.0 */
+	white-space: -pre-wrap !IMPORTANT;     /* Opera 4-6 */
+	white-space: -o-pre-wrap !IMPORTANT;   /* Opera 7 */
+	white-space: -moz-pre-wrap !IMPORTANT; /* Mozilla */
+	white-space: -hp-pre-wrap !IMPORTANT;  /* HP Printers */
+	word-wrap: break-word !IMPORTANT;      /* IE 5+ */
+	-ms-word-break: break-all !IMPORTANT;
+	word-break: break-all !IMPORTANT;
+	word-break: break-word !IMPORTANT;
+	-webkit-hyphens: auto !IMPORTANT;
+	-moz-hyphens: auto !IMPORTANT;
+	-ms-hyphens: auto !IMPORTANT;
+	hyphens: auto !IMPORTANT;
+}

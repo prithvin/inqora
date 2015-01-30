@@ -1,0 +1,322 @@
+<html>
+	<head>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+ 		<link rel="stylesheet" href="//cdn.jsdelivr.net/pure/0.5.0/pure-min.css">
+		<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css" />
+		<link rel="stylesheet" type="text/css" href="CSS/cardlayout.css">
+		<link rel="stylesheet" type="text/css" href="CSS/post.css">
+		<link rel="stylesheet" type="text/css" href="CSS/tooltips.css">
+		<link rel="stylesheet" type="text/css" href="CSS/alert.css">
+		<link rel="stylesheet" type="text/css" href="CSS/companypage.css">
+		<link rel="stylesheet" type="text/css" href="CSS/notifications.css">
+		<link rel="stylesheet" type="text/css" href="CSS/search.css">
+		<link rel="stylesheet" type="text/css" href="CSS/loginmodal.css">
+		<link rel="icon" href="favicon.png" type="image/x-icon" />
+		<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js "></script>
+		<script type="text/javascript">var switchTo5x=true;stLight.options({publisher: "3b51f3e7-db26-4944-a02f-89bcecc33f19", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>
+		<title>Inqora</title>
+	</head>
+
+	<body style="background-color: #ECECEC;">
+			<div id="navsearchmainsearch" class="row  navbar-fixed-top navbar" style="background-color:rgba(34, 49, 63, 0.84);">
+					<p></p>
+						<div class="col-xs-3 col-md-3 col-sm-3" style="text-align:center;margin-top:7px;">
+							<a href="newsfeed.html"><span class="col-xs-10 col-sm-10 col-md-offset-2 col-md-10 col-md-offset-2" style="margin-left:20px;font-size:2em;color:white;height:50px;"><i class="fa fa-area-chart"></i> Inqora</span></a>
+						</div>
+						<div class="col-xs-5 col-lg-6 col-md-5 col-sm-5" style="margin-top:10px;">
+							<form class="pure-form">
+								<input id="project" placeholder="Search for Companies, Groups and People" class="col-xs-* center-block" style="width:100%;">
+							</form>
+						</div>
+
+						<div class="col-xs-4 col-lg-3 col-md-4 col-sm-4" style="margin-top:10px;text-align:center;">
+							<a onclick="document.getElementById('accountsettingsbutton').click()" class="pure-button button greenparty" ><i class="fa fa-cog"></i></a>
+							<a id="myprof" class="pure-button button" style="background-color:#674172;color:white;"><i class="fa fa-user" title="My Profile"></i></a>
+							<a id="admin" style="background-color:#96281B;color:white;" class="pure-button button">  <i id="numnotifs" class="fa fa-bell"> 1</i></a>
+
+
+							<a id=""  href="messaging.html" class="pure-button pure-button-primary button"><i class="fa fa-comment" title="My Profile"></i></a>
+							<a onclick="logout()" class="hidden-xs hidden-sm pure-button button-error"><i class="fa"> Log out</i></a>
+							<a onclick="logout()" class="hidden-md hidden-lg pure-button button-error"><i class="fa fa-sign-out"></i></a>
+							<br>
+
+
+						</div>
+						<iframe id="logout" style="height:0;width:0;" frameborder="0" hidden></iframe>
+						<div style="padding: 0 0 0 0 ;" class="col-xs-12 col-md-12">
+							<br>
+							<a id="notloggedin" href="loginpage.html" class="col-xs-12 col-md-12 col-sm-12  pure-button" style="display:none;color:white;background-color:rgba(242, 38, 19, 0.6);">Not Logged In. Limited Functionality.</a>
+						</div>
+				</div>
+
+		<div class="row fixedtop">
+		<div class="upperdiv" style="float:left;margin-left:30px;min-width:300px;width:33%;">
+			<div class="pure-menu pure-menu-open panel companypanel">
+				<a class="link header pure-menu-heading" id="companymaindata"></a>
+				<ul >
+					<li><a class="mainstockprice"> <span id="stockpricelol"> </span> <span id="tinystock" class="link tinystockgood"></span></a></li>
+					  <li><a  class="link profilepicwrapper" ><img src="" id="profilepic" style="height:2em;max-width:100%;"></a></li>
+					  <li class="link"> <a class="link">Industry:<span id="industry"></span></a></li>
+					  <li> <a class="link"><span id="numfollowers"></span> Followers</a></li>
+
+					  <li><a><img id="yahoochart" src=""></img>
+					  	<br><div class="daychoose" href="">1D</div>
+					  		<div  class="daychoose daychooseactive" href="">5D</div>
+					 		<div  class="daychoose" href="">3M</div>
+					 		<div  class="daychoose" href="">6M</div>
+					 		<div  class="daychoose" href="">1Y</div>
+					 		<div  class="daychoose" href="">2Y</div>
+					 		<div  class="daychoose" href="">5Y</div>
+					 		<div  class="daychoose" href="">Max</div>
+					  </a></li>
+					  <li style="text-align:center;"><button id="subscribe" class="link pure-button pure-button-primary subnow"></button><button style="" id="virtport" class="link virtport pure-button pure-button-primary" href=""></button></li>
+				</ul>
+			</div>
+			<div class="pure-menu pure-menu-open panel" style="box-shadow: 1px 1px 3px #888888;">
+				<a class="link headertiny pure-menu-heading">Portfolio Information</a>
+				<ul style="padding:0 20px;padding-bottom:10px;">
+					<p style="border:black solid 1px;margin:5px 0;padding:0px;"></p>
+					Bought <span id="numtimesbought"></span> Times (Average Return : <span id="avgyield"></span>%)
+					<br>
+					
+					<b>Current Holdings</b>
+					<div style="margin-left:20px;"class="link" id="newyields">
+					</div><br>
+					<b>Previous Holdings</b>
+					<div style="margin-left:20px;" class="link"  id="oldyields">
+					</div><br>
+					</ul>
+			</div>
+			<div class="pure-menu pure-menu-open panel" style="box-shadow: 1px 1px 3px #888888;">
+
+				<a class="link headertiny pure-menu-heading">Stock Information</a>
+				<ul style="padding:0 20px;padding-bottom:10px;">
+					<p style="border:black solid 1px;margin:5px 0;padding:0px;"></p>
+					<span id="description"></span>
+		
+					<p style="border:black solid 1px;margin:5px 0;padding:0px;"></p>
+					Previous Close: <span id="PreviousClose"></span><br>
+					Open:  <span id="Open"></span><br>
+					Price Per Book: <span id="PricePerBook"></span><br>
+					PEG Ratio: <span id="PEGRatio"></span><br>
+					PE Ratio: <span id="PERatio"></span><br>
+					Price Per Sales: <span id="PricePerSales"></span><br>
+					Dividend Yield: <span id="DividendYield"></span><br>
+					Market Capitalization: <span id="MarketCap"></span><br>
+				</ul>
+			</div>
+		</div>
+		<div style="float:left;margin-top:10px;width:40%;" id="regfeed">
+			<div id="posts">
+			</div>
+			<div id="checkdiv">
+			</div>
+		</div>
+		<div style="float:left;margin-top:10px;width:40%;display:none;" id="sharedpost">
+			<button class="pure-button pure-button-primary" style="width:95%;min-width:475px;margin-left:30px;margin-bottom:30px;" id="backshared">Go Back</button>
+			<div id="sharedpostdiv"></div>
+		</div>
+	</div>
+	</body>
+	<div id="menu" style="z-index:999;">
+	</div>
+  <modalwindows>
+  		<input id="messagingmodalbutton" value="" style="display:none;" type="button" data-toggle="modal" data-target="#messagingmodal">
+		<div class="modal fade" id="messagingmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		  <div  class="modal-dialog" style="width:95%;">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" id="messagingbutton" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+		            <center><h1 class="modal-title" id="myModalLabel"><font color="black" id="thistitleformodal">Messaging</h1></center>
+		          </div>
+		          <div class="modal-body" style="width:95% ">
+		          </div>
+		      </div>
+		  </div>
+		</div>
+
+		<input id="loginmodalbutton" value="" style="display:none;" type="button" data-toggle="modal" data-target="#loginmodal">
+		<div class="modal fade" id="loginmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		  <div  class="modal-dialog" style="width:450px;">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" id="loginmodal" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+		            <center><h1 class="modal-title" id="myModalLabel"><font color="black" id="thistitleformodal">Please Log In</h1></center>
+		          </div>
+		          <div class="modal-body" >
+		          	<form id="loginform-modal-window"class="loginform">
+					  <div class="group">
+					    <input class="myinput" placeholder="Username/ Email" id="username-modal-window" type="text"><span class="highlight"></span><span class="bar"></span>
+		
+					  </div>
+					  <div class="group">
+					    <input placeholder="password" class="myinput" id="password-modal-window" type="password"><span class="highlight"></span><span class="bar"></span>
+					   
+					  </div>
+					  <button type="submit" class="loginbutton buttonBlue">Login
+					    <div class="ripples buttonRipples"><span class="ripplesCircle"></span></div>
+					  </button>
+					</form>
+		          </div>
+		      </div>
+		  </div>
+		</div>
+
+
+		<input id="accountsettingsbutton" value="" style="display:none;" type="button" data-toggle="modal" data-target="#accountsettings">
+		<div class="modal fade" id="accountsettings" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" id="accountsettingsbuttonclose" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+		            <center><h1 class="modal-title" id="myModalLabel"><font color="black" id="thistitleformodal">Account Management</h1></center>
+		          </div>
+		          <div class="modal-body">
+					<form id="updatedetails">
+						<div class="pure-menu pure-menu-open">
+						    <a class="pure-menu-heading">Edit Account Settings</a>
+							    <ul>
+							        <li style="height:2em;">
+							        	<a style="color:black;">
+						        			<b>Name:</b>
+						        			<span id="changename">Loading...</span>
+						        			<input id="editname" style="display:none;"></input>
+						        			<input id="undoname" class="pure-button undobutton" type="button" value="Undo Edit">
+						        			<i style="position:relative;color:#428bca;float:right;top:-2px;" id="nameedit" class="fa fa-edit fa-2x"></i>
+							        	</a>
+							        </li>
+							         <li style="height:2em;">
+							        	<a style="color:black;">
+						        			<b>Email:</b>
+						        			<span id="changeemail">Loading...</span>
+						        			<input type="email" id="editemail" style="display:none;" ></input>
+						        			<input id="undoemail" class="pure-button undobutton" type="button" value="Undo Edit">
+						        			<i style="position:relative;color:#428bca;float:right;top:-2px;" id="emailedit" class="fa fa-edit fa-2x"></i>
+							        	</a>
+							        </li>
+							        <li style="height:2em;">
+							        	<a style="color:black;">
+						        			<b>Password:</b>
+						        			<span id="changepassword">********</span>
+						        			<input id="editpassword" style="display:none;" type="password"></input>
+						        			<input id="undopassword" class="pure-button undobutton" type="button" value="Cancel">
+						        			<i style="position:relative;color:#428bca;float:right;top:-2px;" id="passwordedit" class="fa fa-edit fa-2x"></i>
+							        	</a>
+							        </li>
+							        <li >
+							        	<a style="color:black;">
+							        		<b>Profile Picture:</b> 
+							        		<i  id="imageedit" style="position:relative;color:#428bca;float:right;top:-2px;" class="fa fa-edit fa-2x"></i>
+							        		<i class="fa fa-remove fa-2x"  id="imagecancel" style="position:relative;color:#D24D57;float:right;top:-2px;display:none;"></i>
+							        		<br>
+							        		<center><img id="changepicture" style="height:150px;"></img></center>
+							        		<div id="newpicstuff" style="display:none;">
+
+							        			<div class="fileUpload">
+													<center><canvas id="picture" width="150" height="150" ></canvas><br><br>
+												    <span>New Profile Picture</span>
+												    <input id="inputFileToLoad" type="file" accept="image/*" class="pure-button pure-button-primary" >
+												    <input onclick="resetUploadPics()" class="pure-button" value="Default Profile Picture"></input></center>
+												</div>
+							        		</div>
+							        	</a>
+							       	</li>
+							        <li class="pure-menu-heading">Update Changes</li>
+							        <li><a><b>Current Password:</b> <input id="oldpass" type="password"></input></a></li>
+							        <li><a href="" style="text-decoration:none;"><button style="width:90%;margin-left:5%;margin-right:5%;" type="submit"  class="pure-button pure-button-primary">Update Account Settings</button></a></li>
+							    </ul>
+						</div>
+						 </form>
+					 <canvas id="thumbnail" width="30" height="30" hidden></canvas>
+					 <canvas width="150" height="150" id="lol" hidden></canvas>
+					<input id="uploadFile" placeholder="Choose File" disabled="disabled" hidden/>
+		          </div>
+		      </div>
+		  </div>
+		</div>
+	</modalwindows>
+	<footer>
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+		<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+
+		<script src="manager.js"></script>
+		<script src="tooltips.js"></script>
+		<script src="Javascript/companypage.js"></script>
+		<script src="Javascript/postingsystem.js"></script>
+		<script src="Javascript/postinglisteners.js"></script>
+		<script src="Javascript/contentparsing/linkify.js"></script>
+		<script src="Javascript/contentparsing/textcomplete.js"></script>
+		<script src="Javascript/contentparsing/textcompleteoverlay.js"></script>
+		<script src="Javascript/newpost.js"></script>
+		<script src="Javascript/displayfeed.js"></script>
+		<script src="Javascript/notifications.js"></script>
+		<script src="Javascript/accountsettings.js"></script>
+		<script src="Javascript/search.js"></script>
+		<script src="Javascript/loginmodal.js"></script>
+		<script>
+		callAJAX("GET", "/accounts/issess", {}, function (data) {
+			console.log(data);
+			if (data == "true")  {
+				onPageLoad();
+			}
+			else if (data == "false"){
+				callAJAX ("POST", "/users/authenticate", {User: "demo", Password:"demo"}, function (data) {
+					onPageLoad();
+					disableLinks();
+					$("#notloggedin").show();
+				});
+				
+			}
+			else if (data == "demo") {
+				onPageLoad();
+				$("#notloggedin").show();
+				disableLinks();
+			}
+		});
+
+		function onPageLoad () {
+			if (getQueryVariable("userpostid") != false) {
+				showPost(getQueryVariable("userpostid"));
+			}
+			getCompanyPageMain(getQueryVariable("id"));
+		}
+		function showPost (id) {
+			$("#sharedpostdiv").html("");
+			$("#checkdiv").html("");
+			$("#posts").html("");
+			createPost(id, $("#sharedpostdiv"), false);
+			history.pushState('', 'Inqora', updateURLParameter(window.location.href, "userpostid", id));
+			$("#regfeed").hide();
+			$("#sharedpost").show();
+		}
+		
+
+		$("#backshared").on("click", function (ev) {
+			ev.preventDefault();
+			$("#regfeed").show();
+			$("#sharedpost").hide();
+			$("#sharedpostdiv").html("");
+			$("#checkdiv").html("");
+			$("#posts").html("");
+			var arr = [getQueryVariable("id")];
+			showPostingSystem(arr);
+			history.pushState('', 'Inqora', removeParam("userpostid", window.location.href));
+		});
+
+		function getCompanyPageMain (id) {
+			showCompany(id);
+			arr = [id];
+			showPostingSystem(arr);
+		}
+		function showPostingSystem (arr) {
+			newPost(arr, $("#posts"));
+			callAJAX("GET", "/loadingpostfeeds/search/tags/post/recent/", {search: arr}, function (data) {
+				displayAll (data, $("#posts"), $("#checkdiv"));
+			});
+		}
+		</script>
+	</footer>
+	
+</html>
