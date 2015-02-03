@@ -14,7 +14,6 @@ var stockgame = require('./routes/stockgame');
 var accounts = require('./routes/accounts');
 var marketing = require('./routes/marketing');
 var companygroup = require('./routes/companygroup');
-RedisStore = require('connect-redis')(express);
 
 cors = require('cors'); 
 http = require('http');
@@ -22,8 +21,9 @@ compression = require('compression');
 methodOverride = require("method-override")
 express = require('express');
 mongoose = require('mongoose');
-session = require('express-session');
+var session = require('express-session')
 router = express.Router();
+RedisStore = require('connect-redis')(session);
 
 var app = express();
 
@@ -168,7 +168,7 @@ app.use(session({
 
 
 //Production
-// /*
+ ///*
 app.use(express.session({
   cookie: {
     httpOnly: false 
