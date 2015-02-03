@@ -21,7 +21,7 @@ compression = require('compression');
 methodOverride = require("method-override")
 express = require('express');
 mongoose = require('mongoose');
-var session = require('express-session')
+session = require('sessions');
 router = express.Router();
 RedisStore = require('connect-redis')(session);
 
@@ -156,7 +156,7 @@ app.all('*',  function (req, res, next) {
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials', true);
     next();
-});
+});*/
 app.use(session({
     secret: "randomasssecretpassword",
     name: "muellerappcookie",
@@ -168,8 +168,8 @@ app.use(session({
 
 
 //Production
- ///*
-app.use(session({
+ /*
+app.use(express.session({
   cookie: {
     httpOnly: false 
   },
@@ -181,7 +181,7 @@ app.use(session({
   secret: '1234567890QWERTY',
   saveUninitialized: false,
   resave:false
-}));
+}));*/
 app.all('*', function (req, res, next) {
     if (req.headers.origin.indexOf("https") > -1 && req.headers.origin.indexOf("www") > -1)
         res.header('Access-Control-Allow-Origin', 'https://www.inqora.com');
