@@ -1,5 +1,6 @@
 		function getLocalhost() {
 			return "http://localhost:3000";
+		//return "https://inqora2.herokuapp.com"
 			//return " http://468f1883.ngrok.com";
 		}
 function callAJAX (mytype, url, datastruct, callback) {

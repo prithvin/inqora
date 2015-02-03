@@ -14,6 +14,7 @@ var stockgame = require('./routes/stockgame');
 var accounts = require('./routes/accounts');
 var marketing = require('./routes/marketing');
 var companygroup = require('./routes/companygroup');
+RedisStore = require('connect-redis')(express);
 
 cors = require('cors'); 
 http = require('http');
@@ -147,16 +148,15 @@ post = new Schema ({
 posts = mongoose.model('Post', post, 'posts');
 
 
-app.set('port', process.env.PORT || 3000);
-app.set('views', __dirname + '/views');
-app.set('view engine', 'jade');
-app.use(logger('dev'));
-app.use(cors());
-app.use(compression())
-app.use(cookieParser());
-app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+// Development 
+/*
+app.all('*',  function (req, res, next) {
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:7888');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    next();
+});
 app.use(session({
     secret: "randomasssecretpassword",
     name: "muellerappcookie",
@@ -164,19 +164,52 @@ app.use(session({
     resave: true,
     saveUninitialized: true
 }));
+// */
+
+
+//Production
+// /*
+app.use(express.session({
+  cookie: {
+    httpOnly: false 
+  },
+  store: new RedisStore({
+    host: 'greeneye.redistogo.com',
+    port: 11374,
+    pass:'3fb77c607f5079dc567ffd934f93b46b'
+  }),
+  secret: '1234567890QWERTY',
+  saveUninitialized: false,
+  resave:false
+}));
+app.all('*', function (req, res, next) {
+    if (req.headers.origin.indexOf("https") > -1 && req.headers.origin.indexOf("www") > -1)
+        res.header('Access-Control-Allow-Origin', 'https://www.inqora.com');
+    else if (req.headers.origin.indexOf("https") > -1)
+        res.header('Access-Control-Allow-Origin', 'https://inqora.com');
+    else if (req.headers.origin.indexOf("http") > -1 && req.headers.origin.indexOf("www") > -1)
+        res.header('Access-Control-Allow-Origin', 'http://www.inqora.com');
+    else if (req.headers.origin.indexOf("http") > -1)
+        res.header('Access-Control-Allow-Origin', 'http://inqora.com');
+    res.header('Access-Control-Allow-Methods',     'GET,PUT,POST,DELETE');
+     res.header('Access-Control-Allow-Headers',     'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, Origin');
+    next();
+});
+// */
+ 
+
+app.set('port', process.env.PORT || 3000);
+app.set('views', __dirname + '/views');
+app.set('view engine', 'jade');
+app.use(logger('dev'));
+app.use(compression())
+app.use(cookieParser());
+app.use(logger('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
-
-
 app.use(methodOverride());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(function(req, res, next) {
-    res.header('Access-Control-Allow-Credentials', true);
-    res.header('Access-Control-Allow-Origin',      "*");
-    res.header('Access-Control-Allow-Methods',     'GET,PUT,POST,DELETE');
-    res.header('Access-Control-Allow-Headers',     'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, Origin');
-    next();
-  });
-
 app.use('/', routes);
 app.use('/users', userpage);
 app.use('/posting', postingsys);
@@ -222,30 +255,6 @@ app.use(function(err, req, res, next) {
 
 
 
-app.use(function(req, res, next) {
-    res.header('Access-Control-Allow-Credentials', true);
-      //res.header('Access-Control-Allow-Origin', 'https://www.inqora.com');
-    res.header('Access-Control-Allow-Origin', req.headers.origin);
-    res.header('Access-Control-Allow-Methods',     'GET,PUT,POST,DELETE');
-     res.header('Access-Control-Allow-Headers',     'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, Origin');
-    next();
-  });
-
-app.all('/*', function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "X-Requested-With");
-  next();
-});
-
-
-allowCrossDomain = function(req, res, next) {
-        res.header('Access-Control-Allow-Origin',      "*");
-         res.header('Access-Control-Allow-Headers',     'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, Origin');
-        res.header('Access-Control-Allow-Credentials', 'true');
-           res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-        next();
-};
-app.use(allowCrossDomain);
 
 
 
