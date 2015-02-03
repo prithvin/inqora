@@ -21,9 +21,9 @@ compression = require('compression');
 methodOverride = require("method-override")
 express = require('express');
 mongoose = require('mongoose');
-session = require('sessions');
+session = require('express-session');
 router = express.Router();
-RedisStore = require('connect-redis')(session);
+
 
 var app = express();
 
@@ -169,6 +169,7 @@ app.use(session({
 
 //Production
  /*
+ RedisStore = require('connect-redis')(session);
 app.use(express.session({
   cookie: {
     httpOnly: false 
