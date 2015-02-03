@@ -169,7 +169,7 @@ app.use(session({
 
 //Production
  ///*
-app.use(express.session({
+app.use(session({
   cookie: {
     httpOnly: false 
   },
