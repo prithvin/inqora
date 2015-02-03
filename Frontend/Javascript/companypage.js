@@ -115,13 +115,15 @@ function updatePortfolio (companyname) {
 				str += "Percent Change: " + (((data[x].StockEnd - data[x].StockStart)/data[x].StockStart)*100).toFixed(2) + "%<br>";
 				str += "Date Range: " + new Date(data[x].FollowingDate).toDateString() + " to " + new Date(data[x].EndDate).toDateString() + "<br><br>";
 				$("#oldyields").append(str);
-				arr.push((data[x].StockStart - data[x].StockEnd)/data[x].StockStart);
+				arr.push((data[x].StockEnd - data[x].StockStart)/data[x].StockStart);
 			}
 		}
 		var avg = 0;
 		for (var x = 0; x < arr.length; x++) {
 			avg += arr[x];
+			console.log(arr[x]);
 		}
+		console.log(avg);
 		$("#avgyield").html(((avg/arr.length) * 100).toFixed(2));
 	});
 }

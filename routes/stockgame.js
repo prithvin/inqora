@@ -180,4 +180,85 @@ router.get('/isOwnedNow', function(req, res){
 	}
 });
 
+router.get('/allcompanydata', function (req, res) {
+	var username = "aqeasfsdfasdfasdfasdfasdfasdfasdfsadfasdfasdfasdfasdfasdf";
+	console.log(req.query.Username);
+	if (req.query.Username != null && req.query.Username != "") {
+		username = req.query.Username;
+		console.log("HEYHEYHEY");
+	}
+	if(isSess(req)) {
+		users.findOne({$or: [{_id: req.session.UserId}, {"Username" : username}]}, function (err, data) {
+			if (data == null)
+				res.send("Error. This user does not exist");
+			else {
+				var stockdata = data.StockFollowing;
+				var arr = [];
+				for (var x =0 ; x < stockdata.length; x++) {
+					arr.push(stockdata[x]);
+				}
+				checkAndSendStocksAllCompanies(arr, 0, res);
+			}
+		});
+	}
+	else {
+		res.send("Error. Not in session");
+	}
+});
+
+function checkAndSendStocksAllCompanies (arr, x, res) {
+	if (x < arr.length) {
+		arr[x].CurrentPrice = -1;
+		if (arr[x].StockEnd == -1) { // Stock not sold
+			yahooFinance.snapshot({symbol: arr[x].CompanyUsername}, function (err, snapshot) {
+				if (snapshot == null)
+					res.send("TKGL");
+				else {
+					arr[x].CurrentPrice = snapshot.lastTradePriceOnly;
+					checkAndSendStocksAllCompanies(arr, x+1, res);
+				}
+			});
+		}
+		else {
+			checkAndSendStocksAllCompanies(arr, x+1, res);
+		}
+	}
+	else {
+		var obj = [];
+		var parallelobj = [];
+		for (var x =0; x < arr.length; x++) {
+			if (parallelobj.indexOf((arr[x].CompanyUsername)) == -1) {
+				parallelobj.push(arr[x].CompanyUsername);
+				var newobj = {
+					CompanyName: arr[x].CompanyName,
+					CompanyUsername: arr[x].CompanyUsername,
+					RestData: []
+				};
+				var tinyobj = {
+					FollowingDate: arr[x].FollowingDate,
+					EndDate: arr[x].EndDate,
+					StockStart: arr[x].StockStart,
+					StockEnd: arr[x].StockEnd,
+					CurrentPrice: arr[x].CurrentPrice
+				};
+				newobj.RestData.push(tinyobj);
+				obj.push(newobj);
+			}
+			else {
+				var tinyobj = {
+					FollowingDate: arr[x].FollowingDate,
+					EndDate: arr[x].EndDate,
+					StockStart: arr[x].StockStart,
+					StockEnd: arr[x].StockEnd,
+					CurrentPrice: arr[x].CurrentPrice
+				};
+				obj[parallelobj.indexOf((arr[x].CompanyUsername))].RestData.push(tinyobj);
+			}
+		}
+		console.log(obj);
+		res.send(obj);
+	}
+}
+
+
 module.exports = router;

@@ -1,0 +1,34 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+ 		<link rel="stylesheet" href="//cdn.jsdelivr.net/pure/0.5.0/pure-min.css">
+		<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+		<link rel="stylesheet" type="text/css" href="CSS/cardlayout.css">
+		<link rel="stylesheet" type="text/css" href="CSS/post.css">
+		<link rel="stylesheet" type="text/css" href="CSS/tooltips.css">
+		<link rel="stylesheet" type="text/css" href="CSS/alert.css">
+		<link rel="stylesheet" type="text/css" href="CSS/companypage.css">
+		<link rel="stylesheet" type="text/css" href="CSS/notifications.css">
+		<link rel="icon" href="favicon.png" type="image/x-icon" />
+
+		
+		<div style="display:inline-block;float:left;text-align:left;border-right:black solid 2px;height:100%;width:250px; ;overflow-y:scroll !IMPORTANT;">
+<table id="messagelist" style="overflow-x:visible;margin-top:5px;width:250px;height:100%;overflow-y:scroll;">
+</table>
+</div>
+<div style="display:inline;position:relative;float:left;width: calc(100% - 250px);z-index:10000;">
+	<section  style="height:calc(100% - 100px);position:relative;overflow-y:auto;overflow-x:visible;overflow-y:auto;" id="messages" style=""></section>
+		<center>
+	<form id="messager" class="pure-form" style="width:98%;position:relative;margin-left:auto;margin-right:auto;" >
+			<textarea  id="textinputm" type="textarea" placeholder="Send a message..." style="width:100%;"></textarea>
+			<button id="buttonsubmit" class="pure-button pure-button-primary" style="width:100%;">Send Message</button>
+		</center>
+	</form>
+</div>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="manager.js"></script>
+<script src="tooltips.js"></script>
+<script src="Javascript/contentparsing/linkify.js"></script>
+	<script src="Javascript/messaging.js"></script>
+	<script>
+	getList();
+	</script>
+

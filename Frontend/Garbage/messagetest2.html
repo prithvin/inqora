@@ -1,0 +1,32 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/pure/0.5.0/pure-min.css">
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="CSS/cardlayout.css">
+<link rel="stylesheet" type="text/css" href="CSS/post.css">
+<link rel="stylesheet" type="text/css" href="CSS/tooltips.css">
+<link rel="stylesheet" type="text/css" href="CSS/alert.css">
+<link rel="stylesheet" type="text/css" href="CSS/companypage.css">
+<link rel="stylesheet" type="text/css" href="CSS/messaging.css">
+<link rel="icon" href="favicon.png" type="image/x-icon" />
+
+<table style="max-height:100%;overflow-y:hidden;">
+	<td class="messagingmaintd" >
+		<div style="max-height:600px;overflow:auto;overflow-y:scroll" id="messagelist">
+		</div>
+	</td>
+	<td style="width:100%;">
+		<div style="height:100%;display:inline-block;width:100%;">
+			<section id="messages"></section>
+			<form id="messager" class="pure-form">
+				<textarea  id="textinputm" type="textarea" placeholder="Send a message..." style="width:100%;"></textarea>
+				<button id="buttonsubmit" class="pure-button pure-button-primary" style="width:100%;">Send Message</button>
+			</form>
+		</div>
+	</td>
+</table>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="manager.js"></script>
+<script src="tooltips.js"></script>
+<script src="Javascript/messaging.js"></script>
+<script src="Javascript/contentparsing/linkify.js"></script>

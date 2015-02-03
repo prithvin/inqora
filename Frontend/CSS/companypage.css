@@ -13,6 +13,9 @@
 		.header {
 			text-transform:capitalize !IMPORTANT;font-size:2em !IMPORTANT;text-align:center;color:black;border:0px !IMPORTANT;
 		}
+		.headeruserpage {
+			text-transform:none !IMPORTANT;font-size:2em !IMPORTANT;text-align:center;color:black;border:0px !IMPORTANT;
+		}
 		.headertiny {
 			text-transform:capitalize !IMPORTANT;font-size:1.25em !IMPORTANT;text-align:center;color:black;border:0px !IMPORTANT;
 		}
@@ -26,7 +29,7 @@
 			text-align:center;font-size:1.35em;
 		}
 		.profilepicwrapper {
-			padding-top:10px;color:#22313F;font-size:3em;text-align:center;
+			padding-top:10px;color:#22313F;font-size:5em;text-align:center;
 		}
 		#yahoochart {
 			width:100% !IMPORTANT;

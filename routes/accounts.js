@@ -79,5 +79,29 @@ router.get('/getuser', function (req, res) {
 	});
 });
 
+router.get('/getuserprofile', function (req, res) {
+	var username = req.query.Username;
+	users.findOne({Username: username}, "Name Username Points Picture Followers", function (err, data) {
+		if (data == null)
+			res.send("User is not valid");
+		else  {
+			var newdata = JSON.parse(JSON.stringify(data));
+			newdata.NumFollowers = data.Followers.length;
+			users.findOne({_id: req.session.UserId}, function (err, data2) {
+				if (data2 == null)
+					res.send("Error. Not in session");
+				else if(data2.FollowingAccs.Users != null && data2.FollowingAccs.Users.indexOf(username) != -1 ) {
+					newdata.Subscribed = true;
+					res.send(newdata);
+				}
+				else  {
+					newdata.Subscribed = false;
+					res.send(newdata);
+				}
+			});
+		}
+	});
+});
+
 
 module.exports = router;

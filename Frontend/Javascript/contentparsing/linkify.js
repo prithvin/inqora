@@ -9,25 +9,32 @@
  * Usage:   See demonstration page: linkify.html
  */
 
- function tagChange (str) {
+ function tagChange (str, nolink) {
   var regex =/((\S*@\[[^\]]+\])|(\S*@\S+))/ig;
- 
-    return str.replace(regex, "<span><a onmouseover='inlineTool(this);' href='directtotype.html?user=$1'>$1</a></span>");
+  if(nolink)
+     return str.replace(regex, "<span onmouseover='inlineTool(this);'  href=''>$1</span>");
+    return str.replace(regex, "<span><a onmouseover='inlineTool(this);' style='display:inline;padding:0;' href='directtotype.html?user=$1'>$1</a></span>");
 }
 
 function inlineTool (obj) {
    makeToolTipRemove($(obj).parent(), "", obj.innerHTML, $(obj).attr("href"), obj.innerHTML.substring(1), true);
     console.log(obj);
 }
+
 function makeToolTipRemove(maindiv, classAdd, innerHTML, link, username, maindivclear) {
-  $(maindiv).html("");
-  var whoposted = $("<p>").css("margin", 0).addClass("tooltips " + classAdd).attr({"name" : username, 'tooltip-position': "top", 'tooltip-type': "primary" , "tooltip" : "<div class='mainspantool contenttool'>One moment please...</div>"}).appendTo(maindiv);
+  callAJAX("GET", "/getusertooltip", {Username: username}, function (data2){
+     $(maindiv).html("");
+  var whoposted = $("<p>").css("margin", 0).addClass("tooltips " + classAdd).attr({"name" : username, 'tooltip-position': "top", 'tooltip-type': "primary" , "tooltip" : data2}).appendTo(maindiv);
   whoposted.name = username;
+
   var spanlink = $("<a>").css("margin", 0).attr("href" , link).html(innerHTML).appendTo(whoposted);
+  });
+ 
 }
 
-function linkify(text) {
-  text = tagChange(text);
+function linkify(text, nolink) {
+  text = (text);
+  text = tagChange(text, nolink);
     /* Here is a commented version of the regex (in PHP string format):
     $url_pattern = '/# Rev:20100913_0900 github.com\/jmrware\/LinkifyURL
     # Match http & ftp URL that is not already linkified.

@@ -67,7 +67,8 @@ usersch = new Schema ({
         WhoJoined: [],
         NewFollowers: [],
         TaggedInPost: [],
-        TaggedInComment: []
+        TaggedInComment: [],
+        PostUserCommentedOrPosted: []
     },
     Messaging: []
 });

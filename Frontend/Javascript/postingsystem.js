@@ -16,13 +16,10 @@ function createCommentPanel(panel, postid) {
 			start = 0;
 		for (var x = start; x < data.length; x++) {
 			var divvy= $("<div>").css("min-height", "50px").appendTo(panel);
-			var tably = $("<table>").css("width", "100%").appendTo(divvy);
+			var tably = $("<table>").css("width", "100%").css("font-size","1em").appendTo(divvy);
 				var td2 = $("<td>").appendTo(tably);
-				makeToolTip(td2, "zeromargin", "@" + data[x].PosterUsername + "(" + data[x].PosterName + "):" , "userpage.html?user=" + data[x].PosterUsername, data[x].PosterUsername);
+				makeToolTip(td2, "zeromargin", "@" + data[x].PosterUsername + " (" + data[x].PosterName + "): " , "userpage.html?id=" + data[x].PosterUsername, data[x].PosterUsername);
 				var content = $("<span>").html(linkify(data[x].Content)).appendTo(td2);
-
-
-
 
 				var upvoteclass = "commentvotespan";
 				var downvoteclass = "commentvotespan";
@@ -49,7 +46,7 @@ function createCommentPanel(panel, postid) {
 		var z = $("<span>").attr("id", "appendhere-" + postid).appendTo(panel);
 
 	var form = $("<form>").attr("id", "newcommentform-"+ postid).addClass("pure-form").appendTo(panel);
-		var submit = $("<textarea>").attr("type", "text").attr("id", "newcomment-" + postid).css("width", "100%").css("resize", "none").attr("placeholder", "New Comment").appendTo(form).attr("name", postid);
+		var submit = $("<textarea>").attr("type", "text").attr("id", "newcomment-" + postid).css("width", "100%").css("resize", "none").attr("placeholder", "New Comment").css("height","50px").appendTo(form).attr("name", postid);
 		$("<input>").attr("type", "submit").css("display","none").appendTo(form);
 	$(submit).keypress(function(e){
 		if(e.keyCode==13 && e.shiftKey == false) {
@@ -106,9 +103,9 @@ function createCommentPanel(panel, postid) {
 
 function newComment (data, panel, postid, x) {
 	var divvy= $("<div>").css("min-height", "50px").insertAfter(panel);
-	var tably = $("<table>").css("width", "100%").appendTo(divvy);
+	var tably = $("<table>").css("width", "100%").appendTo(divvy).css("font-size","1em");
 		var td2 = $("<td>").appendTo(tably);
-		makeToolTip(td2, "zeromargin", "@" + data.PosterUsername + "(" + data.PosterName + "):" , "userpage.html?user=" + data.PosterUsername, data.PosterUsername);
+		makeToolTip(td2, "zeromargin", "@" + data.PosterUsername + "(" + data.PosterName + "):" , "userpage.html?id=" + data.PosterUsername, data.PosterUsername);
 		var content = $("<span>").html(linkify(data.Content)).appendTo(td2);
 		var upvoteclass = "commentvotespan";
 		var downvoteclass = "commentvotespan";
@@ -169,24 +166,26 @@ function linkwithfontawesome (maindiv, fontawesomeclass, linkclass, innerHTML) {
 }
 
 function createPost(postid, maindiv, appendafter) {
-	callAJAX ("GET", "/posting/getpost", {PostId: postid}, function (data) {
-		if (appendafter) {
+	if (appendafter) {
 			var section = $("<section>").attr("id", postid).addClass("post head card viewpost").insertAfter(maindiv);
 		}
 		else {
 			var section = $("<section>").attr("id", postid).addClass("post head card viewpost").appendTo(maindiv);
 		}
+		$(section).html("<div class='load-1'><div class='line'></div><div class='line'></div><div class='line'></div></div>");
+	callAJAX ("GET", "/posting/getpost", {PostId: postid}, function (data) {
+		$(section).html("");
 		var h1 = $("<h1>").addClass("align-center").html(data.Title).appendTo(section);
 		var h2 = $("<h2>").addClass("description align-center").appendTo(section);
 			var timeposted = $("<span>").html("Posted " + msToTime((new Date).getTime() - data.TimePosted) + " by ").appendTo(h2);
-			makeToolTip(h2, "", "@" + data.PosterUsername + " (" + data.PosterName + ")","userpage.html?user=" + data.PosterUsername, data.PosterUsername);
+			makeToolTip(h2, "", "@" + data.PosterUsername + " (" + data.PosterName + ")","userpage.html?id=" + data.PosterUsername, data.PosterUsername);
 
 		var lol = $("<p>").html(linkify(data.Content)).appendTo(section).addClass("lol");
 		var hr1 = $("<p>").addClass("hr1").appendTo(section);
 		var misc = $("<p>").addClass("lol data").appendTo(section).css("font-weight", "bold");
 			var commentvotespan = $("<span>").html(data.NumComments + " comments  / <span style='color:#2574A9' id='netvotecounter-" + postid + "'>" + data.NetVotes + " Votes </span>  / Tags: ").appendTo(misc);
 			for (var x =0; x < data.Tags.length; x++)
-				makeToolTip(commentvotespan, "", "@" + data.Tags[x] + " , ","userpage.html?user=" + data.Tags[x], data.Tags[x]);
+				makeToolTip(commentvotespan, "", "@" + data.Tags[x] + " , ","directtotype.html?id=" + data.Tags[x], data.Tags[x]);
 		var hr2again = $("<p>").addClass("hr2").appendTo(section);
 		var menu = $("<div>").addClass("pure-menu pure-menu-open pure-menu-horizontal menu").appendTo(section);
 			var ul1 = $("<ul>").css("width", "100%").appendTo(menu);
@@ -217,14 +216,24 @@ function createPost(postid, maindiv, appendafter) {
 
 			var sharepanel = $("<div>").addClass("sharepanel").attr("id" , "sharepanel-" + postid).appendTo(section);
 			var myString ="<p class='hr2'></p>";
-			myString +=	"<span class='st_twitter_large' displayText='Tweet'></span>"
-			myString +=	"<span class='st_reddit_large' displayText='Reddit'></span>"
-			myString +=	"<span class='st_facebook_large' displayText='Facebook'></span>"
-			myString +=	"<span class='st_linkedin_large' displayText='LinkedIn'></span>"
-			myString += "<span class='st_googleplus_large' displayText='Google +'></span>"
-			myString += "<span class='st_email_large' displayText='Email'></span>"
+			myString += "<a href='https://api.addthis.com/oexchange/0.8/forward/facebook/offer?url=" + window.location.href + "&pubid=ra-5237971b387d9041&ct=1&title=Inqora&pco=tbxnj-1.0' target='_blank'><img src='https://cache.addthiscdn.com/icons/v2/thumbs/32x32/facebook.png' border='0' alt='Facebook'/></a>";
+			myString += "<a href='https://api.addthis.com/oexchange/0.8/forward/twitter/offer?url=" + window.location.href + "&pubid=ra-5237971b387d9041&ct=1&title=Inqora&pco=tbxnj-1.0' target='_blank'><img src='https://cache.addthiscdn.com/icons/v2/thumbs/32x32/twitter.png' border='0' alt='Twitter'/></a>";
+			myString += "<a href='https://www.addthis.com/bookmark.php?source=tbx32nj-1.0&v=300&&url=" + window.location.href + "&pubid=ra-5237971b387d9041&ct=1&title=Inqora&pco=tbxnj-1.0' target='_blank'><img src='https://cache.addthiscdn.com/icons/v2/thumbs/32x32/addthis.png' border='0' alt='Addthis'/></a>";
+
+
+		
 			$(sharepanel).html(myString);
 			
 			var commentpanel = $("<div>").addClass("commentpanel").attr("id" , "commentpanel-" + postid).appendTo(section);
+			var id = postid;
+			$(sharepanel).hide();
+			$(commentpanel).show();
+			if($(commentpanel).is(":visible")) {
+				$(commentpanel).find("a").addClass("selected");
+				$(sharepost).find("a").removeClass("selected")
+			}
+			else
+				$(commentpanel).find("a").removeClass("selected");
+			createCommentPanel(commentpanel, id);
 	});
 }

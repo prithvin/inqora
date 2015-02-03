@@ -8,14 +8,16 @@ function loadToolTips (mainobj, obj, data) {
 }
 
 function makeToolTip(maindiv, classAdd, innerHTML, link, username) {
-	var whoposted = $("<p>").addClass("tooltips " + classAdd).attr({"name" : username, 'tooltip-position': "top", 'tooltip-type': "primary" , "tooltip" : "<div class='mainspantool contenttool'>One moment please...</div>"}).appendTo(maindiv);
-	$(whoposted).attr("name", username);
-	var spanlink = $("<a>").attr("href" , link).html(innerHTML).appendTo(whoposted);
+	var whoposted = $("<p>").addClass("tooltips " + classAdd).attr({"name" : username, 'tooltip-position': "top", 'tooltip-type': "primary" , "tooltip" : "One moment please..."}).appendTo(maindiv);
+	callAJAX("GET", "/getusertooltip", {Username: username}, function (data2){
+		$(whoposted).attr("tooltip", data2);
+		$(whoposted).attr("name", username);
+		var spanlink = $("<a>").attr("href" , link).css("display", "inline").css("padding", "0").html(innerHTML).appendTo(whoposted);
+	});
 }
 
 	$(document).on("mouseover", ".tooltips", function(ev){
 		ev.preventDefault();
-		console.log($(this).attr("tooltip").indexOf("One moment please..."));
 		if ($(this).attr("tooltip").indexOf("One moment please...") != -1) {
 			var button = this;
 			callAJAX("GET", "/getusertooltip", {Username: $(this).attr("name")}, function (data2){

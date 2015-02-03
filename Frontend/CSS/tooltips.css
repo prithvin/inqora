@@ -1,6 +1,7 @@
 .tooltips {
   position: relative;
-  display:inline-block;
+  display:inline;
+  padding:0;
 }
 
 .tooltips span {
@@ -8,6 +9,11 @@
   min-width:200px;
   visibility: hidden;
   opacity: 0;
+}
+
+.tooltips a {
+  display:inline !IMPORTANT;
+  padding:0px !IMPORTANT;
 }
 
 

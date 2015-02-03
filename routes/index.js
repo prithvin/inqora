@@ -116,7 +116,7 @@ router.get('/getusertooltip', function (req, res) {
 						Thumbnail: data.Thumbnail,
 						StockFollowing: 0
 					};
-					getPercentChanges(data.StockFollowing, 0, res, [], obj);
+					getPercentChanges(data.StockFollowing, 0, res, [], obj, []);
 				});
 			}
 			else if (data1.Type == "Company") {
@@ -158,12 +158,19 @@ router.get('/getusertooltip', function (req, res) {
 	
 });
 
-function getPercentChanges(StockFollowing, x, res, avgarr, obj){
+function getPercentChanges(StockFollowing, x, res, avgarr, obj, parallelarray){
 	if (StockFollowing.length -1 < x) {
-		avg = 0;
-		for (var x = 0;  x < avgarr.length; x++) 
-			avg += avgarr[x];
-		obj.StockFollowing = parseInt(avg/avgarr.length);
+		console.log(avgarr);
+		var sumper = 0;
+		for (var x =0; x < avgarr.length; x++) {
+			var sum = 0;
+			for (var y = 0; y < avgarr[x].PercentChanges.length; y++) {
+				sum += avgarr[x].PercentChanges[y];
+			}
+			sumper += sum /avgarr[x].PercentChanges.length;
+		}
+		sumper = sumper/avgarr.length;
+		obj.StockFollowing = (sumper * 100).toFixed(2);
 		obj.Points = parseInt(obj.Points);
 		if (isNaN(obj.Points) )
 			obj.Points = 0;
@@ -171,32 +178,32 @@ function getPercentChanges(StockFollowing, x, res, avgarr, obj){
 			obj.StockFollowing = 0;
 		var str = "<div class='mainspantool'><img class='imagetool' src='" + obj.Thumbnail + "'>";
 		str += "<div class='contenttool'>" + obj.Name + " (@" + obj.Username + ")<br>";
-		str += obj.Followers + "<br>" + obj.StockFollowing + "% returns <br>" + obj.Points + " points";
+		str += obj.Followers + "<br>" + obj.StockFollowing + "% overall returns <br>" + obj.Points + " points";
 		str += "</div></div>"
 		res.send(str);
 	}
 	else {
 		var tempobj = StockFollowing[x];
-		if (tempobj.StockEnd != null) {
-			percentstockchange = ((tempobj.StockEnd - tempobj.StockStart)/(tempobj.StockStart));
-			spchange = ((tempobj.SPEnd - tempobj.SPStart)/(tempobj.SPStart));
-			avgarr.push(percentstockchange - spchange);
-			getPercentChanges(StockFollowing, x+1, res, avgarr, obj);
+		if(parallelarray.indexOf(tempobj.CompanyUsername) == -1) {
+			var objtemp = {
+				CompanyUsername: tempobj.CompanyUsername,
+				PercentChanges: []
+			};
+			parallelarray.push(tempobj.CompanyUsername);
+			avgarr.push(objtemp)
 		}
-		else {
+		if (tempobj.StockEnd != null && parseInt(tempobj.StockEnd) != -1) {
+			percentstockchange = ((tempobj.StockEnd - tempobj.StockStart)/(tempobj.StockStart));
+			avgarr[parallelarray.indexOf(tempobj.CompanyUsername)].PercentChanges.push(percentstockchange);
+			getPercentChanges(StockFollowing, x+1, res, avgarr, obj, parallelarray);
+		}
+		else if (parseInt(tempobj.StockEnd) == -1) {
 			yahooFinance.snapshot({
-					symbol: '^GSPC',
-					fields: ['s', 'n', 'd1', 'l1', 'y', 'r'],
-			}, function (err, snapshot) {
-				spchange = ((snapshot.lastTradePriceOnly - tempobj.SPStart)/(tempobj.SPStart));
-				yahooFinance.snapshot({
-					symbol: tempobj.CompanyUsername,
-					fields: ['s', 'n', 'd1', 'l1', 'y', 'r'],
-				}, function (err, snapshot2) {
-					percentstockchange = ((snapshot2.lastTradePriceOnly - tempobj.StockStart)/(tempobj.StockStart));
-					avgarr.push(percentstockchange - spchange);
-					getPercentChanges(StockFollowing, x+1, res, avgarr, obj);
-				});
+				symbol: tempobj.CompanyUsername
+			}, function (err, snapshot2) {
+				percentstockchange = ((snapshot2.lastTradePriceOnly - tempobj.StockStart)/(tempobj.StockStart));
+				avgarr[parallelarray.indexOf(tempobj.CompanyUsername)].PercentChanges.push(percentstockchange);
+				getPercentChanges(StockFollowing, x+1, res, avgarr, obj, parallelarray);
 			});
 		}
 	}

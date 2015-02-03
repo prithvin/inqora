@@ -63,8 +63,9 @@ $(document).on("click", ".sharepost", function (ev) {
 		$(this).find("a").addClass("selected");
 		$("#commentpost-" + id).find("a").removeClass("selected");
 	}
-	else
+	else  {
 		$(this).find("a").removeClass("selected");
+	}
 	$("#commentpanel-" + id).hide();
 });
 

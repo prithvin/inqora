@@ -7,6 +7,7 @@ router.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Credentials', true);
     next();
 });
+var xss = require('xss');
 
 
 function isSess (req) {
@@ -29,7 +30,8 @@ router.get('/getinbox', function (req, res) {
 				var obj = {
 					'Name' : user.Messaging[x].PartnerName,
 					'Username' : user.Messaging[x].PartnerId,
-					'New' : user.Messaging[x].New
+					'New' : user.Messaging[x].New,
+					'Time' : user.Messaging[x].Chat[user.Messaging[x].Chat.length - 1].Time
 				}
 				datatosend.push(obj);
 				console.log(obj);
@@ -56,6 +58,25 @@ router.get('/getbyusername', function (req,res) {
 	});
 });
 
+router.get('/makeold', function (req, res) {
+	var otherperson = req.body.Username;
+	users.findOne({_id: req.session.UserId}, function (err, user) {
+		if (user == null) 
+			res.send("Invalid session");
+		else {
+			messages = user.Messaging;
+			var index = getIndex(otherperson, messages);
+			if (index == -1) {
+				res.send("You never messaged this user before");
+			}
+			else {
+				res.send("Success");
+				messages[index].New = false;
+				users.update({'_id': req.session.UserId}, {$set: {'Messaging' : messages}}, function (err, up) {console.log(up); });
+			}
+		}
+	});
+});
 router.post('/new', function (req,res) {
 	var otherperson = req.body.Username;
 	var message = req.body.Message;
@@ -77,8 +98,9 @@ router.post('/new', function (req,res) {
 							New: false,
 							Chat: [ 
 								{
-									Message: message,
-									ByYou: true
+									Message: xss(message),
+									ByYou: true,
+									Time: (new Date).getTime()
 								}
 							]
 						}
@@ -97,8 +119,9 @@ router.post('/new', function (req,res) {
 			}
 			else {
 				var newchat = {
-					Message: message,
-					ByYou: true
+					Message: xss(message),
+					ByYou: true,
+					Time: (new Date).getTime()
 				};
 				messages[index].New = false;
 				messages[index].Chat.push(newchat);

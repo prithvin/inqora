@@ -59,3 +59,28 @@ function newPost (autotag, maindiv) {
 		});
 	});
 }
+
+function newPostNewsFeed (autotag, maindiv) {
+	var section = $("<section>").addClass("post head card viewpost").appendTo(maindiv);
+		var span = $("<span>").css("font-size", "1.5em").html("<center>New Post</center>").appendTo(section);
+		var hr = $("<hr>").css("margin", "5px").appendTo(section);
+		var form = $("<form>").addClass("pure-form").appendTo(section);
+			var input  = $("<input>").attr("type", "text").attr("placeholder", "Post Title").addClass("newposttitle").appendTo(form);
+			var textarea = $("<textarea>").addClass("newpostcontent").attr("id", "newpost").attr("placeholder", "Whats on your mind?").appendTo(form);
+	var div = $("<div>").addClass("autotag").html("Tag user, companies and groups. Try " + linkify("@AAPL")).appendTo(form);
+	var button = $("<input>").addClass("pure-button pure-button-primary").css("width","100%").attr("type","submit").val("Share Thoughts").appendTo(form).css("margin-top", "10px");
+	$(form).on("submit", function (ev) {
+		ev.preventDefault();
+		var obj = {
+			Content: $("#newpost").val(),
+			Tags: [],
+			Title: $(".newposttitle").val()
+		};
+		callAJAX("POST", "/posting/create/new", obj, function (data) {
+			$(".newposttitle").val("");
+			$("#newpost").val("")
+			createPost(data, section, true);
+			alert("Post created");
+		});
+	});
+}

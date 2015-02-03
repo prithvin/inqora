@@ -1,5 +1,11 @@
+.inmessage {
+	background-color:#E4F1FE;
+	}
 #menu { display: none; }
 
+.false-false {
+	background-color:#DADFE1 !IMPORTANT;
+}
 #menu a
 {
 	  display: block;

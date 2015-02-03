@@ -100,11 +100,14 @@ router.post('/removesub', function (req, res){
 });
 
 router.get('/getsubs', function (req, res) {
-	var username = "";
-	if (req.query.Username != null)
+	var username = "aqeasfsdfasdfasdfasdfasdfasdfasdfsadfasdfasdfasdfasdfasdf";
+	console.log(req.query.Username);
+	if (req.query.Username != null && req.query.Username != "") {
 		username = req.query.Username;
+		console.log("HEYHEYHEY");
+	}
 	if(isSess(req)) {
-		users.findOne({$or: [{'_id': req.session.UserId}, {"Username" : username}]}, function (err, data) {
+		users.findOne({$or: [{_id: req.session.UserId}, {"Username" : username}]}, function (err, data) {
 			var arr = {
 				Companies: [],
 				Groups: [],
@@ -113,10 +116,18 @@ router.get('/getsubs', function (req, res) {
 			var subs = data.FollowingAccs;
 			var usernames = subs.Users.concat(subs.Companies, subs.Groups);
 			if (data._id == req.session.UserId) 
-				getNameAndAdd(arr, usernames, 0, true, res, []);
+				getNameAndAdd(arr, usernames, 0, true, res, {Users: [], Companies: [], Groups:[]});
 			else {
 				users.findOne({_id: req.session.UserId}, function (err, data2) {
-					getNameAndAdd(arr, usernames, 0, false, res, data2.FollowingAccs);
+					if (data2 == null)
+						res.send("Error. Not in session");
+					else {
+						if (data2.FollowingAccs == null)
+							obj = {Users: [], Companies: [], Groups:[]};
+						else 
+							obj = data2.FollowingAccs;
+						getNameAndAdd(arr, usernames, 0, false, res, obj);
+					}
 				});	
 			}
 		});
@@ -124,9 +135,10 @@ router.get('/getsubs', function (req, res) {
 });
 
 router.get('/getfollowers', function (req, res) {
-	var username = "";
-	if (req.query.Username != null)
+	var username = "aqeasfsdfasdfasdfasdfasdfasdfasdfsadfasdfasdfasdfasdfasdf";
+	if (req.query.Username != null && req.query.Username != "") {
 		username = req.query.Username;
+	}
 	if(isSess(req)) {
 		users.findOne({$or: [{'_id': req.session.UserId}, {"Username" : username}]}, function (err, data) {
 			var arr = {
@@ -135,6 +147,7 @@ router.get('/getfollowers', function (req, res) {
 				Users: []
 			};
 			var usernames = data.Followers;
+			console.log(usernames);
 			if (data._id == req.session.UserId) 
 				getNameAndAdd(arr, usernames, 0, true, res, []);
 			else {
@@ -163,7 +176,7 @@ function getNameAndAdd (arr, usernames, x, alreadysubbed, res, sessarr){
 					arr.Groups.push(obj);
 			}
 			else {
-				if (sessarr.Users.indexOf(usernames[x]) != -1 && sessarr.Companies.indexOf(usernames[x]) != -1  && sessarr.Groups.indexOf(usernames[x]) != -1 )
+				if (sessarr.Users.indexOf(usernames[x]) != -1 || sessarr.Companies.indexOf(usernames[x]) != -1  || sessarr.Groups.indexOf(usernames[x]) != -1 )
 					var obj = {Username: usernames[x], Subbed: true, Name: data.Name};
 				else
 					var obj = {Username: usernames[x], Subbed: false, Name: data.Name};
@@ -174,7 +187,7 @@ function getNameAndAdd (arr, usernames, x, alreadysubbed, res, sessarr){
 				else if (data.Type == "Group")
 					arr.Groups.push(obj);
 			}
-			getNameAndAdd(arr, usernames, (x+1) , alreadysubbed, res);
+			getNameAndAdd(arr, usernames, (x+1) , alreadysubbed, res, sessarr);
 		});
 	}
 	else{

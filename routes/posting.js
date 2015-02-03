@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var xss = require('xss');
 router.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:7888');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
@@ -26,8 +27,8 @@ router.get('/getpost', function (req, res) {
 				res.send("Post does not exist");
 			else {
 				var post = {
-					Title: data.Title,
-					Content: data.Content,
+					Title: xss(data.Title),
+					Content: xss(data.Content),
 					Tags: data.Tags,
 					NetVotes: data.Votes.WhoUpvoted.length - data.Votes.WhoDownvoted.length,
 					NumComments: data.Comments.length,
@@ -65,7 +66,7 @@ router.get('/getcomments', function (req, res) {
 							PosterUsername:  data.Comments[x].CreatorUsername,
 							NetVotes: ( data.Comments[x].Votes.WhoUpvoted.length -  data.Comments[x].Votes.WhoDownvoted.length),
 							Time:  data.Comments[x].Time,
-							Content:  data.Comments[x].Content,
+							Content:  xss(data.Comments[x].Content),
 							Status: 0
 						};
 						if ( data.Comments[x].Votes.WhoUpvoted.indexOf(data2.Username) != -1)
@@ -97,7 +98,7 @@ function getTags (words) {
 }
 router.get('/newcomment', function (req, res) {
 	if(isSess (req)) {
-		posts.findOne({_id: req.query.PostId}, "Title" , function (err, data) {
+		posts.findOne({_id: req.query.PostId}, "Title Comments" , function (err, data) {
 			if (data == null)
 				res.send("This post does not exist");
 			else {
@@ -115,7 +116,7 @@ router.get('/newcomment', function (req, res) {
 					        WhoDownvoted: []
 					    },
 						Time:  (new Date()).getTime(),
-						Content:  req.query.Comment,
+						Content:  xss(req.query.Comment),
 						TagsDetected: arr
 					};
 					var objsend = {
@@ -123,17 +124,27 @@ router.get('/newcomment', function (req, res) {
 						PosterUsername: obj.CreatorUsername,
 						NetVotes: 0,
 						Time:  obj.Time,
-						Content:  obj.Content,
+						Content:  xss(obj.Content),
 						Status: 0
 					};
+					var notifobj = {
+			        	TitleOfPost: xss(data.Title),
+						PostId:req.query.PostId,
+						NumCommentsLast: data.Comments.length + 1,
+						wasComment: true
+			        };
+
+			       users.update({_id: req.session.UserId}, {$push: {'Notifications.PostUserCommentedOrPosted' : notifobj}}, function (err, up) {});
+
 					if (data.Comments == null)
 						var comments = 0;
 					else
 						comments = data.Comments.length;
+					
 					var objnotif = {
-						CommentNum: comments,
+						CommentNum: xss(comments),
 						isNew: true,
-						TitleOfPost: data.Title,
+						TitleOfPost: xss(data.Title),
 						PostId: data._id,
 						WhoTagged: data2.Username
 					};
@@ -297,8 +308,8 @@ router.post('/create/new', function (req, res) {
             arr = [];
         arr.push(data.Username);
         var newpost = new posts ({
-            Title: req.body.Title,
-            Content: req.body.Content,
+            Title: xss(req.body.Title),
+            Content: xss(req.body.Content),
             PosterId: req.session.UserId,
             PosterName: data.Name,
             PosterUsername: data.Username,
@@ -315,10 +326,17 @@ router.post('/create/new', function (req, res) {
             else {
             	var obj = {
 		        	WhoTagged: data.Username,
-		        	PostTitle: req.body.Title,
+		        	PostTitle: xss(req.body.Title),
 		        	PostId: newpost._id,
 		        	isNew: true
 		        };
+		        var notifobj = {
+		        	TitleOfPost: xss(req.body.Title),
+					PostId:newpost._id,
+					NumCommentsLast: 0,
+					wasComment: false
+		        };
+		        users.update({_id: req.session.UserId}, {$push: {'Notifications.PostUserCommentedOrPosted' : notifobj}}, function (err, up) {});
 		        for (var x = 0; x < arr.length; x++) {
 		        	if (arr[x] != data.Username) {
 		        		users.update({Username: arr[x]}, {$push: {'Notifications.TaggedInPost' : obj}}, function (err, up) {});
