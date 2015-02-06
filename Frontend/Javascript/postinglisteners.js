@@ -1,6 +1,5 @@
 $(document).on("click", ".upvotebutton", function (ev) {
 	ev.preventDefault();
-	console.log("Upvote button");
 	var postid = $(this).attr("name")
 	if (getStatus(true, postid)) {
 		updateVote(-1, postid);

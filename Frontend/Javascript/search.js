@@ -27,7 +27,6 @@ function showName () {
     type: "GET",
     url:  getLocalhost() + "/companygroup/getSearch",
     success:function(data) {
-      console.log(data);
       project.disabled = false;
       for (var x =0; x  < data.length; x++) {
         if (data[x].Type == "User")
@@ -113,5 +112,9 @@ delay: 0,
   }
 
   function getThumbnail (item, image) {
-    image.src = getLocalhost() + "/companygroup/getThumbnailAct?Username=" + item.Username;
+    //image.src = getLocalhost() + "/companygroup/getThumbnailAct?Username=" + item.Username;
+    $(image).addClass("getThumbnailClassButton").attr("name", item.Username);
+    callAJAX("GET", "/companygroup/getThumbnail", {Username: $(image).attr("name")}, function (data) {
+      $(image).attr("src", data);
+    });
   }

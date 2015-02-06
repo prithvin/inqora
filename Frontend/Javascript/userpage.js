@@ -1,6 +1,5 @@
 function showUser(id) {
 	callAJAX ("GET", "/accounts/getuserprofile/", {Username :id} , function (data) {
-		console.log(data);
 		$("#userprofilename").html(data.Name + "(@" + data.Username + ")");
 		$("#profilepic").attr("src", data.Picture);
 		$("title").html("Inqora - " + data.Name)
@@ -12,11 +11,9 @@ function showUser(id) {
 			$("#subscribe").html("Subscribe");
 		$("#subscribe").on("click", function (ev) {
 			ev.preventDefault();
-			console.log("ZAVALA");
 			var button = this;
 			if ($(this).html() == "Subscribe") {
 				callAJAX("POST", "/subscriptions/addsub", {newsub: id}, function (data) {
-					console.log(data);
 					if (data.trim() == "Success") {
 						$(button).html("Unsubscribe");
 						$("#numfollowers").html(parseInt($("#numfollowers").html()) + 1);
@@ -27,7 +24,6 @@ function showUser(id) {
 			}
 			else if ($(this).html() == "Unsubscribe") {
 				callAJAX("POST", "/subscriptions/removesub", {newsub: id}, function (data) {
-					console.log(data);
 					if (data == "Success") {
 						button.innerHTML = "Subscribe";
 						$("#numfollowers").html(parseInt($("#numfollowers").html()) -1);
@@ -58,7 +54,6 @@ function showUserLikes (id) {
 	$("#posts").html("");
 	$("#checkdiv").html("");
 	callAJAX("GET", "/loadingpostfeeds/postsliked/", {Username: id}, function (data) {
-		console.log(data);
 		displayAll (data, $("#posts"), $("#checkdiv"));
 	});
 }
@@ -73,7 +68,6 @@ function showUserComments (id) {
 	$("#posts").html("");
 	$("#checkdiv").html("");
 	callAJAX("GET", "/loadingpostfeeds/postscommented/", {Username: id}, function (data) {
-		console.log(data);
 		displayAll (data, $("#posts"), $("#checkdiv"));
 	});
 }

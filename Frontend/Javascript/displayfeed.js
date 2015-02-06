@@ -1,6 +1,4 @@
 function displayAll (data, maindiv, adddiv) {
-	console.log(data.length);
-
 	var length = 3;
 	if (length > data.length)
 		length = data.length;
@@ -10,7 +8,6 @@ function displayAll (data, maindiv, adddiv) {
 
 
 	if (length >= data.length) {
-		console.log("LOOOOOL");
 		setFinished (checkspan);
 	}
 

@@ -26,11 +26,9 @@ function showCompany (companyname) {
 		$("#numfollowers").html(data.NumFollowers);
 		$("#subscribe").on("click", function (ev) {
 			ev.preventDefault();
-			console.log("ZAVALA");
 			var button = this;
 			if ($(this).html() == "Subscribe") {
 				callAJAX("POST", "/subscriptions/addsub", {newsub: companyname}, function (data) {
-					console.log(data);
 					if (data.trim() == "Success") {
 						$(button).html("Unsubscribe");
 						$("#numfollowers").html(parseInt($("#numfollowers").html()) + 1);
@@ -41,7 +39,6 @@ function showCompany (companyname) {
 			}
 			else if ($(this).html() == "Unsubscribe") {
 				callAJAX("POST", "/subscriptions/removesub", {newsub: companyname}, function (data) {
-					console.log(data);
 					if (data == "Success") {
 						button.innerHTML = "Subscribe";
 						$("#numfollowers").html(parseInt($("#numfollowers").html()) -1);
@@ -60,7 +57,6 @@ function showCompany (companyname) {
 			var button = this;
 			if ($(this).html() == "Add to Virtual Portfolio") {
 				callAJAX("GET", "/stockgame/buycompany", {CompanyUsername: companyname}, function (data) {
-					console.log(data);
 					if (data.toString().indexOf("Error") != -1) 
 						alert(data);
 					else 
@@ -70,7 +66,6 @@ function showCompany (companyname) {
 			}
 			else {
 				callAJAX("GET", "/stockgame/sellcompany", {CompanyUsername: companyname}, function (data) {
-					console.log(data);
 					if (data.indexOf("Error") != -1) 
 						alert(data);
 					else 
@@ -121,9 +116,7 @@ function updatePortfolio (companyname) {
 		var avg = 0;
 		for (var x = 0; x < arr.length; x++) {
 			avg += arr[x];
-			console.log(arr[x]);
 		}
-		console.log(avg);
 		$("#avgyield").html(((avg/arr.length) * 100).toFixed(2));
 	});
 }

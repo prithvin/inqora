@@ -18,7 +18,8 @@ router.get('/logout', function(req,res ) {
 	res.send("Session destroyed");
 });
 
-router.get('/test', function (res, res) {
+router.get('/test', function (req, res) {
+	console.log(req.headers.host);
 	yahooFinance.snapshot(
 		{
 			symbol: 'AAPL'
@@ -142,6 +143,30 @@ router.get('/getusertooltip', function (req, res) {
 								str += "</div></div>"
 								res.send(str);
 							});
+						}
+					});
+				});
+			}
+			else if (data1.Type == "Group") {
+				companies.findOne({UserId: username}, function (err, data) {
+					var obj = {
+						Name: data.Name,
+						Username: data.UserId,
+						isFollowed: "Not Following",
+						Thumbnail: data.Thumbnail,
+						NumFollowers: data.NumFollowers + " Followers",
+					};
+					users.findOne({_id: req.session.UserId}, "FollowingAccs" , function (err, data2) {
+						if (data2 == null)
+							res.send("Not in session");
+						else {
+							if (data2.FollowingAccs.Groups != null && data2.FollowingAccs.Groups.indexOf(username) != -1)
+								obj.isFollowed = "Following";
+							var str = "<div class='mainspantool'><img class='imagetool' src='" + obj.Thumbnail + "'>";
+							str += "<div class='contenttool'>" + obj.Name + " (@" + obj.Username + ")<br>";
+							str += "<br>" + obj.NumFollowers+ " (" + obj.isFollowed + ") ";
+							str += "</div></div>"
+							res.send(str);
 						}
 					});
 				});

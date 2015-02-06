@@ -40,7 +40,7 @@ router.post('/addsub', function (req, res){
 						else if (typer.Type == "Company" || typer.Type == "Group") {
 							console.log("HEYA");
 							companies.update({'UserId': newsub} , {$inc: {NumFollowers: 1}}, function (err, up){});
-							if (typer.Type = 'Company"')
+							if (typer.Type == 'Company')
 								users.update({'Username' : data.Username}, {$push: {'FollowingAccs.Companies' : newsub}}, function(err, ups)  {console.log(ups);});
 							else {
 								users.update({'Username' : data.Username}, {$push: {'FollowingAccs.Groups' : newsub}}, function(err, ups)  {console.log(ups);});

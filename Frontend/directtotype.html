@@ -1,0 +1,35 @@
+<html>
+	<head>
+	</head>
+	<body>
+	</body>
+	<footer>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script src="manager.js"></script>
+<script>
+	runFile(getQueryVariable('id'));
+	function runFile (user) {
+		var user = user.substring(1);
+		$.ajax({
+			type: "GET",
+			url: getLocalhost() + "/companygroup/getType",
+			data: {
+				Username: user
+			},
+			success:function(data) {
+				if (data.toString().toLowerCase() == "user") 
+					window.location.assign("userpage.html?id=" + user);
+				else if (data.toString().toLowerCase() == "company")
+					window.location.assign("companypage.html?id=" + user);
+				else if (data.toString().toLowerCase() == "group")
+					window.location.assign("grouppage.html?id=" + user);
+				else 
+					window.history.back();
+			},
+			xhrFields: {withCredentials: true},
+			error:function(){
+				console.log("ERROR");
+			}
+		});
+	}
+</script>

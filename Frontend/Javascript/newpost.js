@@ -2,7 +2,7 @@ callAJAX("GET", "/companygroup/getSearch", {}, function (searchres) {
 		var textarea = document.getElementById("newpost");
 		var arr = [];
 		for (var x = 0 ;x  < searchres.length; x++) {
-			var img = "<img src='"+getLocalhost()+ "/companygroup/getThumbnailAct?Username=" + searchres[x].Username +  "'>";
+			var img = "<img style='margin:0;padding:0;position:relative;left:0;margin-right:5px;' src='"+getLocalhost()+ "/companygroup/getThumbnailAct?Username=" + searchres[x].Username +  "'>";
 			arr.push(img + " " + searchres[x].Name + " (@"  + searchres[x].Username + ") - " + searchres[x].Type);
 		}
 		$(textarea).textcomplete([
@@ -46,18 +46,39 @@ function newPost (autotag, maindiv) {
 	var button = $("<input>").addClass("pure-button pure-button-primary").css("width","100%").attr("type","submit").val("Share Thoughts").appendTo(form).css("margin-top", "10px");
 	$(form).on("submit", function (ev) {
 		ev.preventDefault();
-		var obj = {
-			Content: $("#newpost").val(),
-			Tags: autotag,
-			Title: $(".newposttitle").val()
-		};
-		callAJAX("POST", "/posting/create/new", obj, function (data) {
-			$(".newposttitle").val("");
-			$("#newpost").val("")
-			createPost(data, section, true);
-			alert("Post created");
-		});
+		if ($("#newpost").val().trim() == "") {
+			alert("Oops! Looks lie you forgot to write a post");
+		}
+		else if ($(".newposttitle").val().trim() == "") {
+			alert("Please title your post");
+		}
+		else {
+			var obj = {
+				Content: $("#newpost").val(),
+				Tags: autotag,
+				Title: $(".newposttitle").val()
+			};
+			callAJAX("POST", "/posting/create/new", obj, function (data) {
+				$(".newposttitle").val("");
+				$("#newpost").val("")
+				createPost(data, section, true);
+				alert("Post created");
+			});
+		}
 	});
+}
+
+function getTags (words) {
+    var tmplist = words.split(' ');
+    var hashlist = [];
+    var nonhashlist = [];
+    for(var w in tmplist){
+        if(tmplist[ w ].indexOf('@') == 0)
+            hashlist.push(tmplist[ w ].substring(1));
+        else
+            nonhashlist.push(tmplist[ w ]);
+    }
+    return hashlist;
 }
 
 function newPostNewsFeed (autotag, maindiv) {
@@ -71,16 +92,27 @@ function newPostNewsFeed (autotag, maindiv) {
 	var button = $("<input>").addClass("pure-button pure-button-primary").css("width","100%").attr("type","submit").val("Share Thoughts").appendTo(form).css("margin-top", "10px");
 	$(form).on("submit", function (ev) {
 		ev.preventDefault();
-		var obj = {
-			Content: $("#newpost").val(),
-			Tags: [],
-			Title: $(".newposttitle").val()
-		};
-		callAJAX("POST", "/posting/create/new", obj, function (data) {
-			$(".newposttitle").val("");
-			$("#newpost").val("")
-			createPost(data, section, true);
-			alert("Post created");
-		});
+		if ($("#newpost").val().trim() == "") {
+			alert("Oops! Looks lie you forgot to write a post");
+		}
+		else if(getTags($("#newpost").val().trim()).length == 0) {
+			alert("Please tag 1 or more companies, groups and users.");
+		}
+		else if ($(".newposttitle").val().trim() == "") {
+			alert("Please title your post");
+		}
+		else {
+			var obj = {
+				Content: $("#newpost").val(),
+				Tags: [],
+				Title: $(".newposttitle").val()
+			};
+			callAJAX("POST", "/posting/create/new", obj, function (data) {
+				$(".newposttitle").val("");
+				$("#newpost").val("")
+				createPost(data, section, true);
+				alert("Post created");
+			});
+		}
 	});
 }

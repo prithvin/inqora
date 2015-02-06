@@ -83,6 +83,16 @@ router.get('/getSearch', function(req,res) {
 
 });
 
+router.get('/getType', function(req,res) {
+	var newsub = req.query.Username;
+	searchresmod.findOne({$or: [{'Username' : newsub},{'UserId' : newsub}]}, "Type UserId Username", function(err,results) {
+		if (results == null) 
+			res.send("ERROR");
+		else
+		res.send(results.Type);
+	});
+});
+
 router.get('/getThumbnail' ,function (req, res) {
 	if (isSess(req)) {
 		searchresmod.findOne({ $or: [{'Username' : req.query.Username}, {'UserId' : req.query.Username}]}, 'Thumbnail', function (err, rez) {
@@ -172,6 +182,39 @@ router.post('/company/create', function(req, res) {
 		return res.send("Account successfully created")
 	});
 });
+
+
+//data.Subscribed (true or false)
+
+
+router.get('/group/get/:username', function(req,res) {
+	var username = req.params.username;
+	groups.findOne({UserId : username}, function(err, result) {
+		if (result == null)
+			res.send("Error. Company does not exist");
+		else {
+			var obj = {
+				Name: result.Name,
+				Username: result.UserId,
+				Description: result.Description,
+				Picture: result.Picture,
+				NumFollowers: result.NumFollowers,
+				Subscribed: false
+			};
+			users.findOne({_id: req.session.UserId}, "FollowingAccs", function (err, data) {
+				if (data == null)
+					res.send("Error. Not in session");
+				else {
+					if (data.FollowingAccs.Groups != null && data.FollowingAccs.Groups.indexOf(username) != -1 )
+						obj.Subscribed = true;
+					res.send(obj);
+				}
+			});
+		}
+	});
+
+});
+
 
 router.get('/company/get/:stock', function(req,res) {
 	companies.findOne({UserId : req.params.stock}, function(err, result) {

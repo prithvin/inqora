@@ -73,6 +73,18 @@ router.get('/getuser', function (req, res) {
 	});
 });
 
+router.get('/isverified', function (req, res) {
+	users.findOne({_id : req.session.UserId}, "Verified", function (err, data) {
+		if (data == null)
+			res.send("User is not valid");
+		else 
+			if (data.Verified == true || data.Verified == "true")
+				res.send("T");
+			else
+				res.send("N");
+	});
+});
+
 router.get('/getuserprofile', function (req, res) {
 	var username = req.query.Username;
 	users.findOne({Username: username}, "Name Username Points Picture Followers", function (err, data) {

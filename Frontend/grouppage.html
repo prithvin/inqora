@@ -14,136 +14,68 @@
 		<link rel="stylesheet" type="text/css" href="CSS/loginmodal.css">
 		<link rel="stylesheet" type="text/css" href="CSS/messaging.css">
 		<link rel="icon" href="favicon.png" type="image/x-icon" />
-		<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js "></script>
+		<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
 		<script type="text/javascript">var switchTo5x=true;stLight.options({publisher: "3b51f3e7-db26-4944-a02f-89bcecc33f19", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>
 		<title>Inqora</title>
 	</head>
+	<body style="background-color: #DADFE1;">
+		<div class="btn-group btn-group-lg bottombar col-xs-12 hidden-sm hidden-sm hidden-md hidden-lg" role="group"  class=""> 
+			<button type="button" onclick="$('#mydatapanel').removeClass('hidden-xs');$('#mydatapanel').addClass('col-xs-12');$('#postingsystemdiv').addClass('hidden-xs');$('#postingsystemdiv').removeClass('col-xs-12');"  style="width: 50%;border-radius: 0;"class="btn btn-default">My Network</button>
+			<button type="button" onclick="$('#postingsystemdiv').removeClass('hidden-xs');$('#postingsystemdiv').addClass('col-xs-12');$('#mydatapanel').addClass('hidden-xs');$('#mydatapanel').removeClass('col-xs-12');" style="width: 50%;border-radius: 0;"class="btn btn-default">Posts</button>
+		</div>
+		<div id="navsearchmainsearch" class="row  navbar-fixed-top navbar" style="background-color:rgba(34, 49, 63, 0.84);">
+		<p></p>
+		<div class="col-md-3 col-sm-3 col-xs-12" style="text-align:center;margin-top:7px;">
+			<a href="newsfeed.html"><span class="col-xs-10 col-sm-10 col-md-offset-2 col-md-10 col-md-offset-2" style="margin-left:20px;font-size:2em;color:white;height:50px;"><i class="fa fa-area-chart"></i> Inqora</span></a>
+		</div>
+		<div class="col-lg-6 col-md-5 col-sm-8 col-sm-offset-0 col-xs-10 col-xs-offset-1" style="margin-top:10px;">
+			<form class="pure-form">
+				<input id="project" placeholder="Search for Companies, Groups and People" class="col-xs-* center-block" style="width:100%;">
+			</form>
+		</div>
 
-	<body style="background-color: #ECECEC;">
-			<div id="navsearchmainsearch" class="row  navbar-fixed-top navbar" style="background-color:rgba(34, 49, 63, 0.84);">
-					<p></p>
-						<div class="col-xs-3 col-md-3 col-sm-3" style="text-align:center;margin-top:7px;">
-							<a href="newsfeed.html"><span class="col-xs-10 col-sm-10 col-md-offset-2 col-md-10 col-md-offset-2" style="margin-left:20px;font-size:2em;color:white;height:50px;"><i class="fa fa-area-chart"></i> Inqora</span></a>
-						</div>
-						<div class="col-xs-5 col-lg-6 col-md-5 col-sm-5" style="margin-top:10px;">
-							<form class="pure-form">
-								<input id="project" placeholder="Search for Companies, Groups and People" class="col-xs-* center-block" style="width:100%;">
-							</form>
-						</div>
-
-						<div class="col-xs-4 col-lg-3 col-md-4 col-sm-4" style="margin-top:10px;text-align:center;">
-							<a onclick="document.getElementById('accountsettingsbutton').click()" class="pure-button button greenparty" ><i class="fa fa-cog"></i></a>
-							<a id="myprof" class="pure-button button" style="background-color:#674172;color:white;"><i class="fa fa-user" title="My Profile"></i></a>
-							<a id="admin" style="background-color:#96281B;color:white;" class="pure-button button">  <i id="numnotifs" class="fa fa-bell"> 1</i></a>
-
-
-							<a id=""  onclick="$('#messagingmodalbutton').click()" class="pure-button pure-button-primary button"><i class="fa fa-comment" title="My Profile"></i></a>
-							<a onclick="logout()" class="hidden-xs hidden-sm pure-button button-error"><i class="fa"> Log out</i></a>
-							<a onclick="logout()" class="hidden-md hidden-lg pure-button button-error"><i class="fa fa-sign-out"></i></a>
-							<br>
+		<div class="col-xs-12 col-lg-3 col-md-4 col-sm-12" style="margin-top:10px;text-align:center;">
+			<a onclick="document.getElementById('accountsettingsbutton').click()" class="pure-button button greenparty" ><i class="fa fa-cog"></i></a>
+			<a id="myprof" class="pure-button button" style="background-color:#674172;color:white;"><i class="fa fa-user" title="My Profile"></i></a>
+			<a id="admin" style="background-color:#96281B;color:white;" class="pure-button button">  <i id="numnotifs" class="fa fa-bell"> 1</i></a>
 
 
-						</div>
-						<iframe id="logout" style="height:0;width:0;" frameborder="0" hidden></iframe>
-						<div style="padding: 0 0 0 0 ;" class="col-xs-12 col-md-12">
-							<br>
-							<a id="notloggedin" href="loginpage.html" class="col-xs-12 col-md-12 col-sm-12  pure-button" style="display:none;color:white;background-color:rgba(242, 38, 19, 0.6);">Not Logged In. Limited Functionality.</a>
-						</div>
-				</div>
+			<a id=""  onclick="$('#messagingmodalbutton').click()" class="pure-button pure-button-primary button"><i class="fa fa-comment" title="My Profile"></i></a>
+			<a onclick="logout()" class="hidden-xs hidden-sm pure-button button-error"><i class="fa"> Log out</i></a>
+			<a onclick="logout()" class="hidden-md hidden-lg pure-button button-error"><i class="fa fa-sign-out"></i></a>
+			<br>
+		</div>
+		<iframe id="logout" style="height:0;width:0;" frameborder="0" hidden></iframe>
+		<div style="padding: 0 0 0 0 ;" class="col-xs-12 col-md-12">
+			<br>
+			<a id="notloggedin" href="loginpage.html" class="col-xs-12 col-md-12 col-sm-12  pure-button" style="display:none;color:white;background-color:rgba(242, 38, 19, 0.6);">Not Logged In. Limited Functionality.</a>
+			<a id="verifyemailbar" href="loginpage.html" class="col-xs-12 col-md-12 col-sm-12  pure-button" style="display:none;color:white;background-color:rgba(113, 255, 0, 0.5);">Please verify your email to access full functionality. Click here to resend email</a>
+		</div>
+	</div>
 
-		<div class="row fixedtop">
-		<div class="upperdiv" style="float:left;margin-left:30px;min-width:300px;width:33%;">
+		<div class="fixedtop">
+			<div id="mydatapanel" class="col-xs-12 col-sm-4 col-md-4">
 			<div class="pure-menu pure-menu-open panel companypanel">
-				<a class="link headeruserpage pure-menu-heading">George Yang (@krisps)</a>
+				<a class="link header pure-menu-heading" id="companymaindata"></a>
 				<ul >
-					  <li><a class="link profilepicwrapper" ><img src="https://www.google.com/images/srpr/logo11w.png" id="profilepic" style="margin-top:10px;height:2em;max-width:100%;"></a></li>
-					  <li class="link"> <a class="link">Points: 100 pts<span id="industry"></span></a></li>
-					  <li> <a class="link"><span id="numfollowers"></span>Number of Followers: 10</a></li>
-
-				
-					  <li style="text-align:center;"><button id="subscribe" class="link pure-button pure-button-primary subnow">Subscribe</button><button style="" id="virtport" class="link virtport pure-button pure-button-primary" href="">Message</button></li>
-				</ul>
-			</div>
-			<div class="pure-menu pure-menu-open panel" style="box-shadow: 1px 1px 3px #888888;">
-				<a class="link headertiny pure-menu-heading">Subscriptions</a>
-				<ul style="padding:0 20px;padding-bottom:10px;">
-					<li class="pure-menu-heading">Users</li>
-					<li style="">
-						<table style="width: 100%;">
-							<tr id="tr-Nishith Modi">
-								<td style="font-size:85%">
-									<a class="link" href="userpage.html?id=nishiscool">Nishith Modi(@nishiscool)</a>
-								</td>
-								<td style="font-size:85%">
-									<button id="540bcc3fff8ead7c0c8055b1" name="540bcc3fff8ead7c0c8055b1" class="badge pure-button pure-button-primary" value="Subscribe" style="text-align: center; float: right; margin-right: 5px; padding: 3px 7px;">
-										<i class="fa fa-plus" style=""></i>
-									</button>
-								</td>
-							</tr>
-						</table>
-					</li>
-					<li class="pure-menu-heading">Companies</li>
-					<li style="">
-						<table style="width: 100%;">
-							<tr id="tr-Nishith Modi">
-								<td style="font-size:85%">
-									<a class="link" href="userpage.html?id=nishiscool">Nishith Modi(@nishiscool)</a>
-								</td>
-								<td style="font-size:85%">
-									<button id="540bcc3fff8ead7c0c8055b1" name="540bcc3fff8ead7c0c8055b1" class="badge pure-button pure-button-primary" value="Subscribe" style="text-align: center; float: right; margin-right: 5px; padding: 3px 7px;">
-										<i class="fa fa-plus" style=""></i>
-									</button>
-								</td>
-							</tr>
-						</table>
-					</li>
-					<li class="pure-menu-heading">Groups</li>
-					<li style="">
-						<table style="width: 100%;">
-							<tr id="tr-Nishith Modi">
-								<td style="font-size:85%">
-									<a class="link" href="userpage.html?id=nishiscool">Nishith Modi(@nishiscool)</a>
-								</td>
-								<td style="font-size:85%">
-									<button id="540bcc3fff8ead7c0c8055b1" name="540bcc3fff8ead7c0c8055b1" class="badge pure-button pure-button-primary" value="Subscribe" style="text-align: center; float: right; margin-right: 5px; padding: 3px 7px;">
-										<i class="fa fa-plus" style=""></i>
-									</button>
-								</td>
-							</tr>
-						</table>
-					</li>
-					
-				</ul>
-			</div>
-			<div class="pure-menu pure-menu-open panel" style="box-shadow: 1px 1px 3px #888888;">
-				<a class="link headertiny pure-menu-heading">Followers</a>
-				<ul style="padding:0 20px;padding-bottom:10px;">
-					<li style="">
-						<table style="width: 100%;">
-							<tr id="tr-Nishith Modi">
-								<td style="font-size:85%">
-									<a class="link" href="userpage.html?id=nishiscool">Nishith Modi(@nishiscool)</a>
-								</td>
-								<td style="font-size:85%">
-									<button id="540bcc3fff8ead7c0c8055b1" name="540bcc3fff8ead7c0c8055b1" class="badge pure-button pure-button-primary" value="Subscribe" style="text-align: center; float: right; margin-right: 5px; padding: 3px 7px;">
-										<i class="fa fa-plus" style=""></i>
-									</button>
-								</td>
-							</tr>
-						</table>
-					</li>
+					  <li><a  class="link profilepicwrapper" ><img src="" id="profilepic" style="height:2em;max-width:100%;"></a></li>
+					  <li class="link"> <a class="link">Description:<span id="description"></span></a></li>
+					  <li> <a class="link"><span id="numfollowers"></span> Followers</a></li>
+					  <li style="text-align:center;"><button id="subscribe" class="link pure-button pure-button-primary subnow" style="margin-bottom:5px;"></button></li>
 				</ul>
 			</div>
 		</div>
-		<div style="float:left;margin-top:10px;width:40%;" id="regfeed">
-			<div id="posts">
+		<div style="margin-top:10px;" id="postingsystemdiv" class="hidden-xs col-sm-5">
+			<div id="regfeed">
+				<div id="posts">
+				</div>
+				<div id="checkdiv">
+				</div>
 			</div>
-			<div id="checkdiv">
+			<div id="sharedpost" style="display:none;">
+				<button class="pure-button pure-button-primary" style="width:95%;min-width:475px;margin-left:30px;margin-bottom:30px;" id="backshared">Go Back</button>
+				<div id="sharedpostdiv"></div>
 			</div>
-		</div>
-		<div style="float:left;margin-top:10px;width:40%;display:none;" id="sharedpost">
-			<button class="pure-button pure-button-primary" style="width:95%;min-width:475px;margin-left:30px;margin-bottom:30px;" id="backshared">Go Back</button>
-			<div id="sharedpostdiv"></div>
 		</div>
 	</div>
 	</body>
@@ -152,7 +84,7 @@
   <modalwindows>
   		<input id="messagingmodalbutton" value="" style="display:none;" type="button" data-toggle="modal" data-target="#messagingmodal" onclick="getList();">
 		<div class="modal fade" id="messagingmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		  <div  class="modal-dialog" style="width:75%;">
+		  <div  class="modal-dialog" style="width:95%;">
 		    <div class="modal-content">
 		      <div class="modal-header">
 		        <button type="button" class="close" id="messagingbutton" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
@@ -181,7 +113,7 @@
 
 		<input id="loginmodalbutton" value="" style="display:none;" type="button" data-toggle="modal" data-target="#loginmodal">
 		<div class="modal fade" id="loginmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		  <div  class="modal-dialog" style="width:450px;">
+		  <div  class="modal-dialog">
 		    <div class="modal-content">
 		      <div class="modal-header">
 		        <button type="button" class="close" id="loginmodal" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
@@ -278,15 +210,18 @@
 		      </div>
 		  </div>
 		</div>
+		<div class="device-xs visible-xs"></div>
+<div class="device-sm visible-sm"></div>
+<div class="device-md visible-md"></div>
+<div class="device-lg visible-lg"></div>
 	</modalwindows>
 	<footer>
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 		<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
-
 		<script src="manager.js"></script>
 		<script src="tooltips.js"></script>
-		<script src="Javascript/companypage.js"></script>
+		<script src="Javascript/grouppage.js"></script>
 		<script src="Javascript/postingsystem.js"></script>
 		<script src="Javascript/postinglisteners.js"></script>
 		<script src="Javascript/contentparsing/linkify.js"></script>
@@ -313,17 +248,23 @@
 				
 			}
 			else if (data == "demo") {
-				onPageLoad();
-				$("#notloggedin").show();
-				disableLinks();
+				callAJAX ("POST", "/users/authenticate", {User: "demo", Password:"demo"}, function (data) {
+					onPageLoad();
+					disableLinks();
+					$("#notloggedin").show();
+				});
 			}
 		});
 
 		function onPageLoad () {
 			if (getQueryVariable("userpostid") != false) {
 				showPost(getQueryVariable("userpostid"));
+				getGroupPageMain(getQueryVariable("id"), true);
 			}
-			getCompanyPageMain(getQueryVariable("id"));
+			else {
+				getGroupPageMain(getQueryVariable("id"), false);
+			}
+			
 		}
 		function showPost (id) {
 			$("#sharedpostdiv").html("");
@@ -348,10 +289,11 @@
 			history.pushState('', 'Inqora', removeParam("userpostid", window.location.href));
 		});
 
-		function getCompanyPageMain (id) {
-			showCompany(id);
+		function getGroupPageMain (id, noposts) {
+			showGroup(id);
 			arr = [id];
-			showPostingSystem(arr);
+			if (!noposts)
+				showPostingSystem(arr);
 		}
 		function showPostingSystem (arr) {
 			newPost(arr, $("#posts"));

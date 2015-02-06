@@ -13,8 +13,6 @@ function setUser (user) {
 	$("#" + user + "-messaging").addClass("currentmessage");
 }
 function convertTime (time) {
-	console.log(time);
-	console.log("LOL");
 	if (time == undefined) {
 		return 2;
 	}
@@ -39,6 +37,7 @@ function formatAMPM(date) {
   var strTime = hours + ':' + minutes + ' ' + ampm;
   return strTime;
 }
+
 function getList () {
 	$(document).on("click" , ".regularmessage" , function (ev) {
 		ev.preventDefault();
@@ -51,7 +50,11 @@ function getList () {
 
 			var maintable = $("<table>").addClass("regularmessage").appendTo("#messagelist").attr("name", data[x].Username).attr("id", data[x].Username + "-messaging");
 			var table = $("<tr>").appendTo(maintable);
-			var td1 = $("<td>").appendTo(table).html("<img class='imagemessageprofile' src='" + getLocalhost() + "/companygroup/getThumbnailAct?Username=" + data[x].Username + "'></img>");
+			var td1 = $("<td>").appendTo(table).css("width", "38px");
+			var image = $("<img>").appendTo(td1);
+			$(image).addClass("getThumbnailClassButton").attr("name", data[x].Username);
+			setImage(image);
+		   
 			var td2 = $("<td>").addClass("innertdmessage").appendTo(table);
 				var span =$("<span>").css("float", "right").html(convertTime(data[x].Time)).appendTo(td2);
 				var b = $("<b>").html(data[x].Name + "<br>" + "(" + ("@" + data[x].Username) + ")<br>").appendTo(td2);
@@ -146,7 +149,6 @@ function messageFunction (otheruser, num, messages, hasstarted) {
 				else if (!isHidden(messages))
 					setTimeout(messageFunction(otheruser, 0, messages, true) , 700);
 				else {
-					console.log("HEYHEYHEY");
 				}
 			},
 			xhrFields: {withCredentials: true},

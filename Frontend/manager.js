@@ -1,7 +1,7 @@
 		function getLocalhost() {
-			return "http://localhost:3000";
+			//return "http://localhost:3000";
 		//return "https://inqora2.herokuapp.com"
-			//return " http://468f1883.ngrok.com";
+			return "http://27171590.ngrok.com";
 		}
 function callAJAX (mytype, url, datastruct, callback) {
 	$.ajax({
@@ -15,6 +15,27 @@ function callAJAX (mytype, url, datastruct, callback) {
 		}
 	});
 }
+$(".fixedtop").css("top", $("#navsearchmainsearch").height() + "px");
+$(window).resize(function(){
+	$(".fixedtop").css("top", $("#navsearchmainsearch").height() + "px");
+});
+
+callAJAX ("GET", "/accounts/isverified", {}, function (data) {
+	if (data == "N") {
+		$("#verifyemailbar").show();
+	}
+});
+
+$("#verifyemailbar").on("click", function (ev) {
+	ev.preventDefault();
+	callAJAX("POST", "/users/resendverification", {}, function (data) {
+		if (data == "Success") {
+			alert("Please check your email for further instructions.");
+		}
+	});
+});
+
+//
 
 function msToTime(duration) {
 	var minutes = parseInt((duration/(1000*60))%60)
@@ -28,7 +49,25 @@ function msToTime(duration) {
 	else
 		return parseInt(hours/24) + " days and " + hours%24 + " hours ago";
 }
-
+function setImage (image, maindiv, callback) {
+	$.ajax({
+	    type: "GET",
+	    url: getLocalhost() + "/companygroup/getThumbnail",
+	    data: {
+	      Username: $(image).attr("name")
+	    },
+	    success: function (data) {
+	      $(image).attr("src", data);
+	      if (callback != null) {
+	      	callback(maindiv, image);
+	      }
+	    },
+	    xhrFields: {withCredentials: true},
+	    error:function(){
+	      console.log("ERROR");
+	    }
+	  });
+}
 
 function disableLinks () {
 	$(document).one("click", function (event){ 

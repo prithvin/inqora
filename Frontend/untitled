@@ -1,0 +1,118 @@
+    <h1>Create Account</h1><br>
+    <form id="createacc">
+
+  <input placeholder="Name" id="name" type="text" required><br><br>
+  <input placeholder="Username" id="username" type="text" required><br><br>
+  <input placeholder="Email (Optional) - Recommended for Password Reset" id="email" type="email"><br><br>
+  <input placeholder="Password" id="password" type="password" required><br><br>
+  <input placeholder="Confirm Password" id="confirmpassword" type="password" ></input><br><br>
+
+
+<input id="uploadFile" placeholder="Choose File" disabled="disabled" />
+<div class="fileUpload btn btn-primary">
+    <span>Upload Profile Picture (Optional) </span>
+    <input id="inputFileToLoad" type="file" accept="image/*" class="upload" >
+</div>
+<button id="url" value="WOW" hidden></button>
+<style>
+.fileUpload {
+  position: relative;
+  overflow: hidden;
+  margin: 10px;
+}
+.fileUpload input.upload {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0;
+  padding: 0;
+  font-size: 20px;
+  cursor: pointer;
+  opacity: 0;
+  filter: alpha(opacity=0);
+}
+</style>
+
+<canvas id="myCanvas" width="150" height="150" hidden></canvas>
+
+
+<canvas width="150" height="150" id="lol" hidden></canvas>
+
+    
+<canvas id="thumbnail" width="30" height="30" hidden></canvas>
+
+
+<script type='text/javascript'>
+document.getElementById("inputFileToLoad").onchange = function () {
+  var filesSelected = document.getElementById("inputFileToLoad").files;
+  if (filesSelected.length > 0) {
+    var fileToLoad = filesSelected[0];
+    var fileReader = new FileReader();
+    var x  = document.getElementById("uploadFile");
+    x.value = fileToLoad.name;
+    if( isImage(fileToLoad.name) == false) {
+      alert("Please upload an image");
+    }
+    else {
+      fileReader.onload = function(fileLoadedEvent) {
+        var srcData = fileLoadedEvent.target.result; // <--- data: base64
+        alert("Image uploaded");
+
+        var canvas = document.getElementById('myCanvas');
+        var context = canvas.getContext('2d');
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        var imageObj = new Image();
+        imageObj.src = srcData;
+        imageObj.onload = function() {
+          context.drawImage(imageObj, 0,0, 150, imageObj.height * (150/imageObj.width));
+          //canvas.toDataURL();
+        };
+
+        var thumbnail = document.getElementById("thumbnail");
+        var contx = thumbnail.getContext("2d");
+        contx.clearRect(0, 0, thumbnail.width, thumbnail.height);
+        var thumbimg = new Image();
+        thumbimg.src=srcData;
+        thumbimg.onload = function () {
+          contx.drawImage(thumbimg, 0,0, 30, thumbimg.height * (30/thumbimg.width));
+        }
+      }
+    }
+    fileReader.readAsDataURL(fileToLoad);
+  }
+};
+
+
+function isImage(filename) {
+    var ext = filename.substring(filename.length - 3);
+    switch (ext.toLowerCase()) {
+    case 'jpg':
+    case 'gif':
+    case 'bmp':
+    case 'png':
+        return true;
+    }
+    return false;
+}
+
+</script>
+
+
+
+  <input type="submit" class="login login-submit"  value="Create Account">
+  By creating an account, you agree with the <a href="tos.html">Terms of Service</a><br><br>
+
+</form>
+
+    <div class="login-help">
+     <a href="loginpage.html">Back</a>
+    </div>
+  </div>
+</body>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="manager.js"></script>
+<script src="Javascript/createaccount.js"></script>
+
+  

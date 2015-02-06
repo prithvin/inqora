@@ -246,7 +246,7 @@ router.get('/verify/:userid', function(req, res){
 				if (up == 0)
 					res.send("Sorry, error occured. Please try again later");
 				else
-					res.send("Account verified. Login to continue!")
+					res.send("<script>alert('Account verified. Login to continue!');</script>")
 			});
 		}
 	});
@@ -325,10 +325,6 @@ router.post('/create', function(req, res) {
 		}
 	});
 	
-	var body = "Dear " + req.body.Name + ",\nThank you for joining Inqora!<br>Inqora is the premier investment social";
-	body = body + "network, and our amazing collaborative platform will help you invest better.\nYour username is "
-	body = body +  req.body.Username+"\nYour password is " + req.body.Password + "\n Thank you!";
-
 	var attachment = "<h1>Welcome to Inqora&nbsp;</h1><p>Hi " + req.body.Name + ",</p><p>We are pleased that";
 	attachment += " you have agreed to act as a Beta Test Site for Inqora.</p><p>Here&rsquo;s a quick snippet";
 	attachment += " of what Inqora is and what we represent:</p><p>Inqora is a user contributed collaborative network";
@@ -344,13 +340,27 @@ router.post('/create', function(req, res) {
 	attachment += " site. &nbsp;During the trial, Inqora will coordinate and provide assistance to your distributor to insure the";
 	attachment += " best possible service while accomplishing the goals of the test. We hope Inqora&nbsp;can be something of value to";
 	attachment += " your daily investing experience.<br>On a second note, please verify your email at "; 
-	attachment += "<a href='http://localhost:7888/verify/" + newuser._id + "'> Here</a></p><p>-Inqora Team</p><p>Contact Prithvi at this email for bug reports!</p><p>";
+	attachment += "<a href='" + req.headers.host + "/users/verify/" + newuser._id + "'> Here</a></p><p>-Inqora Team</p><p>Contact Prithvi at this email for bug reports!</p><p>";
 	attachment += "<img src='http://www.inqora.com/logo.png' style='height:108px; width:200px' /></p>";
 
-	emailsend(body, attachment, req.body.Name, req.body.Email);
+	emailsend("", attachment, req.body.Name, req.body.Email);
 	
 });
 
+router.post('/resendverification', function( req, res) {
+	users.findOne({_id: req.session.UserId}, function (err, data) {
+		if (data == null)
+			res.send("User does not exist");
+		else {
+			var attachment = "<h1>Welcome to Inqora&nbsp;</h1><p>Hi " + data.Username + ",</p><p>Please verify your email at "; 
+			attachment += "<a href='http://localhost:7888/users/verify/" + req.session.UserId + "'> Here</a></p><p>-Inqora Team</p><p>Contact Prithvi at this email for bug reports!</p><p>";
+			attachment += "<img src='http://www.inqora.com/logo.png' style='height:108px; width:200px' /></p>";
+			emailsend("", attachment, data.Name, data.Email);
+			res.send("Success");
+		}
+	});
+	
+});
 router.post('/forget', function(req,res) {
 	var email = req.body.Email;
 	users.findOne({Email: email}, function (err, results) {

@@ -12,9 +12,7 @@ function averageCalculator (data) {
 			sum += parseFloat(((((parseFloat(data[x].CurrentPrice) - parseFloat(data[x].StockStart))/parseFloat(data[x].StockStart))*100.0).toFixed(5)));
 		else 
 			sum += parseFloat(((((parseFloat(data[x].StockEnd) - parseFloat(data[x].StockStart))/parseFloat(data[x].StockStart))*100.0).toFixed(5)));
-		console.log(sum);
 	}
-	console.log(sum);
 	return (sum/data.length).toFixed(2);
 }
 function displayData(maindiv, data) {
@@ -28,7 +26,6 @@ function displayData(maindiv, data) {
 
 	for (var x = 0; x < data.length; x++) {
 		var str = "Initial Price: $" + data[x].StockStart.toFixed(2) + "<br>";
-		console.log(data[x].CurrentPrice);
 		if (data[x].CurrentPrice != null && data[x].CurrentPrice != -1) {
 			str += "Current Price: $" + data[x].CurrentPrice.toFixed(2) + "<br>";
 			str += "Percent Change: " + (((data[x].CurrentPrice - data[x].StockStart)/data[x].StockStart)*100).toFixed(2) + "%<br>";

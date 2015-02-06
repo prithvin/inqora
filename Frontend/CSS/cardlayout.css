@@ -73,9 +73,7 @@
 
 .fixedtop {
     top:100px;
-    width: 100%;
-    position:absolute;
-    min-width:900px;
+    position:relative;
 }
 
 

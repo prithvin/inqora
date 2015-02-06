@@ -13,12 +13,11 @@
   var regex =/((\S*@\[[^\]]+\])|(\S*@\S+))/ig;
   if(nolink)
      return str.replace(regex, "<span onmouseover='inlineTool(this);'  href=''>$1</span>");
-    return str.replace(regex, "<span><a onmouseover='inlineTool(this);' style='display:inline;padding:0;' href='directtotype.html?user=$1'>$1</a></span>");
+    return str.replace(regex, "<span><a onmouseover='inlineTool(this);' style='display:inline;padding:0;' href='directtotype.html?id=$1'>$1</a></span>");
 }
 
 function inlineTool (obj) {
    makeToolTipRemove($(obj).parent(), "", obj.innerHTML, $(obj).attr("href"), obj.innerHTML.substring(1), true);
-    console.log(obj);
 }
 
 function makeToolTipRemove(maindiv, classAdd, innerHTML, link, username, maindivclear) {

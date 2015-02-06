@@ -73,7 +73,7 @@ usersch = new Schema ({
     },
     Messaging: []
 });
-users = mongoose.model('User', usersch, 'users');
+users = mongoose.model('User', usersch, 'usercol');
 
 emailschema = new Schema ({
     Email: []
@@ -94,7 +94,7 @@ company = new Schema ({
     NumFollowers: Number,
     NumOwnStock: Number
 });
-companies = mongoose.model('Company', company, 'users');
+companies = mongoose.model('Company', company, 'usercol');
 
 group = new Schema ({
     Type: String,
@@ -107,7 +107,7 @@ group = new Schema ({
     NumFollowers: Number,
     NumOwnStock: Number
 });
-groups = mongoose.model('Group', group, 'users');
+groups = mongoose.model('Group', group, 'usercol');
 
 searchres = new Schema ({
     Type: String,
@@ -117,7 +117,7 @@ searchres = new Schema ({
     Thumbnail: String,
     Username: String
 });
-searchresmod = mongoose.model('Search', searchres, 'users');
+searchresmod = mongoose.model('Search', searchres, 'usercol');
 
 
 post = new Schema ({
@@ -145,18 +145,28 @@ post = new Schema ({
       Content: String
     }]
 });
-posts = mongoose.model('Post', post, 'posts');
+posts = mongoose.model('Post', post, 'postcol');
 
 
 // Development 
-/*
+
 app.all('*',  function (req, res, next) {
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:7888');
+    if (req.headers.origin == null);
+    else if (req.headers.origin.indexOf("localhost") != -1) 
+         res.setHeader('Access-Control-Allow-Origin', 'http://localhost:7888');
+    else if (req.headers.origin.indexOf("https") > -1 && req.headers.origin.indexOf("www") > -1)
+        res.setHeader('Access-Control-Allow-Origin', 'https://www.inqora.com');
+    else if (req.headers.origin.indexOf("https") > -1)
+        res.setHeader('Access-Control-Allow-Origin', 'https://inqora.com');
+    else if (req.headers.origin.indexOf("http") > -1 && req.headers.origin.indexOf("www") > -1)
+        res.setHeader('Access-Control-Allow-Origin', 'http://www.inqora.com');
+    else if (req.headers.origin.indexOf("http") > -1)
+        res.setHeader('Access-Control-Allow-Origin', 'http://inqora.com');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials', true);
     next();
-});*/
+});
 app.use(session({
     secret: "randomasssecretpassword",
     name: "muellerappcookie",
@@ -182,22 +192,8 @@ app.use(express.session({
   secret: '1234567890QWERTY',
   saveUninitialized: false,
   resave:false
-}));*/
-app.all('*', function (req, res, next) {
-    if (req.headers.origin.indexOf("https") > -1 && req.headers.origin.indexOf("www") > -1)
-        res.header('Access-Control-Allow-Origin', 'https://www.inqora.com');
-    else if (req.headers.origin.indexOf("https") > -1)
-        res.header('Access-Control-Allow-Origin', 'https://inqora.com');
-    else if (req.headers.origin.indexOf("http") > -1 && req.headers.origin.indexOf("www") > -1)
-        res.header('Access-Control-Allow-Origin', 'http://www.inqora.com');
-    else if (req.headers.origin.indexOf("http") > -1)
-        res.header('Access-Control-Allow-Origin', 'http://inqora.com');
-    res.header('Access-Control-Allow-Methods',     'GET,PUT,POST,DELETE');
-     res.header('Access-Control-Allow-Headers',     'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, Origin');
-      res.header('Access-Control-Allow-Credentials', true);
-    next();
-});
-// */
+}));
+*/
  
 
 app.set('port', process.env.PORT || 3000);
