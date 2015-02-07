@@ -155,7 +155,7 @@ app.all('*',  function (req, res, next) {
     else if (req.headers.origin.indexOf("localhost") != -1) 
          res.setHeader('Access-Control-Allow-Origin', 'http://localhost:7888');
     else if (req.headers.origin.indexOf("ngrok") != -1) 
-         res.setHeader('Access-Control-Allow-Origin', 'http://www.ngrok.com');
+         res.setHeader('Access-Control-Allow-Origin', 'http://5eeff2d4.ngrok.com');
     else if (req.headers.origin.indexOf("https") > -1 && req.headers.origin.indexOf("www") > -1)
         res.setHeader('Access-Control-Allow-Origin', 'https://www.inqora.com');
     else if (req.headers.origin.indexOf("https") > -1)
