@@ -40,7 +40,7 @@ router.post('/updateuser', function (req,res) {
 
 router.get('/issess', function (req, res) {
 	if (isSess(req)) {
-		if (req.session.UserId == "5446aefaf9d5d20200d592b8")
+		if (req.session.UserId == "54d4e26fa110200c00c9953c")
 			res.send("demo");
 		else 
 			res.send("true");
