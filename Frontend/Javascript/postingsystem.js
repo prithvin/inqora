@@ -198,20 +198,20 @@ function createPost(postid, maindiv, appendafter) {
 				downvoteclass = "selected";
 
 			var upvote = $("<li>").addClass("mostmenu upvotebutton").appendTo(ul1).attr("id" ,postid + "-upvote").attr("name", postid);
-				linkwithfontawesome(upvote, "fa fa-arrow-up", upvoteclass, "Upvote");
+				linkwithfontawesome(upvote, "fa fa-arrow-up", upvoteclass, "<span class='mostmenutext'>Upvote</span>");
 				
 
 
 			var downvote = $("<li>").addClass("mostmenu downvotebutton").appendTo(ul1).attr("id" ,postid + "-downvote").attr("name", postid);
-				linkwithfontawesome(downvote, "fa fa-arrow-down", downvoteclass, "Downvote");
+				linkwithfontawesome(downvote, "fa fa-arrow-down", downvoteclass, "<span class='mostmenutext'>Downvote</span>");
 				
 
 			var commentpost = $("<li>").addClass("mostmenu commentpost").attr("id", "commentpost-" + postid).attr("name",postid).appendTo(ul1);
-				linkwithfontawesome(commentpost, "fa fa-comment", "", "Comment");
+				linkwithfontawesome(commentpost, "fa fa-comment", "", "<span class='mostmenutext'>Comment</span>");
 				
 
 			var sharepost = $("<li>").addClass("sharepost").attr("id", "sharepost-" + postid).attr("name",postid).appendTo(ul1);
-				linkwithfontawesome(sharepost, "fa fa-share-square-o", "", "Share");
+				linkwithfontawesome(sharepost, "fa fa-share-square-o", "", "<span class='mostmenutext'>Share</span>");
 				
 
 			var sharepanel = $("<div>").addClass("sharepanel").attr("id" , "sharepanel-" + postid).appendTo(section);

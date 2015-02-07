@@ -113,14 +113,19 @@ router.get('/getThumbnailAct' ,function (req, res) {
 			if (data == null || data.Thumbnail == null)
 				res.send("Error");
 			else {
-				var contenttype =  data.Thumbnail.substring(data.Thumbnail.indexOf("data:") + 5, data.Thumbnail.indexOf(";base64"));
-				if (contenttype.toLowerCase().indexOf("image") == -1)
-					contenttype = "image";
-				res.writeHead(200, {
-			    	'Content-Type': contenttype
-			  	});
-				var bar = new Buffer(data.Thumbnail.substring(data.Thumbnail.indexOf(";base64,") + 8), 'base64');
-				res.end(bar);
+				if (data.Thumbnail.indexOf("http") != -1) {
+					res.send(data.Thumbnail);
+				}
+				else {
+					var contenttype =  data.Thumbnail.substring(data.Thumbnail.indexOf("data:") + 5, data.Thumbnail.indexOf(";base64"));
+					if (contenttype.toLowerCase().indexOf("image") == -1)
+						contenttype = "image";
+					res.writeHead(200, {
+				    	'Content-Type': contenttype
+				  	});
+					var bar = new Buffer(data.Thumbnail.substring(data.Thumbnail.indexOf(";base64,") + 8), 'base64');
+					res.end(bar);
+				}
 			}
 		});
 	}
