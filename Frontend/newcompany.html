@@ -1,0 +1,154 @@
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+		<link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
+		<link rel="stylesheet" href="//cdn.jsdelivr.net/pure/0.5.0/pure-min.css">
+		<link rel="stylesheet" href="newsfeedbutton.css">
+		<link rel="stylesheet" href="notifications.css">
+		<link rel="stylesheet" type="text/css" href="cardlayout.css">
+		<link rel="stylesheet" href="messaging.css">
+		<link rel="stylesheet" href="search.css"/>
+		<link rel="stylesheet" type="text/css" href="createpost.css">
+		<link rel="icon" href="favicon.png" type="image/x-icon" />
+<form id="createcomp">
+	<input placeholder="Crunchbase URL (Full URL)" id="url" type="url" required><br><br>
+	<input type="submit" value="Fetch Data">
+</form>
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-XXXXXX-XX', 'example.com');
+ga('require', 'displayfeatures');
+ga('send', 'pageview');
+</script>
+Once you press submit above, look below and make sure that all the data that Inqora has fetched is correct and make any appropriate changes <br>
+To find new data, check the crunchbase URL and fill in the appropriate blanks or fix the incorrect data <br><br>
+If the industry is wrong, find the company on yahoo finance<br><br>
+Whenenver this gets wrong information, be sure to contact Prithvi. <b> It is important to let him know</b><br><br><b> Examples of errors include typos in the stock ticker. Make sure that everyone looks ok. You dont need to read the description, if the first few words are ok, then its probably good </b><br>
+<form id="editcomp">
+	Name <input id="name"/><br><br>
+	Stock Ticker <input id="tkr"/><br><br>
+	Description <input id="desc"/><br><br>
+	Industry <input id="inds"/><br><br>
+	<input id="imgurl" hidden>
+	<input id="thumburl" hidden>
+	<input type="submit" value="Submit Company Profile">
+</form>
+ <script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+ <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-ajaxtransport-xdomainrequest/1.0.2/jquery.xdomainrequest.min.js"></script>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-ajaxtransport-xdomainrequest/1.0.2/jquery.xdomainrequest.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+<script src="manager.js"></script>
+
+
+<script src="all.js"></script>
+<script src="manager.js"></script>
+<script>
+
+function convertImgToBase64URL(url, callback, outputFormat){
+    var canvas = document.createElement('CANVAS'),
+        ctx = canvas.getContext('2d'),
+        img = new Image;
+    img.crossOrigin = 'Anonymous';
+    img.onload = function(){
+        var dataURL;
+        canvas.height = img.height;
+        canvas.width = img.width;
+        ctx.drawImage(img, 0, 0);
+        dataURL = canvas.toDataURL(outputFormat);
+        callback.call(this, dataURL);
+        canvas = null; 
+    };
+    img.src = url;
+}
+
+
+function getData (source) {
+	$.ajax({
+		type: "GET",
+		url: "https://api.import.io/store/data/6de4bb48-f415-4c81-a31c-78cb983fa62b/_query?input/webpage/url=" + source + "&_user=e0b9ed2b-cff6-46ee-9336-57359a6d89af&_apikey=7b1pFzBsMqSW4llRnNFCViSfI4uxxVZUT6JYiNWrdgo6hFn62aTeWDl55xh3xCWWcQcDvfAdwalQUQgc4Cahrw==",
+		data: {
+		},
+		success:function(data) {
+			if (data.results == null || data.results.length == 0)
+				alert("Please stop trying to spam with fake URL's");
+			else { 
+				publishCompany(data.results[0], data.pageUrl.substring(data.pageUrl.indexOf("data.pageUrl") + 39));
+			}
+		},
+		xhrFields: {withCredentials: true},
+		error:function(){
+		console.log("ERROR");
+		}
+	});
+}
+function publishCompany (data, imgurl) {
+
+	$("#name").attr ("value", data.name);
+	$("#tkr").attr ("value", data.stock_ticker);
+	$("#desc").attr("value", data.description);
+	$("#inds").attr("value", data.industry);
+	
+	var thumbnail = "http://www.crunchbase.com/organization/" + imgurl + "/primary-image/raw?w=30";
+	thumbnail = thumbnail.substring(0, thumbnail.indexOf("/n/")) + thumbnail.substring(thumbnail.indexOf("/n/") + 2);
+	$("#thumburl").attr("value", thumbnail);
+	var picture = "http://www.crunchbase.com/organization/" + imgurl + "/primary-image/raw?w=150";
+	picture = picture.substring(0, picture.indexOf("/n/")) + picture.substring(picture.indexOf("/n/") + 2);
+	$("#imgurl").attr("value", picture);
+
+	$.ajax ({ 
+		type: "GET",
+		url: "https://api.import.io/store/data/9bcd4565-ab41-4619-8f49-ce3c9f2683cf/_query?input/webpage/url=http%3A%2F%2Ffinance.yahoo.com%2Fq%2Fin%3Fs%3D"  + data.stock_ticker +"%2BIndustry&_user=e0b9ed2b-cff6-46ee-9336-57359a6d89af&_apikey=7b1pFzBsMqSW4llRnNFCViSfI4uxxVZUT6JYiNWrdgo6hFn62aTeWDl55xh3xCWWcQcDvfAdwalQUQgc4Cahrw==",
+		success: function (data) {
+			//console.log(data);
+			if (data.results == null || data.results.length == 0);
+			else 
+				$('#inds').attr("value", data.results[0].industry);
+		},
+		xhrFields: {withCredentials: true},
+		error:function(){
+			console.log("ERROR");
+		}
+	});
+	var form = document.getElementById("editcomp");
+	form.addEventListener('submit', function (event) {
+		event.preventDefault();
+		$.ajax({
+			type: "POST",
+			url: getLocalhost() + "/companygroup/company/create",
+			data: {
+					Name: $("#name").val(),
+					UserID: $("#tkr").val(),
+					Description: $("#desc").val(),
+					Industry: $("#inds").val(),
+					Picture: $("#imgurl").val(),
+					Thumbnail: $("#thumburl").val()
+			},
+			success:function(data) {
+				alert(data);
+			},
+			xhrFields: {withCredentials: true},
+			error:function(){
+				console.log("ERROR");
+			}
+		});
+	});
+	
+}
+
+
+var form = document.getElementById("createcomp");
+form.addEventListener('submit',function(event){
+	event.preventDefault();
+	getData(document.getElementById("url").value);
+});
+
+</script>
+
+
+	

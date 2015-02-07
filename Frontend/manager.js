@@ -1,7 +1,7 @@
 		function getLocalhost() {
 			//return "http://localhost:3000";
-		//return "https://inqora2.herokuapp.com"
-			return "http://27171590.ngrok.com";
+		return "https://inqora2.herokuapp.com"
+			//return "http://27171590.ngrok.com";
 		}
 function callAJAX (mytype, url, datastruct, callback) {
 	$.ajax({
@@ -18,7 +18,20 @@ function callAJAX (mytype, url, datastruct, callback) {
 $(".fixedtop").css("top", $("#navsearchmainsearch").height() + "px");
 $(window).resize(function(){
 	$(".fixedtop").css("top", $("#navsearchmainsearch").height() + "px");
+	if( isBreakpoint('xs') ) {
+		$(".fixedtop").css("position", "relative");
+	}
+	else {
+		$(".fixedtop").css("position", "absolute");
+	}
 });
+
+function isBreakpoint( alias ) {
+    return $('.device-' + alias).is(':visible');
+}
+
+
+	
 
 callAJAX ("GET", "/accounts/isverified", {}, function (data) {
 	if (data == "N") {
@@ -166,3 +179,27 @@ function getQueryVariable(variable) {
        }
        return(false);
 	}
+
+
+function postButton () {
+	$('#postingsystemdiv').removeClass('hidden-xs');$('#postingsystemdiv').addClass('col-xs-12');$('#mydatapanel').addClass('hidden-xs');$('#mydatapanel').removeClass('col-xs-12');
+}
+
+$(document).ready(function () {  
+  var top = 0;
+  $(window).scroll(function (event) {
+    // what the y position of the scroll is
+    var y = $(this).scrollTop();
+  
+    // whether that's below the form
+    if ($(window).scrollTop() <= 0) 
+    	 $('#navsearchmainsearch').removeClass('extrafluff').addClass("regularfluff");
+   else  if (y >= top) {
+      // if so, ad the fixed class
+      $('#navsearchmainsearch').addClass('extrafluff', 1000, "easeInOutQuad" ).removeClass("regularfluff");
+    } else {
+      // otherwise remove it
+      $('#navsearchmainsearch').removeClass('extrafluff').addClass("regularfluff");
+    }
+  });
+});

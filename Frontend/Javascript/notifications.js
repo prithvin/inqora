@@ -112,7 +112,7 @@ $( " #admin" ).on( "click", function() {
         width: "100% !IMPORTANT"
    		 });
    		 $("#menu a").css({
-    	width: "260px !IMPORTANT"
+    	width: "100% !IMPORTANT"
     		});
 	}
 	else {

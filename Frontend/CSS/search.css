@@ -36,3 +36,11 @@
 .searchform {
   position:relative;height:90px;background:#22313F;margin:0px;height:12%;min-height:100px;width:100%;min-width:920px !IMPORTANT;
 }
+
+.extrafluff {
+  padding-top:5px !IMPORTANT;padding-bottom:5px !IMPORTANT;background-color:rgba(34, 49, 63, 0.84) !IMPORTANT;
+}
+
+.regularfluff {
+  background-color:rgba(34, 49, 63, 1);padding-top:10px;padding-bottom:10px;
+}

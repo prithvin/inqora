@@ -180,7 +180,7 @@ function createPost(postid, maindiv, appendafter) {
 			var timeposted = $("<span>").html("Posted " + msToTime((new Date).getTime() - data.TimePosted) + " by ").appendTo(h2);
 			makeToolTip(h2, "", "@" + data.PosterUsername + " (" + data.PosterName + ")","userpage.html?id=" + data.PosterUsername, data.PosterUsername);
 
-		var lol = $("<p>").html(linkify(data.Content)).appendTo(section).addClass("lol");
+		var lol = $("<p>").html(linkify(data.Content)).appendTo(section).addClass("lol link");
 		var hr1 = $("<p>").addClass("hr1").appendTo(section);
 		var misc = $("<p>").addClass("lol data").appendTo(section).css("font-weight", "bold");
 			var commentvotespan = $("<span>").html(data.NumComments + " comments  / <span style='color:#2574A9' id='netvotecounter-" + postid + "'>" + data.NetVotes + " Votes </span>  / Tags: ").appendTo(misc);

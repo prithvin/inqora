@@ -1,6 +1,6 @@
 function showUser(id) {
 	callAJAX ("GET", "/accounts/getuserprofile/", {Username :id} , function (data) {
-		$("#userprofilename").html(data.Name + "(@" + data.Username + ")");
+		$("#userprofilename").html(data.Name + " (@" + data.Username + ")");
 		$("#profilepic").attr("src", data.Picture);
 		$("title").html("Inqora - " + data.Name)
 		$("#numpointsforuser").html(data.Points);
