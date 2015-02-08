@@ -25,7 +25,9 @@
   },
   "description": "New Inqora!",
   "main": "app.js",
-  "devDependencies": {},
+  "devDependencies": {
+    "grunt": "^0.4.5"
+  },
   "author": "Prithvi Narasimhan",
   "license": "ISC"
 }
