@@ -1,0 +1,22 @@
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script>
+	function logoURL (company) {
+		$.ajax({
+			type: "GET",
+			url: "https://www.kimonolabs.com/api/4j400v70?apikey=rUAlNtyAWcprQKFvUJk5eiMTCSdo0xbB&q=" + company+ "%20crunchbase&pq=" + company+ "%20crunchbase",
+			data: {
+			},
+			success:function(data) {
+				var url = data.results.collection1[0].firstresult.href;
+				
+				http://localhost:3000/marketing/image
+				
+			},
+			xhrFields: {withCredentials: true},
+			error:function(){
+			console.log("ERROR");
+			}
+		});
+	}
+</script>
+<img id="lolimage"></img>

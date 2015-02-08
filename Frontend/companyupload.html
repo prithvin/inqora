@@ -1,0 +1,60 @@
+<img id="lolimage"></img>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script>
+
+	function logoURL (company) {
+		$.ajax({
+			type: "GET",
+			url: "https://www.kimonolabs.com/api/4j400v70?apikey=rUAlNtyAWcprQKFvUJk5eiMTCSdo0xbB&q=" + company+ "%20crunchbase&pq=" + company+ "%20crunchbase",
+			data: {
+			},
+			success:function(data) {
+				console.log(data);
+				var companyname = data.results.collection1[0].firstresult.href;
+				companyname = companyname.substring(companyname.indexOf("/organization/") + 14);
+				nextLogo(companyname);
+			},
+			xhrFields: {withCredentials: true},
+			error:function(){
+			console.log("ERROR");
+			}
+		});
+	}
+	function nextLogo (companyname) {
+		console.log(companyname);
+		$.ajax({
+			type: "GET",
+			url: "https://www.kimonolabs.com/api/2gssgzby?apikey=rUAlNtyAWcprQKFvUJk5eiMTCSdo0xbB&kimpath2=" + companyname,
+			data: {
+			},
+			success:function(data) {
+				console.log(data);
+				if (data.lastrunstatus == "failure")
+					nextLogo(companyname);
+				else {
+					var src = data.results.collection1[0].logo.src;
+					$.ajax({
+						type: "GET",
+						url: "http://localhost:3000/marketing/image",
+						data: {
+							url: src
+						},
+						success:function(data) {
+							$("#lolimage").attr("src" ,data);
+						},
+						xhrFields: {withCredentials: true},
+						error:function(){
+						console.log("ERROR");
+						}
+					});
+				}
+			},
+			xhrFields: {withCredentials: true},
+			error:function(){
+			console.log("ERROR");
+			}
+		});
+	}
+</script>
+
+
