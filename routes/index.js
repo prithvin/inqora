@@ -103,7 +103,7 @@ router.get('/getusertooltip', function (req, res) {
 			if (data1 == null)
 				res.send("ERROR. User does not exist");
 			else if (data1.Type == "User") {
-				users.findOne({Username: username}, "Name Username Points Followers Thumbnail StockFollowing", function (err, data) {
+				users.findOne({Username: username}, "Name Username Picture Points Followers Thumbnail StockFollowing", function (err, data) {
 					var obj = {
 						Name: data.Name,
 						Username: data.Username,
