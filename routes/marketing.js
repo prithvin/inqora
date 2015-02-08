@@ -68,6 +68,8 @@ router.get('/viewemail', function (req, res) {
 	});
 });
 
+	var request = require('request');
+
 router.get('/image', function (req, res) {
 	loadBase64Image(req.query.url, function (image, prefix) {
 		res.send(prefix + image);
@@ -78,7 +80,7 @@ router.get('/image', function (req, res) {
 
 var loadBase64Image = function (url, callback) {
     // Required 'request' module
-    var request = require('request');
+
 
     // Make request to our image url
     request({url: url, encoding: null}, function (err, res, body) {
@@ -94,6 +96,33 @@ var loadBase64Image = function (url, callback) {
         }
     });
 };
+
+
+extractor = require('unfluff');
+var SummaryTool = require('node-summary');
+
+
+router.get('/lollol', function (req, res) {
+
+	request({
+		uri: req.query.url,
+	}, function(error, response, body) {
+		data = extractor(body);
+		SummaryTool.summarize("", data.text, function(err, summary) {
+			console.log("HEYHEYHEY");
+			if(err) 
+				console.log("Something went wrong man!");
+			//console.log(data.Title);
+			var obj = {
+				Summary: summary,
+				Title: data.title
+			};
+			res.send(obj);
+			
+		});
+	});
+
+});
 
 
 module.exports = router;

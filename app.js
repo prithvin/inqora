@@ -38,7 +38,7 @@ server  = email.server.connect({
 
 
 mongoose.connect('mongodb://inqora:inqora@alcatraz.0.mongolayer.com:10033,alcatraz.1.mongolayer.com:10033/InqoraDB');
-//mongoose.connect('mongodb://107.170.205.213:27017/inqoradb')
+//mongoose.connect('mongodb://104.131.30.72:27017/inqoradb')
 db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function callback () {});
@@ -155,6 +155,13 @@ app.all('*',  function (req, res, next) {
     if (req.headers.origin == null);
     else if (req.headers.origin.indexOf("localhost") != -1) 
          res.setHeader('Access-Control-Allow-Origin', 'http://localhost:7888');
+     else if (req.headers.origin.indexOf("104.131.30.72") != -1) {
+        if ((req.headers.origin.indexOf("https") ! =-1) 
+            res.setHeader('Access-Control-Allow-Origin', 'https://104.131.30.72');
+        else if ((req.headers.origin.indexOf("http") ! =-1) 
+            res.setHeader('Access-Control-Allow-Origin', 'http://104.131.30.72');
+        
+     }
     else if (req.headers.origin.indexOf("ngrok") != -1) 
          res.setHeader('Access-Control-Allow-Origin', 'http://5eeff2d4.ngrok.com');
     else if (req.headers.origin.indexOf("https") > -1 && req.headers.origin.indexOf("www") > -1)
