@@ -1,19 +1,20 @@
 $(document).on("click", ".upvotebutton", function (ev) {
 	ev.preventDefault();
 	var postid = $(this).attr("name")
-	if (getStatus(true, postid)) {
-		updateVote(-1, postid);
-		selectWhich (false, false, postid);		
-	}
-	else if (getStatus(false, postid)) {
-		updateVote(2, postid);
-		selectWhich (true, false, postid)
-	}
-	else {
-		updateVote(1, postid);
-		selectWhich (true, false, postid);
-	}
+	
 	callAJAX ("GET", "/posting/like", {PostId: postid}, function (data) {
+		if (getStatus(true, postid)) {
+			updateVote(-1, postid);
+			selectWhich (false, false, postid);		
+		}
+		else if (getStatus(false, postid)) {
+			updateVote(2, postid);
+			selectWhich (true, false, postid)
+		}
+		else {
+			updateVote(1, postid);
+			selectWhich (true, false, postid);
+		}
 		alert(data);
 	});
 });
@@ -21,19 +22,20 @@ $(document).on("click", ".upvotebutton", function (ev) {
 $(document).on("click", ".downvotebutton", function (ev) {
 	ev.preventDefault();
 	var postid = $(this).attr("name");
-	if (getStatus(false, postid)) {
-		updateVote(1, postid);
-		selectWhich (false, false, postid);
-	}
-	else if (getStatus(true, postid)) {
-		updateVote(-2, postid);
-		selectWhich (false, true, postid);
-	}
-	else {
-		updateVote(-2, postid);
-		selectWhich (false, true, postid);
-	}
+	
 	callAJAX ("GET", "/posting/dislike", {PostId: postid}, function (data) {
+		if (getStatus(false, postid)) {
+			updateVote(1, postid);
+			selectWhich (false, false, postid);
+		}
+		else if (getStatus(true, postid)) {
+			updateVote(-2, postid);
+			selectWhich (false, true, postid);
+		}
+		else {
+			updateVote(-2, postid);
+			selectWhich (false, true, postid);
+		}
 		alert(data);
 	});
 });

@@ -3,57 +3,33 @@
 <span id="description"></span><br>
 <span id="industry"></span><br>
 <span id="name"></span><br>
+<span id="ticker"></span><br>
 <button id="sendittopeople">Click HEERE</button>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 <script>
-	function loadIt (company) {
-		logoURL(company);
-		descriptionAndData(company);
-		$("#sendittopeople").on("click", function (ev) {
+	var num = 0;
+	function loadIt(companyname, companyid) {
+		$("#name").html(companyname);
+		$("#ticker").html(companyid);
+		nextLogo(companyname);
+		descriptionAndData(companyid);
+		$("#sendittopeople").one("click", function (ev) {
 			ev.preventDefault();
-			callAJAX (company);
-		});
-	}
-	function logoURL (company) {
-		$.ajax({
-			type: "GET",
-			url: "https://www.kimonolabs.com/api/4j400v70?apikey=rUAlNtyAWcprQKFvUJk5eiMTCSdo0xbB&q=" + company+ "%20crunchbase&pq=" + company+ "%20crunchbase",
-			data: {
-			},
-			success:function(data) {
-				console.log(data);
-				if (data.lastrunstatus == "failure") {
-					logoURL(company);
-				}
-				else {
-					var companyname = data.results.collection1[0].firstresult.href;
-					
-					companyname = companyname.substring(companyname.indexOf("/organization/") + 14);
-					$("#name").html(companyname);
-					nextLogo(companyname);
-				}
-			},
-			xhrFields: {withCredentials: true},
-			error:function(){
-				logoURL(company);
-			}
+			num+=2;
+			callAJAX();
 		});
 	}
 	function nextLogo (companyname) {
-		console.log(companyname);
 		$.ajax({
 			type: "GET",
-			url: "https://www.kimonolabs.com/api/2gssgzby?apikey=rUAlNtyAWcprQKFvUJk5eiMTCSdo0xbB&kimpath2=" + companyname,
-			data: {
-			},
+			url: "https://api.import.io/store/data/c25f8686-a24c-40bb-aa7c-b4ead1420ff3/_query?input/webpage/url=http%3A%2F%2Fwww.bing.com%2Fsearch%3Fq%3D" + companyname + "%26qs%3Dn%26form%3DQBRE%26pq%" + companyname + "%26sc%3D8-3%26sp%3D-1%26sk%3D%26ghc%3D1%26cvid%3Dedf3823a2d0148c1b2d4c55da75c6358&_user=e0b9ed2b-cff6-46ee-9336-57359a6d89af&_apikey=7b1pFzBsMqSW4llRnNFCViSfI4uxxVZUT6JYiNWrdgo6hFn62aTeWDl55xh3xCWWcQcDvfAdwalQUQgc4Cahrw%3D%3D",
 			success:function(data) {
 				console.log(data);
-				if (data.lastrunstatus == "failure") {
-					nextLogo(companyname);
-				}
-				else {
-					var src = data.results.collection1[0].logo.src;
-					$.ajax({
+				if (data.results.length == 0)
+					var src = "http://icons.iconarchive.com/icons/designcontest/ecommerce-business/256/company-building-icon.png";
+				else 
+					var src = data.results[0].logo;
+				$.ajax({
 						type: "GET",
 						url: "http://localhost:3000/marketing/image",
 						data: {
@@ -68,25 +44,25 @@
 						console.log("ERROR");
 						}
 					});
-				}
 			},
 			xhrFields: {withCredentials: true},
 			error:function(){
-				nextLogo(compayname);
+				console.log("ERROR");
 			}
 		});
+
+
+
 	}
 	function descriptionAndData (companyname) {
+		console.log(companyname);
 		$.ajax({
 			type: "GET",
-			url: "https://www.kimonolabs.com/api/ag7nvp30",
-			data: {
-				apikey : "rUAlNtyAWcprQKFvUJk5eiMTCSdo0xbB",
-				t: companyname
-			},
+			url: "https://api.import.io/store/data/d757ab3b-12c0-460c-80c3-fcac11474dba/_query?input/webpage/url=http%3A%2F%2Ffinancials.morningstar.com%2Fcompany-profile%2Fc.action%3Ft%3D" + companyname + "%26region%3Dusa%26culture%3Den-US&_user=e0b9ed2b-cff6-46ee-9336-57359a6d89af&_apikey=7b1pFzBsMqSW4llRnNFCViSfI4uxxVZUT6JYiNWrdgo6hFn62aTeWDl55xh3xCWWcQcDvfAdwalQUQgc4Cahrw%3D%3D",
 			success:function(data) {
-				$("#description").html(data.results.collection1[0].Description);
-				$("#industry").html(data.results.collection1[0].Industry);
+				console.log(data);
+				$("#description").html(data.results[0].description);
+				$("#industry").html(data.results[0].industry);
 			},
 			xhrFields: {withCredentials: true},
 			error:function(){
@@ -119,20 +95,17 @@
 			
 		});
 	}
-	function callAJAX (company) {
-		var result = $("#name").html()
-		  .replace(/-/g, ' ')
-		  .replace(/\b./g, function(m){ return m.toUpperCase(); });
+	function callAJAX () {
 		$.ajax({
 			type: "POST",
 			url: "http://localhost:3000/companygroup/company/create",
 			data: {
-					Name: result,
-					UserID: company,
-					Description: $("#description").html(),
-					Industry: $("#industry").html(),
-					Picture: $("#lolimage").attr("src"),
-					Thumbnail: $("#thumbnail").attr("src")
+				Name: $("#name").html(),
+				UserID: $("#ticker").html(),
+				Description: $("#description").html(),
+				Industry: $("#industry").html(),
+				Picture: $("#lolimage").attr("src"),
+				Thumbnail: $("#thumbnail").attr("src")
 			},
 			success:function(data) {
 				alert(data);
@@ -144,5 +117,1991 @@
 		});
 	}
 </script>
+<table>
+<TR>
+			<TD WIDTH=101 HEIGHT=18 ALIGN=LEFT>MMM</TD>
+			<TD WIDTH=101 ALIGN=LEFT>3M Co</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>ABT</TD>
+			<TD ALIGN=LEFT>Abbott Laboratories</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>ABBV</TD>
+			<TD ALIGN=LEFT>AbbVie</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>ACN</TD>
+			<TD ALIGN=LEFT>Accenture Plc</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>ACE</TD>
+			<TD ALIGN=LEFT>ACE Limited</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>ACT</TD>
+			<TD ALIGN=LEFT>Actavis Plc</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>ADBE</TD>
+			<TD ALIGN=LEFT>Adobe Systems</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>ADT</TD>
+			<TD ALIGN=LEFT>ADT Corp (The)</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>AES</TD>
+			<TD ALIGN=LEFT>AES Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>AET</TD>
+			<TD ALIGN=LEFT>Aetna</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>AMG</TD>
+			<TD ALIGN=LEFT>Affiliated Managers Group</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>AFL</TD>
+			<TD ALIGN=LEFT>AFLAC</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>A</TD>
+			<TD ALIGN=LEFT>Agilent Technologies</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>GAS</TD>
+			<TD ALIGN=LEFT>AGL Resources</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>APD</TD>
+			<TD ALIGN=LEFT>Air Products &amp; Chemicals</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>ARG</TD>
+			<TD ALIGN=LEFT>Airgas</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>AKAM</TD>
+			<TD ALIGN=LEFT>Akamai Technologies</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>AA</TD>
+			<TD ALIGN=LEFT>Alcoa</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>ALXN</TD>
+			<TD ALIGN=LEFT>Alexion Pharmaceuticals</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>ALLE</TD>
+			<TD ALIGN=LEFT>Allegion Plc</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>AGN</TD>
+			<TD ALIGN=LEFT>Allergan</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>ADS</TD>
+			<TD ALIGN=LEFT>Alliance Data Systems</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>ALL</TD>
+			<TD ALIGN=LEFT>Allstate Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>ALTR</TD>
+			<TD ALIGN=LEFT>Altera Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>MO</TD>
+			<TD ALIGN=LEFT>Altria Group</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>AMZN</TD>
+			<TD ALIGN=LEFT>Amazon.com</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>AEE</TD>
+			<TD ALIGN=LEFT>Ameren Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>AEP</TD>
+			<TD ALIGN=LEFT>American Electric Power</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>AXP</TD>
+			<TD ALIGN=LEFT>American Express</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>AIG</TD>
+			<TD ALIGN=LEFT>American International Group</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>AMT</TD>
+			<TD ALIGN=LEFT>American Tower</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>AMP</TD>
+			<TD ALIGN=LEFT>Ameriprise Financial</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>ABC</TD>
+			<TD ALIGN=LEFT>AmerisourceBergen Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>AME</TD>
+			<TD ALIGN=LEFT>AMETEK</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>AMGN</TD>
+			<TD ALIGN=LEFT>Amgen</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>APH</TD>
+			<TD ALIGN=LEFT>Amphenol Corp A</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>APC</TD>
+			<TD ALIGN=LEFT>Anadarko Petroleum</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>ADI</TD>
+			<TD ALIGN=LEFT>Analog Devices</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>AON</TD>
+			<TD ALIGN=LEFT>Aon Plc</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>APA</TD>
+			<TD ALIGN=LEFT>Apache Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>AIV</TD>
+			<TD ALIGN=LEFT>Apartment Investment &amp; Mgmt</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>AAPL</TD>
+			<TD ALIGN=LEFT>Apple</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>AMAT</TD>
+			<TD ALIGN=LEFT>Applied Materials</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>ADM</TD>
+			<TD ALIGN=LEFT>Archer-Daniels-Midland</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>AIZ</TD>
+			<TD ALIGN=LEFT>Assurant</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>T</TD>
+			<TD ALIGN=LEFT>AT&amp;T</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>ADSK</TD>
+			<TD ALIGN=LEFT>Autodesk</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>ADP</TD>
+			<TD ALIGN=LEFT>Automatic Data Processing</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>AN</TD>
+			<TD ALIGN=LEFT>AutoNation</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>AZO</TD>
+			<TD ALIGN=LEFT>AutoZone</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>AVGO</TD>
+			<TD ALIGN=LEFT>Avago Technologies</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>AVB</TD>
+			<TD ALIGN=LEFT>AvalonBay Communities</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>AVY</TD>
+			<TD ALIGN=LEFT>Avery Dennison Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>AVP</TD>
+			<TD ALIGN=LEFT>Avon Products</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>BHI</TD>
+			<TD ALIGN=LEFT>Baker Hughes</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>BLL</TD>
+			<TD ALIGN=LEFT>Ball Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>BAC</TD>
+			<TD ALIGN=LEFT>Bank of America</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>BK</TD>
+			<TD ALIGN=LEFT>Bank of New York Mellon</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>BCR</TD>
+			<TD ALIGN=LEFT>Bard (C.R.)</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>BAX</TD>
+			<TD ALIGN=LEFT>Baxter International</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>BBT</TD>
+			<TD ALIGN=LEFT>BB&amp;T Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>BDX</TD>
+			<TD ALIGN=LEFT>Becton Dickinson</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>BBBY</TD>
+			<TD ALIGN=LEFT>Bed Bath &amp; Beyond</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>BMS</TD>
+			<TD ALIGN=LEFT>Bemis Co</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>BRK-B</TD>
+			<TD ALIGN=LEFT>Berkshire Hathaway</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>BBY</TD>
+			<TD ALIGN=LEFT>Best Buy</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>BIIB</TD>
+			<TD ALIGN=LEFT>Biogen Idec</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>BLK</TD>
+			<TD ALIGN=LEFT>BlackRock</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>BA</TD>
+			<TD ALIGN=LEFT>Boeing Co</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>BWA</TD>
+			<TD ALIGN=LEFT>Borg Warner</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>BXP</TD>
+			<TD ALIGN=LEFT>Boston Properties</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>BSX</TD>
+			<TD ALIGN=LEFT>Boston Scientific</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>BMY</TD>
+			<TD ALIGN=LEFT>Bristol-Myers Squibb</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>BRCM</TD>
+			<TD ALIGN=LEFT>Broadcom Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>BF-B</TD>
+			<TD ALIGN=LEFT>Brown-Forman</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>CHRW</TD>
+			<TD ALIGN=LEFT>C.H. Robinson Worldwide</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>CA</TD>
+			<TD ALIGN=LEFT>CA</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>CVC</TD>
+			<TD ALIGN=LEFT>Cablevision Systems</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>COG</TD>
+			<TD ALIGN=LEFT>Cabot Oil &amp; Gas</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>CAM</TD>
+			<TD ALIGN=LEFT>Cameron International</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>CPB</TD>
+			<TD ALIGN=LEFT>Campbell Soup</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>COF</TD>
+			<TD ALIGN=LEFT>Capital One Financial</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>CAH</TD>
+			<TD ALIGN=LEFT>Cardinal Health</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>CFN</TD>
+			<TD ALIGN=LEFT>CareFusion Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>KMX</TD>
+			<TD ALIGN=LEFT>CarMax</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>CCL</TD>
+			<TD ALIGN=LEFT>Carnival Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>CAT</TD>
+			<TD ALIGN=LEFT>Caterpillar</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>CBG</TD>
+			<TD ALIGN=LEFT>CBRE Group</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>CBS</TD>
+			<TD ALIGN=LEFT>CBS Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>CELG</TD>
+			<TD ALIGN=LEFT>Celgene Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>CNP</TD>
+			<TD ALIGN=LEFT>CenterPoint Energy</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>CTL</TD>
+			<TD ALIGN=LEFT>CenturyLink</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>CERN</TD>
+			<TD ALIGN=LEFT>Cerner Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>CF</TD>
+			<TD ALIGN=LEFT>CF Industries Holdings</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>CHK</TD>
+			<TD ALIGN=LEFT>Chesapeake Energy</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>CVX</TD>
+			<TD ALIGN=LEFT>Chevron Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>CMG</TD>
+			<TD ALIGN=LEFT>Chipotle Mexican Grill</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>CB</TD>
+			<TD ALIGN=LEFT>Chubb Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>CI</TD>
+			<TD ALIGN=LEFT>Cigna Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>XEC</TD>
+			<TD ALIGN=LEFT>Cimarex Energy</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>CINF</TD>
+			<TD ALIGN=LEFT>Cincinnati Financial</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>CTAS</TD>
+			<TD ALIGN=LEFT>Cintas Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>CSCO</TD>
+			<TD ALIGN=LEFT>Cisco Systems</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>C</TD>
+			<TD ALIGN=LEFT>Citigroup</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>CTXS</TD>
+			<TD ALIGN=LEFT>Citrix Systems</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>CLX</TD>
+			<TD ALIGN=LEFT>Clorox Co</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>CME</TD>
+			<TD ALIGN=LEFT>CME Group</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>CMS</TD>
+			<TD ALIGN=LEFT>CMS Energy</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>COH</TD>
+			<TD ALIGN=LEFT>Coach</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>KO</TD>
+			<TD ALIGN=LEFT>Coca-Cola Co</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>CCE</TD>
+			<TD ALIGN=LEFT>Coca-Cola Enterprises</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>CTSH</TD>
+			<TD ALIGN=LEFT>Cognizant Technology Solutions</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>CL</TD>
+			<TD ALIGN=LEFT>Colgate-Palmolive</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>CMCSA</TD>
+			<TD ALIGN=LEFT>Comcast Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>CMA</TD>
+			<TD ALIGN=LEFT>Comerica</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>CSC</TD>
+			<TD ALIGN=LEFT>Computer Sciences</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>CAG</TD>
+			<TD ALIGN=LEFT>ConAgra Foods</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>COP</TD>
+			<TD ALIGN=LEFT>ConocoPhillips</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>CNX</TD>
+			<TD ALIGN=LEFT>CONSOL Energy</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>ED</TD>
+			<TD ALIGN=LEFT>Consolidated Edison</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>STZ</TD>
+			<TD ALIGN=LEFT>Constellation Brands</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>GLW</TD>
+			<TD ALIGN=LEFT>Corning</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>COST</TD>
+			<TD ALIGN=LEFT>Costco Wholesale</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>COV</TD>
+			<TD ALIGN=LEFT>Covidien Plc</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>CCI</TD>
+			<TD ALIGN=LEFT>Crown Castle International</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>CSX</TD>
+			<TD ALIGN=LEFT>CSX Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>CMI</TD>
+			<TD ALIGN=LEFT>Cummins</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>CVS</TD>
+			<TD ALIGN=LEFT>CVS Health Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>DHI</TD>
+			<TD ALIGN=LEFT>D.R.Horton</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>DHR</TD>
+			<TD ALIGN=LEFT>Danaher Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>DRI</TD>
+			<TD ALIGN=LEFT>Darden Restaurants</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>DVA</TD>
+			<TD ALIGN=LEFT>DaVita HealthCare Partner</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>DE</TD>
+			<TD ALIGN=LEFT>Deere &amp; Co</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>DLPH</TD>
+			<TD ALIGN=LEFT>Delphi Automotive Plc</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>DAL</TD>
+			<TD ALIGN=LEFT>Delta Air Lines</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>DNR</TD>
+			<TD ALIGN=LEFT>Denbury Resources</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>XRAY</TD>
+			<TD ALIGN=LEFT>DENTSPLY International</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>DVN</TD>
+			<TD ALIGN=LEFT>Devon Energy</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>DO</TD>
+			<TD ALIGN=LEFT>Diamond Offshore Drilling</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>DTV</TD>
+			<TD ALIGN=LEFT>DIRECTV</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>DFS</TD>
+			<TD ALIGN=LEFT>Discover Financial Services</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>DISCA</TD>
+			<TD ALIGN=LEFT>Discovery Communications</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>DG</TD>
+			<TD ALIGN=LEFT>Dollar General</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>DLTR</TD>
+			<TD ALIGN=LEFT>Dollar Tree</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>D</TD>
+			<TD ALIGN=LEFT>Dominion Resources</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>DOV</TD>
+			<TD ALIGN=LEFT>Dover Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>DOW</TD>
+			<TD ALIGN=LEFT>Dow Chemical</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>DPS</TD>
+			<TD ALIGN=LEFT>Dr. Pepper Snapple Group</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>DTE</TD>
+			<TD ALIGN=LEFT>DTE Energy</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>DD</TD>
+			<TD ALIGN=LEFT>Du Pont (E.I.)</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>DUK</TD>
+			<TD ALIGN=LEFT>Duke Energy</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>DNB</TD>
+			<TD ALIGN=LEFT>Dun &amp; Bradstreet</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>ETFC</TD>
+			<TD ALIGN=LEFT>E Trade Financial</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>EMN</TD>
+			<TD ALIGN=LEFT>Eastman Chemical</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>ETN</TD>
+			<TD ALIGN=LEFT>Eaton Corp Plc</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>EBAY</TD>
+			<TD ALIGN=LEFT>eBay</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>ECL</TD>
+			<TD ALIGN=LEFT>Ecolab</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>EIX</TD>
+			<TD ALIGN=LEFT>Edison International</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>EW</TD>
+			<TD ALIGN=LEFT>Edwards Lifesciences</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>EA</TD>
+			<TD ALIGN=LEFT>Electronic Arts</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>EMC</TD>
+			<TD ALIGN=LEFT>EMC Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>EMR</TD>
+			<TD ALIGN=LEFT>Emerson Electric</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>ESV</TD>
+			<TD ALIGN=LEFT>ENSCO Plc</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>ETR</TD>
+			<TD ALIGN=LEFT>Entergy Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>EOG</TD>
+			<TD ALIGN=LEFT>EOG Resources</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>EQT</TD>
+			<TD ALIGN=LEFT>EQT Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>EFX</TD>
+			<TD ALIGN=LEFT>Equifax</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>EQR</TD>
+			<TD ALIGN=LEFT>Equity Residential</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>ESS</TD>
+			<TD ALIGN=LEFT>Essex Property Trust</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>EL</TD>
+			<TD ALIGN=LEFT>Estee Lauder Co</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>EXC</TD>
+			<TD ALIGN=LEFT>Exelon Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>EXPE</TD>
+			<TD ALIGN=LEFT>Expedia</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>EXPD</TD>
+			<TD ALIGN=LEFT>Expeditors International,Wash</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>ESRX</TD>
+			<TD ALIGN=LEFT>Express Scripts Holding</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>XOM</TD>
+			<TD ALIGN=LEFT>Exxon Mobil</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>FFIV</TD>
+			<TD ALIGN=LEFT>F5 Networks</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>FB</TD>
+			<TD ALIGN=LEFT>Facebook Cl</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>FDO</TD>
+			<TD ALIGN=LEFT>Family Dollar Stores</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>FAST</TD>
+			<TD ALIGN=LEFT>Fastenal Co</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>FDX</TD>
+			<TD ALIGN=LEFT>FedEx Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>FIS</TD>
+			<TD ALIGN=LEFT>Fidelity National Information Services</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>FITB</TD>
+			<TD ALIGN=LEFT>Fifth Third Bancorp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>FSLR</TD>
+			<TD ALIGN=LEFT>First Solar</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>FE</TD>
+			<TD ALIGN=LEFT>FirstEnergy Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>FISV</TD>
+			<TD ALIGN=LEFT>Fiserv</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>FLIR</TD>
+			<TD ALIGN=LEFT>FLIR Systems</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>FLS</TD>
+			<TD ALIGN=LEFT>Flowserve Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>FLR</TD>
+			<TD ALIGN=LEFT>Fluor Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>FMC</TD>
+			<TD ALIGN=LEFT>FMC Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>FTI</TD>
+			<TD ALIGN=LEFT>FMC Technologies</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>F</TD>
+			<TD ALIGN=LEFT>Ford Motor</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>FOSL</TD>
+			<TD ALIGN=LEFT>Fossil Group</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>BEN</TD>
+			<TD ALIGN=LEFT>Franklin Resources</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>FCX</TD>
+			<TD ALIGN=LEFT>Freeport-McMoRan</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>FTR</TD>
+			<TD ALIGN=LEFT>Frontier Communications</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>GME</TD>
+			<TD ALIGN=LEFT>GameStop Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>GCI</TD>
+			<TD ALIGN=LEFT>Gannett Co</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>GPS</TD>
+			<TD ALIGN=LEFT>Gap</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>GRMN</TD>
+			<TD ALIGN=LEFT>Garmin Ltd</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>GM</TD>
+			<TD ALIGN=LEFT>General Motors</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>GD</TD>
+			<TD ALIGN=LEFT>Genl Dynamics</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>GE</TD>
+			<TD ALIGN=LEFT>Genl Electric</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>GGP</TD>
+			<TD ALIGN=LEFT>Genl Growth Properties</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>GIS</TD>
+			<TD ALIGN=LEFT>Genl Mills</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>GPC</TD>
+			<TD ALIGN=LEFT>Genuine Parts</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>GNW</TD>
+			<TD ALIGN=LEFT>Genworth Financial</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>GILD</TD>
+			<TD ALIGN=LEFT>Gilead Sciences</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>GS</TD>
+			<TD ALIGN=LEFT>Goldman Sachs Group</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>GT</TD>
+			<TD ALIGN=LEFT>Goodyear Tire &amp; Rub</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>GOOG</TD>
+			<TD ALIGN=LEFT>Google'C'</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>GWW</TD>
+			<TD ALIGN=LEFT>Grainger (W.W.)</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>HAL</TD>
+			<TD ALIGN=LEFT>Halliburton Co</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>HOG</TD>
+			<TD ALIGN=LEFT>Harley-Davidson</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>HAR</TD>
+			<TD ALIGN=LEFT>Harman International</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>HRS</TD>
+			<TD ALIGN=LEFT>Harris Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>HIG</TD>
+			<TD ALIGN=LEFT>Hartford Finl Services Gp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>HAS</TD>
+			<TD ALIGN=LEFT>Hasbro</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>HCP</TD>
+			<TD ALIGN=LEFT>HCP</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>HCN</TD>
+			<TD ALIGN=LEFT>Health Care REIT</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>HP</TD>
+			<TD ALIGN=LEFT>Helmerich &amp; Payne</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>HSY</TD>
+			<TD ALIGN=LEFT>Hershey Co</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>HES</TD>
+			<TD ALIGN=LEFT>Hess Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>HPQ</TD>
+			<TD ALIGN=LEFT>Hewlett-Packard</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>HD</TD>
+			<TD ALIGN=LEFT>Home Depot</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>HON</TD>
+			<TD ALIGN=LEFT>Honeywell International</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>HRL</TD>
+			<TD ALIGN=LEFT>Hormel Foods</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>HSP</TD>
+			<TD ALIGN=LEFT>Hospira</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>HST</TD>
+			<TD ALIGN=LEFT>Host Hotels &amp; Resorts</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>HCBK</TD>
+			<TD ALIGN=LEFT>Hudson City Bancorp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>HUM</TD>
+			<TD ALIGN=LEFT>Humana</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>HBAN</TD>
+			<TD ALIGN=LEFT>Huntington Bancshares</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>ITW</TD>
+			<TD ALIGN=LEFT>Illinois Tool Works</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>IR</TD>
+			<TD ALIGN=LEFT>Ingersoll-Rand Plc</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>TEG</TD>
+			<TD ALIGN=LEFT>Integrys Energy Group</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>INTC</TD>
+			<TD ALIGN=LEFT>Intel Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>ICE</TD>
+			<TD ALIGN=LEFT>Intercontinental Exchange</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>IBM</TD>
+			<TD ALIGN=LEFT>International Bus. Machines</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>IFF</TD>
+			<TD ALIGN=LEFT>International Flavors/Fragr</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>IP</TD>
+			<TD ALIGN=LEFT>International Paper</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>IPG</TD>
+			<TD ALIGN=LEFT>Interpublic GroupCompanies</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>INTU</TD>
+			<TD ALIGN=LEFT>Intuit</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>ISRG</TD>
+			<TD ALIGN=LEFT>Intuitive Surgical</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>IVZ</TD>
+			<TD ALIGN=LEFT>INVESCO Ltd</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>IRM</TD>
+			<TD ALIGN=LEFT>Iron Mountain</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>JBL</TD>
+			<TD ALIGN=LEFT>Jabil Circuit</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>JEC</TD>
+			<TD ALIGN=LEFT>Jacobs Engineering Group</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>JNJ</TD>
+			<TD ALIGN=LEFT>Johnson &amp; Johnson</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>JCI</TD>
+			<TD ALIGN=LEFT>Johnson Controls</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>JPM</TD>
+			<TD ALIGN=LEFT>JPMorgan Chase &amp; Co</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>JNPR</TD>
+			<TD ALIGN=LEFT>Juniper Networks</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>KSU</TD>
+			<TD ALIGN=LEFT>Kansas City Southern</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>K</TD>
+			<TD ALIGN=LEFT>Kellogg Co</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>GMCR</TD>
+			<TD ALIGN=LEFT>Keurig Green Mountain</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>KEY</TD>
+			<TD ALIGN=LEFT>KeyCorp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>KMB</TD>
+			<TD ALIGN=LEFT>Kimberly-Clark</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>KIM</TD>
+			<TD ALIGN=LEFT>Kimco Realty</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>KMI</TD>
+			<TD ALIGN=LEFT>Kinder Morgan</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>KLAC</TD>
+			<TD ALIGN=LEFT>KLA-Tencor Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>KSS</TD>
+			<TD ALIGN=LEFT>Kohl's Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>KRFT</TD>
+			<TD ALIGN=LEFT>Kraft Foods Group</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>KR</TD>
+			<TD ALIGN=LEFT>Kroger Co</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>LB</TD>
+			<TD ALIGN=LEFT>L Brands</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>LLL</TD>
+			<TD ALIGN=LEFT>L-3 Communications Holdings</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>LH</TD>
+			<TD ALIGN=LEFT>Laboratory Corp American Holdings</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>LRCX</TD>
+			<TD ALIGN=LEFT>Lam Research</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>LM</TD>
+			<TD ALIGN=LEFT>Legg Mason</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>LEG</TD>
+			<TD ALIGN=LEFT>Leggett &amp; Platt</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>LEN</TD>
+			<TD ALIGN=LEFT>Lennar Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>LUK</TD>
+			<TD ALIGN=LEFT>Leucadia National</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>LLY</TD>
+			<TD ALIGN=LEFT>Lilly (Eli)</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>LNC</TD>
+			<TD ALIGN=LEFT>Lincoln National</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>LLTC</TD>
+			<TD ALIGN=LEFT>Linear Technology Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>LMT</TD>
+			<TD ALIGN=LEFT>Lockheed Martin</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>L</TD>
+			<TD ALIGN=LEFT>Loews Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>LO</TD>
+			<TD ALIGN=LEFT>Lorillard</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>LOW</TD>
+			<TD ALIGN=LEFT>Lowe'sCompanies</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>LYB</TD>
+			<TD ALIGN=LEFT>LyondellBasell Industries</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>MTB</TD>
+			<TD ALIGN=LEFT>M&amp;T Bank</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>MAC</TD>
+			<TD ALIGN=LEFT>Macerich Co</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>M</TD>
+			<TD ALIGN=LEFT>Macy's</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>MNK</TD>
+			<TD ALIGN=LEFT>Mallinckrodt plc</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>MRO</TD>
+			<TD ALIGN=LEFT>Marathon Oil</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>MPC</TD>
+			<TD ALIGN=LEFT>Marathon Petroleum</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>MAR</TD>
+			<TD ALIGN=LEFT>Marriott International</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>MMC</TD>
+			<TD ALIGN=LEFT>Marsh &amp; McLennan</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>MLM</TD>
+			<TD ALIGN=LEFT>Martin Marietta Materials</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>MAS</TD>
+			<TD ALIGN=LEFT>Masco Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>MA</TD>
+			<TD ALIGN=LEFT>MasterCard</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>MAT</TD>
+			<TD ALIGN=LEFT>Mattel</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>MKC</TD>
+			<TD ALIGN=LEFT>McCormick &amp; Co</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>MCD</TD>
+			<TD ALIGN=LEFT>McDonald's Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>MHFI</TD>
+			<TD ALIGN=LEFT>McGraw Hill Financial</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>MCK</TD>
+			<TD ALIGN=LEFT>McKesson Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>MJN</TD>
+			<TD ALIGN=LEFT>Mead Johnson Nutrition</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>MWV</TD>
+			<TD ALIGN=LEFT>MeadWestvaco Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>MDT</TD>
+			<TD ALIGN=LEFT>Medtronic</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>MRK</TD>
+			<TD ALIGN=LEFT>Merck &amp; Co</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>MET</TD>
+			<TD ALIGN=LEFT>MetLife</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>KORS</TD>
+			<TD ALIGN=LEFT>Michael Kors Holdings</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>MCHP</TD>
+			<TD ALIGN=LEFT>Microchip Technology</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>MU</TD>
+			<TD ALIGN=LEFT>Micron Technology</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>MSFT</TD>
+			<TD ALIGN=LEFT>Microsoft Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>MHK</TD>
+			<TD ALIGN=LEFT>Mohawk Industries</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>TAP</TD>
+			<TD ALIGN=LEFT>Molson Coors Brewing</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>MDLZ</TD>
+			<TD ALIGN=LEFT>Mondelez International</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>MON</TD>
+			<TD ALIGN=LEFT>Monsanto Co</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>MNST</TD>
+			<TD ALIGN=LEFT>Monster Beverage</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>MCO</TD>
+			<TD ALIGN=LEFT>Moody's Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>MS</TD>
+			<TD ALIGN=LEFT>Morgan Stanley</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>MOS</TD>
+			<TD ALIGN=LEFT>Mosaic Co</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>MSI</TD>
+			<TD ALIGN=LEFT>Motorola Solutions</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>MUR</TD>
+			<TD ALIGN=LEFT>Murphy Oil</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>MYL</TD>
+			<TD ALIGN=LEFT>Mylan</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>NBR</TD>
+			<TD ALIGN=LEFT>Nabors Industries</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>NDAQ</TD>
+			<TD ALIGN=LEFT>Nasdaq OMX Group</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>NOV</TD>
+			<TD ALIGN=LEFT>Natl Oilwell Varco</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>NAVI</TD>
+			<TD ALIGN=LEFT>Navient Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>NTAP</TD>
+			<TD ALIGN=LEFT>NetApp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>NFLX</TD>
+			<TD ALIGN=LEFT>NetFlix</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>NWL</TD>
+			<TD ALIGN=LEFT>Newell Rubbermaid</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>NFX</TD>
+			<TD ALIGN=LEFT>Newfield Exploration</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>NEM</TD>
+			<TD ALIGN=LEFT>Newmont Mining</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>NWSA</TD>
+			<TD ALIGN=LEFT>News Corporation</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>NEE</TD>
+			<TD ALIGN=LEFT>NextEra Energy</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>NLSN</TD>
+			<TD ALIGN=LEFT>Nielsen NV</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>NKE</TD>
+			<TD ALIGN=LEFT>NIKE</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>NI</TD>
+			<TD ALIGN=LEFT>NiSource</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>NE</TD>
+			<TD ALIGN=LEFT>Noble Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>NBL</TD>
+			<TD ALIGN=LEFT>Noble Energy</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>JWN</TD>
+			<TD ALIGN=LEFT>Nordstrom</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>NSC</TD>
+			<TD ALIGN=LEFT>Norfolk Southern</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>NU</TD>
+			<TD ALIGN=LEFT>Northeast Utilities</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>NTRS</TD>
+			<TD ALIGN=LEFT>Northern Trust</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>NOC</TD>
+			<TD ALIGN=LEFT>Northrop Grumman</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>NRG</TD>
+			<TD ALIGN=LEFT>NRG Energy</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>NUE</TD>
+			<TD ALIGN=LEFT>Nucor Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>NVDA</TD>
+			<TD ALIGN=LEFT>NVIDIA Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>ORLY</TD>
+			<TD ALIGN=LEFT>O'Reilly Automotive</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>OXY</TD>
+			<TD ALIGN=LEFT>Occidental Petroleum</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>OMC</TD>
+			<TD ALIGN=LEFT>Omnicom Group</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>OKE</TD>
+			<TD ALIGN=LEFT>ONEOK</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>ORCL</TD>
+			<TD ALIGN=LEFT>Oracle Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>OI</TD>
+			<TD ALIGN=LEFT>Owens-Illinois</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>PCAR</TD>
+			<TD ALIGN=LEFT>PACCAR</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>PLL</TD>
+			<TD ALIGN=LEFT>Pall Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>PH</TD>
+			<TD ALIGN=LEFT>Parker-Hannifin</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>PDCO</TD>
+			<TD ALIGN=LEFT>PattersonCompanies</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>PAYX</TD>
+			<TD ALIGN=LEFT>Paychex</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>PNR</TD>
+			<TD ALIGN=LEFT>Pentair plc</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>PBCT</TD>
+			<TD ALIGN=LEFT>People's United Financial</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>POM</TD>
+			<TD ALIGN=LEFT>Pepco Holdings</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>PEP</TD>
+			<TD ALIGN=LEFT>PepsiCo</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>PKI</TD>
+			<TD ALIGN=LEFT>PerkinElmer</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>PRGO</TD>
+			<TD ALIGN=LEFT>Perrigo</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>PETM</TD>
+			<TD ALIGN=LEFT>PETsMART</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>PFE</TD>
+			<TD ALIGN=LEFT>Pfizer</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>PCG</TD>
+			<TD ALIGN=LEFT>PG&amp;E Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>PM</TD>
+			<TD ALIGN=LEFT>Philip Morris International</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>PSX</TD>
+			<TD ALIGN=LEFT>Phillips 66</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>PNW</TD>
+			<TD ALIGN=LEFT>Pinnacle West Capital</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>PXD</TD>
+			<TD ALIGN=LEFT>Pioneer Natural Resources</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>PBI</TD>
+			<TD ALIGN=LEFT>Pitney Bowes</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>PCL</TD>
+			<TD ALIGN=LEFT>Plum Creek Timber</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>PNC</TD>
+			<TD ALIGN=LEFT>PNC Financial Services</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>PPG</TD>
+			<TD ALIGN=LEFT>PPG Indus</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>PPL</TD>
+			<TD ALIGN=LEFT>PPL Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>PX</TD>
+			<TD ALIGN=LEFT>Praxair</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>PCP</TD>
+			<TD ALIGN=LEFT>Precision Castparts</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>PCLN</TD>
+			<TD ALIGN=LEFT>Priceline Group (The)</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>PFG</TD>
+			<TD ALIGN=LEFT>Principal Financial Group</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>PG</TD>
+			<TD ALIGN=LEFT>Procter &amp; Gamble</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>PGR</TD>
+			<TD ALIGN=LEFT>Progressive Corp,Ohio</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>PLD</TD>
+			<TD ALIGN=LEFT>Prologis</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>PRU</TD>
+			<TD ALIGN=LEFT>Prudential Financial</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>PSA</TD>
+			<TD ALIGN=LEFT>Public Storage</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>PEG</TD>
+			<TD ALIGN=LEFT>Public Svc Enterprises</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>PHM</TD>
+			<TD ALIGN=LEFT>PulteGroup</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>PVH</TD>
+			<TD ALIGN=LEFT>PVH Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>QEP</TD>
+			<TD ALIGN=LEFT>QEP Resources</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>QCOM</TD>
+			<TD ALIGN=LEFT>QUALCOMM</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>PWR</TD>
+			<TD ALIGN=LEFT>Quanta Services</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>DGX</TD>
+			<TD ALIGN=LEFT>Quest Diagnostics</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>RL</TD>
+			<TD ALIGN=LEFT>Ralph Lauren Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>RRC</TD>
+			<TD ALIGN=LEFT>Range Resources</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>RTN</TD>
+			<TD ALIGN=LEFT>Raytheon Co</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>RHT</TD>
+			<TD ALIGN=LEFT>Red Hat</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>REGN</TD>
+			<TD ALIGN=LEFT>Regeneron Pharmaceuticals</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>RF</TD>
+			<TD ALIGN=LEFT>Regions Financial</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>RSG</TD>
+			<TD ALIGN=LEFT>Republic Services</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>RAI</TD>
+			<TD ALIGN=LEFT>Reynolds American</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>RHI</TD>
+			<TD ALIGN=LEFT>Robert Half International</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>ROK</TD>
+			<TD ALIGN=LEFT>Rockwell Automation</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>COL</TD>
+			<TD ALIGN=LEFT>Rockwell Collins</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>ROP</TD>
+			<TD ALIGN=LEFT>Roper Indus</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>ROST</TD>
+			<TD ALIGN=LEFT>Ross Stores</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>R</TD>
+			<TD ALIGN=LEFT>Ryder System</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>SWY</TD>
+			<TD ALIGN=LEFT>Safeway</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>CRM</TD>
+			<TD ALIGN=LEFT>salesforce.com inc</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>SNDK</TD>
+			<TD ALIGN=LEFT>SanDisk Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>SCG</TD>
+			<TD ALIGN=LEFT>SCANA Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>SLB</TD>
+			<TD ALIGN=LEFT>Schlumberger Ltd</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>SCHW</TD>
+			<TD ALIGN=LEFT>Schwab(Charles)Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>SNI</TD>
+			<TD ALIGN=LEFT>Scripps Networks Interact</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>STX</TD>
+			<TD ALIGN=LEFT>Seagate Technology Plc</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>SEE</TD>
+			<TD ALIGN=LEFT>Sealed Air</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>SRE</TD>
+			<TD ALIGN=LEFT>Sempra Energy</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>SHW</TD>
+			<TD ALIGN=LEFT>Sherwin-Williams</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>SIAL</TD>
+			<TD ALIGN=LEFT>Sigma-Aldrich</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>SPG</TD>
+			<TD ALIGN=LEFT>Simon Property Group</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>SJM</TD>
+			<TD ALIGN=LEFT>Smucker (J.M.)</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>SNA</TD>
+			<TD ALIGN=LEFT>Snap-On</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>SO</TD>
+			<TD ALIGN=LEFT>Southern Co</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>LUV</TD>
+			<TD ALIGN=LEFT>Southwest Airlines</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>SWN</TD>
+			<TD ALIGN=LEFT>Southwestern Energy</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>SE</TD>
+			<TD ALIGN=LEFT>Spectra Energy</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>STJ</TD>
+			<TD ALIGN=LEFT>St. Jude Medical</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>SWK</TD>
+			<TD ALIGN=LEFT>Stanley Black &amp; Decker</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>SPLS</TD>
+			<TD ALIGN=LEFT>Staples</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>SBUX</TD>
+			<TD ALIGN=LEFT>Starbucks Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>HOT</TD>
+			<TD ALIGN=LEFT>Starwood Hotels&amp;Res World</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>STT</TD>
+			<TD ALIGN=LEFT>State Street Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>SRCL</TD>
+			<TD ALIGN=LEFT>Stericycle</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>SYK</TD>
+			<TD ALIGN=LEFT>Stryker Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>STI</TD>
+			<TD ALIGN=LEFT>SunTrust Banks</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>SYMC</TD>
+			<TD ALIGN=LEFT>Symantec Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>SYY</TD>
+			<TD ALIGN=LEFT>Sysco Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>TROW</TD>
+			<TD ALIGN=LEFT>T.Rowe Price Group</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>TGT</TD>
+			<TD ALIGN=LEFT>Target Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>TEL</TD>
+			<TD ALIGN=LEFT>TE Connectivity</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>TE</TD>
+			<TD ALIGN=LEFT>TECO Energy</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>THC</TD>
+			<TD ALIGN=LEFT>Tenet Healthcare</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>TDC</TD>
+			<TD ALIGN=LEFT>Teradata Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>TSO</TD>
+			<TD ALIGN=LEFT>Tesoro Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>TXN</TD>
+			<TD ALIGN=LEFT>Texas Instruments</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>TXT</TD>
+			<TD ALIGN=LEFT>Textron</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>TMO</TD>
+			<TD ALIGN=LEFT>Thermo Fisher Scientific</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>TIF</TD>
+			<TD ALIGN=LEFT>Tiffany &amp; Co</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>TWX</TD>
+			<TD ALIGN=LEFT>Time Warner</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>TWC</TD>
+			<TD ALIGN=LEFT>Time Warner Cable</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>TJX</TD>
+			<TD ALIGN=LEFT>TJX Companies</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>TMK</TD>
+			<TD ALIGN=LEFT>Torchmark Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>TSS</TD>
+			<TD ALIGN=LEFT>Total System Services</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>TSCO</TD>
+			<TD ALIGN=LEFT>Tractor Supply</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>RIG</TD>
+			<TD ALIGN=LEFT>Transocean Ltd</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>TRV</TD>
+			<TD ALIGN=LEFT>TravelersCompanies</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>TRIP</TD>
+			<TD ALIGN=LEFT>TripAdvisor</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>FOXA</TD>
+			<TD ALIGN=LEFT>Twenty-First Century Fox</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>TSN</TD>
+			<TD ALIGN=LEFT>Tyson Foods</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>USB</TD>
+			<TD ALIGN=LEFT>U.S. Bancorp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>UA</TD>
+			<TD ALIGN=LEFT>Under Armour</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>UNP</TD>
+			<TD ALIGN=LEFT>Union Pacific</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>UPS</TD>
+			<TD ALIGN=LEFT>United Parcel</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>URI</TD>
+			<TD ALIGN=LEFT>United Rentals</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>UTX</TD>
+			<TD ALIGN=LEFT>United Technologies</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>UNH</TD>
+			<TD ALIGN=LEFT>UnitedHealth Group</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>UHS</TD>
+			<TD ALIGN=LEFT>Univl Health Services</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>UNM</TD>
+			<TD ALIGN=LEFT>Unum Group</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>URBN</TD>
+			<TD ALIGN=LEFT>Urban Outfitters</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>VLO</TD>
+			<TD ALIGN=LEFT>Valero Energy</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>VAR</TD>
+			<TD ALIGN=LEFT>Varian Medical Systems</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>VTR</TD>
+			<TD ALIGN=LEFT>Ventas</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>VRSN</TD>
+			<TD ALIGN=LEFT>VeriSign</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>VZ</TD>
+			<TD ALIGN=LEFT>Verizon Communications</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>VRTX</TD>
+			<TD ALIGN=LEFT>Vertex Pharmaceuticals</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>VFC</TD>
+			<TD ALIGN=LEFT>VF Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>VIAB</TD>
+			<TD ALIGN=LEFT>Viacom</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>V</TD>
+			<TD ALIGN=LEFT>Visa</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>VNO</TD>
+			<TD ALIGN=LEFT>Vornado Realty Trust</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>VMC</TD>
+			<TD ALIGN=LEFT>Vulcan Materials</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>WMT</TD>
+			<TD ALIGN=LEFT>Wal-Mart Stores</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>WAG</TD>
+			<TD ALIGN=LEFT>Walgreen Co</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>DIS</TD>
+			<TD ALIGN=LEFT>Walt Disney Co</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>WM</TD>
+			<TD ALIGN=LEFT>Waste Management</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>WAT</TD>
+			<TD ALIGN=LEFT>Waters Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>WLP</TD>
+			<TD ALIGN=LEFT>WellPoint</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>WFC</TD>
+			<TD ALIGN=LEFT>Wells Fargo</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>WDC</TD>
+			<TD ALIGN=LEFT>Western Digital</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>WU</TD>
+			<TD ALIGN=LEFT>Western Union</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>WY</TD>
+			<TD ALIGN=LEFT>Weyerhaeuser Co</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>WHR</TD>
+			<TD ALIGN=LEFT>Whirlpool Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>WFM</TD>
+			<TD ALIGN=LEFT>Whole Foods Market</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>WMB</TD>
+			<TD ALIGN=LEFT>WilliamsCompanies</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>WIN</TD>
+			<TD ALIGN=LEFT>Windstream Holdings</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>WEC</TD>
+			<TD ALIGN=LEFT>Wisconsin Energy Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>WYN</TD>
+			<TD ALIGN=LEFT>Wyndham Worldwide</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>WYNN</TD>
+			<TD ALIGN=LEFT>Wynn Resorts</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>XEL</TD>
+			<TD ALIGN=LEFT>Xcel Energy</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>XRX</TD>
+			<TD ALIGN=LEFT>Xerox Corp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>XLNX</TD>
+			<TD ALIGN=LEFT>Xilinx</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>XL</TD>
+			<TD ALIGN=LEFT>XL Group Plc</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>XYL</TD>
+			<TD ALIGN=LEFT>Xylem</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>YHOO</TD>
+			<TD ALIGN=LEFT>Yahoo</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>YUM</TD>
+			<TD ALIGN=LEFT>Yum Brands</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>ZMH</TD>
+			<TD ALIGN=LEFT>Zimmer Holdings</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=18 ALIGN=LEFT>ZION</TD>
+			<TD ALIGN=LEFT>Zions Bancorp</TD>
+		</TR>
+		<TR>
+			<TD HEIGHT=19 ALIGN=LEFT>ZTS</TD>
+			<TD ALIGN=LEFT>Zoetis</TD>
+		</TR>
+
 
 

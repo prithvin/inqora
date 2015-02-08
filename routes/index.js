@@ -109,7 +109,7 @@ router.get('/getusertooltip', function (req, res) {
 						Username: data.Username,
 						Points: data.Points.NumPoints,
 						Followers: data.Followers.length + " Followers",
-						Thumbnail: data.Thumbnail,
+						Thumbnail: data.Picture,
 						StockFollowing: 0
 					};
 					getPercentChanges(data.StockFollowing, 0, res, [], obj, []);
@@ -122,7 +122,7 @@ router.get('/getusertooltip', function (req, res) {
 						StockTicker: data.UserId,
 						isFollowed: "Not Following",
 						StockPriceAndPercent: 0,
-						Thumbnail: data.Thumbnail,
+						Thumbnail: data.Picture,
 						NumFollowers: data.NumFollowers + " Followers",
 						Industry: data.Industry
 					};
@@ -153,7 +153,7 @@ router.get('/getusertooltip', function (req, res) {
 						Name: data.Name,
 						Username: data.UserId,
 						isFollowed: "Not Following",
-						Thumbnail: data.Thumbnail,
+						Thumbnail: data.Picture,
 						NumFollowers: data.NumFollowers + " Followers",
 					};
 					users.findOne({_id: req.session.UserId}, "FollowingAccs" , function (err, data2) {
