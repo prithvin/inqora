@@ -156,9 +156,9 @@ app.all('*',  function (req, res, next) {
     else if (req.headers.origin.indexOf("localhost") != -1) 
          res.setHeader('Access-Control-Allow-Origin', 'http://localhost:7888');
      else if (req.headers.origin.indexOf("104.131.30.72") != -1) {
-        if ((req.headers.origin.indexOf("https") ! =-1) 
+        if (req.headers.origin.indexOf("https") !=-1) 
             res.setHeader('Access-Control-Allow-Origin', 'https://104.131.30.72');
-        else if ((req.headers.origin.indexOf("http") ! =-1) 
+        else if (req.headers.origin.indexOf("http") ! =-1) 
             res.setHeader('Access-Control-Allow-Origin', 'http://104.131.30.72');
         
      }
