@@ -224,8 +224,6 @@ router.post('/authenticate', function(req,res) {
 	users.findOne({$or: [{"Username":regex, 'Password' : password},{"Email":regex, 'Password' : password}]}, function(err, results) {
 		if (results == null) 
 			res.send("Username/email or password invalid.");
-		else if (results.Verified == false) 
-			res.send("Please verify your email address.");
 		else {
 			
 			req.session.UserId = results._id;

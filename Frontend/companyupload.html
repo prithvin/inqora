@@ -1,7 +1,19 @@
-<img id="lolimage"></img>
+<img id="lolimage"></img><br>
+<img id="thumbnail"></img><br>
+<span id="description"></span><br>
+<span id="industry"></span><br>
+<span id="name"></span><br>
+<button id="sendittopeople">Click HEERE</button>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 <script>
-
+	function loadIt (company) {
+		logoURL(company);
+		descriptionAndData(company);
+		$("#sendittopeople").on("click", function (ev) {
+			ev.preventDefault();
+			callAJAX (company);
+		});
+	}
 	function logoURL (company) {
 		$.ajax({
 			type: "GET",
@@ -10,13 +22,20 @@
 			},
 			success:function(data) {
 				console.log(data);
-				var companyname = data.results.collection1[0].firstresult.href;
-				companyname = companyname.substring(companyname.indexOf("/organization/") + 14);
-				nextLogo(companyname);
+				if (data.lastrunstatus == "failure") {
+					logoURL(company);
+				}
+				else {
+					var companyname = data.results.collection1[0].firstresult.href;
+					
+					companyname = companyname.substring(companyname.indexOf("/organization/") + 14);
+					$("#name").html(companyname);
+					nextLogo(companyname);
+				}
 			},
 			xhrFields: {withCredentials: true},
 			error:function(){
-			console.log("ERROR");
+				logoURL(company);
 			}
 		});
 	}
@@ -29,8 +48,9 @@
 			},
 			success:function(data) {
 				console.log(data);
-				if (data.lastrunstatus == "failure")
+				if (data.lastrunstatus == "failure") {
 					nextLogo(companyname);
+				}
 				else {
 					var src = data.results.collection1[0].logo.src;
 					$.ajax({
@@ -40,7 +60,8 @@
 							url: src
 						},
 						success:function(data) {
-							$("#lolimage").attr("src" ,data);
+							imageToDataUri(data, 150, 150);
+							imageToDataUri(data, 30, 30);
 						},
 						xhrFields: {withCredentials: true},
 						error:function(){
@@ -51,7 +72,74 @@
 			},
 			xhrFields: {withCredentials: true},
 			error:function(){
-			console.log("ERROR");
+				nextLogo(compayname);
+			}
+		});
+	}
+	function descriptionAndData (companyname) {
+		$.ajax({
+			type: "GET",
+			url: "https://www.kimonolabs.com/api/ag7nvp30",
+			data: {
+				apikey : "rUAlNtyAWcprQKFvUJk5eiMTCSdo0xbB",
+				t: companyname
+			},
+			success:function(data) {
+				$("#description").html(data.results.collection1[0].Description);
+				$("#industry").html(data.results.collection1[0].Industry);
+			},
+			xhrFields: {withCredentials: true},
+			error:function(){
+				console.log("ERROR");
+			}
+		});
+	}
+	function imageToDataUri(img1, width, height) {
+		// create an off-screen canvas
+		var img = new Image;
+		img.src = img1;
+		$(img).on("load", function () {
+			var canvas = document.createElement('canvas'),
+			ctx = canvas.getContext('2d');
+
+			// set its dimension to target size
+			canvas.width = width;
+			canvas.height = height;
+
+			// draw source image into the off-screen canvas:
+			ctx.drawImage(img, 0, 0, width, height);
+
+			// encode image to data-uri with base64 version of compressed image
+			if (width == 30) {
+				$("#thumbnail").attr("src" ,canvas.toDataURL());
+			}
+			else {
+				$("#lolimage").attr("src" ,canvas.toDataURL());
+			}
+			
+		});
+	}
+	function callAJAX (company) {
+		var result = $("#name").html()
+		  .replace(/-/g, ' ')
+		  .replace(/\b./g, function(m){ return m.toUpperCase(); });
+		$.ajax({
+			type: "POST",
+			url: "http://localhost:3000/companygroup/company/create",
+			data: {
+					Name: result,
+					UserID: company,
+					Description: $("#description").html(),
+					Industry: $("#industry").html(),
+					Picture: $("#lolimage").attr("src"),
+					Thumbnail: $("#thumbnail").attr("src")
+			},
+			success:function(data) {
+				alert(data);
+			},
+			xhrFields: {withCredentials: true},
+			error:function(){
+				console.log("ERROR");
 			}
 		});
 	}
