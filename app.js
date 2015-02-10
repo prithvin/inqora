@@ -37,9 +37,9 @@ server  = email.server.connect({
 
 
 
-
+//mongodump --host alcatraz.0.mongolayer.com:10033 --db InqoraDB -u inqora -pinqora -o /var/lib/mongodb
 //mongoose.connect('mongodb://inqora:inqora@alcatraz.0.mongolayer.com:10033,alcatraz.1.mongolayer.com:10033/InqoraDB');
-mongoose.connect('mongodb://104.131.30.72:27017/inqoradb')
+mongoose.connect('mongodb://104.131.30.72:27017/InqoraDB')
 db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function callback () {});
