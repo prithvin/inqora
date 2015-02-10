@@ -185,12 +185,11 @@ app.use(session({
     resave: true,
     saveUninitialized: true
 }));
-// */
 
 
 //Production
  /*
- RedisStore = require('connect-redis')(session);
+RedisStore = require('connect-redis')(session);
 app.use(express.session({
   cookie: {
     httpOnly: false 

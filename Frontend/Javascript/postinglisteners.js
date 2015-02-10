@@ -33,7 +33,7 @@ $(document).on("click", ".downvotebutton", function (ev) {
 			selectWhich (false, true, postid);
 		}
 		else {
-			updateVote(-2, postid);
+			updateVote(-1, postid);
 			selectWhich (false, true, postid);
 		}
 		alert(data);
@@ -104,7 +104,7 @@ $(document).on("click", ".sharepost", function (ev) {
 	ev.preventDefault();
 });
 
-$(document).on("click", "lithird",function (ev) {
+$(document).on("click", ".lithird",function (ev) {
 	ev.preventDefault();
 	var elementby = $(this).attr("name") + "-" + $(this).attr("value");
 	if (getStatus(false, elementby)) {
@@ -116,7 +116,7 @@ $(document).on("click", "lithird",function (ev) {
 		selectWhich (false, true, elementby);
 	}
 	else {
-		updateVote(-2, elementby);
+		updateVote(-1, elementby);
 		selectWhich (false, true, elementby);
 	}
 	callAJAX ("GET", "/posting/comment/dislike/" + $(this).attr("value"), {PostId: $(this).attr("name")}, function (data2) {
