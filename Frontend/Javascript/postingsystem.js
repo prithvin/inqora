@@ -49,7 +49,9 @@ function createCommentPanel(panel, postid) {
 		var submit = $("<textarea>").attr("type", "text").attr("id", "newcomment-" + postid).css("width", "100%").css("resize", "none").attr("placeholder", "New Comment").css("height","50px").appendTo(form).attr("name", postid);
 		$("<input>").attr("type", "submit").css("display","none").appendTo(form);
 	$(submit).keypress(function(e){
-		if(e.keyCode==13 && e.shiftKey == false) {
+		if ($(this).val().trim() == "")
+			alert("Please do not post blank comments");
+		else if(e.keyCode==13 && e.shiftKey == false) {
 			var obj = {
 				Comment: $(this).val(),
 				PostId: $(this).attr("name")
@@ -66,12 +68,14 @@ function createCommentPanel(panel, postid) {
 		}
 	});
 	callAJAX("GET", "/companygroup/getSearch", {}, function (searchres) {
+		console.log("IN HERE");
 		var textarea = document.getElementById("newcomment-" + postid);
 		var arr = [];
 		for (var x = 0 ;x  < searchres.length; x++) {
 			var img = "<img style='margin:0;padding:0;position:relative;left:0;margin-right:5px;' src='"+getLocalhost()+ "/companygroup/getThumbnailAct?Username=" + searchres[x].Username +  "'>";
 			arr.push(img + " " + searchres[x].Name + " (@"  + searchres[x].Username + ") - " + searchres[x].Type);
 		}
+		console.log("IN HERE");
 		$(textarea).textcomplete([
 		    { // html
 		        mentions: arr,

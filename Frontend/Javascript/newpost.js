@@ -1,33 +1,3 @@
-callAJAX("GET", "/companygroup/getSearch", {}, function (searchres) {
-		var textarea = document.getElementById("newpost");
-		var arr = [];
-		for (var x = 0 ;x  < searchres.length; x++) {
-			var img = "<img style='margin:0;padding:0;position:relative;left:0;margin-right:5px;' src='"+getLocalhost()+ "/companygroup/getThumbnailAct?Username=" + searchres[x].Username +  "'>";
-			arr.push(img + " " + searchres[x].Name + " (@"  + searchres[x].Username + ") - " + searchres[x].Type);
-		}
-		$(textarea).textcomplete([
-		    { // html
-		        mentions: arr,
-		        match: /\B@(\w*)$/,
-		        search: function (term, callback) {
-		            callback($.map(this.mentions, function (mention) {
-		                return mention.toLowerCase().indexOf(term.toLowerCase()) != -1 ? mention : null;
-		            }));
-		        },
-		        index: 1,
-		        replace: function (mention) {
-		            return '@' + mention.substring(mention.indexOf("(@") + 2, mention.indexOf(") - ")) + ' ';
-		        }
-		    }
-		], { appendTo: 'body' }).overlay([
-		    {
-		        match: /\B@\w+/g,
-		        css: {
-		            'background-color': '#d8dfea'
-		        }
-		    }
-		]);
-	});
 
 
 
@@ -65,6 +35,37 @@ function newPost (autotag, maindiv) {
 				alert("Post created");
 			});
 		}
+	});
+	callAJAX("GET", "/companygroup/getSearch", {}, function (searchres) {
+		var textarea = document.getElementById("newpost");
+		var arr = [];
+		console.log("HERE");
+		for (var x = 0 ;x  < searchres.length; x++) {
+			var img = "<img style='margin:0;padding:0;position:relative;left:0;margin-right:5px;' src='"+getLocalhost()+ "/companygroup/getThumbnailAct?Username=" + searchres[x].Username +  "'>";
+			arr.push(img + " " + searchres[x].Name + " (@"  + searchres[x].Username + ") - " + searchres[x].Type);
+		}
+		$(textarea).textcomplete([
+		    { // html
+		        mentions: arr,
+		        match: /\B@(\w*)$/,
+		        search: function (term, callback) {
+		            callback($.map(this.mentions, function (mention) {
+		                return mention.toLowerCase().indexOf(term.toLowerCase()) != -1 ? mention : null;
+		            }));
+		        },
+		        index: 1,
+		        replace: function (mention) {
+		            return '@' + mention.substring(mention.indexOf("(@") + 2, mention.indexOf(") - ")) + ' ';
+		        }
+		    }
+		], { appendTo: 'body' }).overlay([
+		    {
+		        match: /\B@\w+/g,
+		        css: {
+		            'background-color': '#d8dfea'
+		        }
+		    }
+		]);
 	});
 }
 
