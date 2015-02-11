@@ -296,7 +296,10 @@ router.get('/comment/dislike/:number', function(req,res){
 router.post('/create/new', function (req, res) {
 	users.findOne({_id: req.session.UserId}, function(err, data) {
         var d = new Date();
-        var arr = getTags(req.body.Content).concat(req.body.Tags);
+        var temp = getTags(req.body.Content);
+        if (temp = null)
+        	temp = [];
+        var arr = temp.concat(req.body.Tags);
         if (arr == null)
             arr = [];
         arr.push(data.Username);
