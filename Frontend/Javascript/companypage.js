@@ -117,6 +117,9 @@ function updatePortfolio (companyname) {
 		for (var x = 0; x < arr.length; x++) {
 			avg += arr[x];
 		}
-		$("#avgyield").html(((avg/arr.length) * 100).toFixed(2));
+		if (isNaN(((avg/arr.length) * 100).toFixed(2)))
+			$("#avgyield").html("N / A");
+		else
+			$("#avgyield").html(((avg/arr.length) * 100).toFixed(2) + "%");
 	});
 }

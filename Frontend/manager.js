@@ -1,8 +1,7 @@
 		function getLocalhost() {
 			//return "http://localhost:3000";
 		//return "https://inqora2.herokuapp.com"
-		return "http://104.131.30.72:3000";
-			//return "http://27171590.ngrok.com";
+		return "http://104.131.30.72/api";
 		}
 function callAJAX (mytype, url, datastruct, callback) {
 	$.ajax({

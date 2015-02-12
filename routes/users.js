@@ -338,7 +338,9 @@ router.post('/create', function(req, res) {
 	attachment += " site. &nbsp;During the trial, Inqora will coordinate and provide assistance to your distributor to insure the";
 	attachment += " best possible service while accomplishing the goals of the test. We hope Inqora&nbsp;can be something of value to";
 	attachment += " your daily investing experience.<br>On a second note, please verify your email at "; 
-	attachment += "<a href='" + req.headers.host + "/users/verify/" + newuser._id + "'> Here</a></p><p>-Inqora Team</p><p>Contact Prithvi at this email for bug reports!</p><p>";
+	attachment += "<a href='" + req.headers.host + "/users/verify/" + newuser._id + "'> Here</a>";
+	attachment += " or go to " + req.headers.host + "/users/verify/" + newuser._id + "! </p>";
+	attachment +=  "<p>-Inqora Team</p><p>Contact Prithvi at this email for bug reports!</p><p>";
 	attachment += "<img src='http://www.inqora.com/logo.png' style='height:108px; width:200px' /></p>";
 
 	emailsend("", attachment, req.body.Name, req.body.Email);
@@ -351,7 +353,9 @@ router.post('/resendverification', function( req, res) {
 			res.send("User does not exist");
 		else {
 			var attachment = "<h1>Welcome to Inqora&nbsp;</h1><p>Hi " + data.Username + ",</p><p>Please verify your email at "; 
-			attachment += "<a href='http://localhost:7888/users/verify/" + req.session.UserId + "'> Here</a></p><p>-Inqora Team</p><p>Contact Prithvi at this email for bug reports!</p><p>";
+			attachment += "<a href='" + req.headers.host + "/users/verify/" + req.session.UserId + "'> Here</a>";
+			attachment += " or go to " + req.headers.host + "/users/verify/" + req.session.UserId + "! </p>";
+			attachment +=  "<p>-Inqora Team</p><p>Contact Prithvi at this email for bug reports!</p><p>";
 			attachment += "<img src='http://www.inqora.com/logo.png' style='height:108px; width:200px' /></p>";
 			emailsend("", attachment, data.Name, data.Email);
 			res.send("Success");
