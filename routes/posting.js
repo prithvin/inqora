@@ -297,7 +297,7 @@ router.post('/create/new', function (req, res) {
 	users.findOne({_id: req.session.UserId}, function(err, data) {
         var d = new Date();
         var temp = getTags(req.body.Content);
-        if (temp = null)
+        if (temp == null)
         	temp = [];
         var arr = temp.concat(req.body.Tags);
         if (arr == null)
