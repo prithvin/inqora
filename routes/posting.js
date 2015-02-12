@@ -295,52 +295,62 @@ router.get('/comment/dislike/:number', function(req,res){
 
 router.post('/create/new', function (req, res) {
 	users.findOne({_id: req.session.UserId}, function(err, data) {
-        var d = new Date();
-        var temp = getTags(req.body.Content);
-        if (temp == null)
-        	temp = [];
-        var arr = temp.concat(req.body.Tags);
-        if (arr == null)
-            arr = [];
-        arr.push(data.Username);
-        var newpost = new posts ({
-            Title: xss(req.body.Title),
-            Content: xss(req.body.Content),
-            PosterId: req.session.UserId,
-            PosterName: data.Name,
-            PosterUsername: data.Username,
-            Votes: {
-            	WhoDownvoted:[],
-            	WhoUpvoted:[]
-            },
-            Time: d.getTime(),
-            Tags: arr
-        });
-        newpost.save(function (err, product) {
-            if (err)
-                return res.send(error.message);
-            else {
-            	var obj = {
-		        	WhoTagged: data.Username,
-		        	PostTitle: xss(req.body.Title),
-		        	PostId: newpost._id,
-		        	isNew: true
-		        };
-		        var notifobj = {
-		        	TitleOfPost: xss(req.body.Title),
-					PostId:newpost._id,
-					NumCommentsLast: 0,
-					wasComment: false
-		        };
-		        users.update({_id: req.session.UserId}, {$push: {'Notifications.PostUserCommentedOrPosted' : notifobj}}, function (err, up) {});
-		        for (var x = 0; x < arr.length; x++) {
-		        	if (arr[x] != data.Username) {
-		        		users.update({Username: arr[x]}, {$push: {'Notifications.TaggedInPost' : obj}}, function (err, up) {});
-		        	}
-		        }
-				return res.send(newpost._id)
-           	}
-        });
+		if (data ==null)
+			res.send("Error. Not in session");
+		else {
+	        var d = new Date();
+	        var temp = getTags(req.body.Content);
+	        if (temp == null)
+	        	temp = [];
+	        var temp2 = req.body.Tags;
+	        if (temp2 == null)
+	        	temp2 = [];
+	        var arr = temp.concat(temp2);
+	        if (arr == null)
+	            arr = [];
+	        console.log(arr);
+	        arr.push(data.Username);
+	        console.log(data.Username);
+	        console.log(arr);
+	        var newpost = new posts ({
+	            Title: xss(req.body.Title),
+	            Content: xss(req.body.Content),
+	            PosterId: req.session.UserId,
+	            PosterName: data.Name,
+	            PosterUsername: data.Username,
+	            Votes: {
+	            	WhoDownvoted:[],
+	            	WhoUpvoted:[]
+	            },
+	            Time: d.getTime(),
+	            Tags: arr
+	        });
+	        newpost.save(function (err, product) {
+	            if (err)
+	                return res.send(error.message);
+	            else {
+	            	var obj = {
+			        	WhoTagged: data.Username,
+			        	PostTitle: xss(req.body.Title),
+			        	PostId: newpost._id,
+			        	isNew: true
+			        };
+			        var notifobj = {
+			        	TitleOfPost: xss(req.body.Title),
+						PostId:newpost._id,
+						NumCommentsLast: 0,
+						wasComment: false
+			        };
+			        users.update({_id: req.session.UserId}, {$push: {'Notifications.PostUserCommentedOrPosted' : notifobj}}, function (err, up) {});
+			        for (var x = 0; x < arr.length; x++) {
+			        	if (arr[x] != data.Username) {
+			        		users.update({Username: arr[x]}, {$push: {'Notifications.TaggedInPost' : obj}}, function (err, up) {});
+			        	}
+			        }
+					return res.send(newpost._id)
+	           	}
+	        });
+	     }
     });
 });
  
