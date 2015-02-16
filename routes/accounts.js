@@ -10,6 +10,18 @@ function isSess (req) {
         return false;
 }
 
+
+router.get('/shareurlandwhoshared', function (req, res) {
+	if (isSess(req)) {
+		users.findOne({_id: req.session.UserId}, function (err, user) {
+			
+		});
+	}
+	else {
+		res.send("Error. Not in session");
+	}
+});
+
 router.post('/updateuser', function (req,res) {
 	if (isSess(req)) {
 		users.findOne({_id: req.session.UserId}, function(err, user) {

@@ -148,8 +148,9 @@ router.post('/group/create', function(req, res) {
 	});
 	newuser.pre("save", function(next) {
 		groups.findOne({UserId: req.body.UserID.toUpperCase()}, function (err,results) {
-			if  (results) 
+			if  (results)  {
 				res.send("Unique User ID already in use");
+			}
 			else
 				next();
 		});
@@ -285,6 +286,37 @@ router.get('/company/get/:stock', function(req,res) {
 		}
 	});
 
+});
+
+router.get('/companiesingroup', function (req, res) {
+	console.log(req.query.Industry);
+	companies.find({Industry: req.query.Industry}, "UserId", function (err, data) {
+		res.send(data);
+	});
+});
+
+router.get('/companybycategory', function (req, res) {
+	console.log(req.query.Name);
+	companies.findOne({UserId: req.query.Name}, function (err, data) {
+		if (data == null)
+			res.send("DOES NOT EXIST");
+		else  {
+			companies.find({Industry: data.Industry}, "UserId", function (err, data2) {
+				var arr = "Companies in this industry include ";
+				for (var x = 0; x < data2.length; x++) {
+					arr += "@" + (data2[x].UserId) + " , ";
+				}
+				var obj = {
+					Industry: data.Industry,
+					Description: arr,
+					Name: data.Industry,
+					UserId: data.Industry.toUpperCase().replace(new RegExp(" ", 'g') , "_")
+				}
+				res.send(obj);
+			});
+		}
+	})
+	
 });
 
 module.exports = router;

@@ -1,0 +1,114 @@
+<img id="lolimage"></img><br>
+<img id="thumbnail"></img><br>
+<span id="description"></span><br>
+<span id="industry"></span><br>
+<span id="name"></span><br>
+<span id="userid"></span><br>
+
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+<script src="manager.js"></script>
+<script>
+var str = "AVP,MMM,ABT,ABBV,ACE,ACT,ADBE,ADT,AES,AET,AMG,AFL,A,GAS,APD,ARG,AKAM,ALXN,AGN,JPM,AA,ALLE,ADS,ALL,ALTR,MO,AMZN,AEE,AEP,AXP,AIG,AMT,AMP,ABC,AME,AMGN,APH,APC,ADI,AON,APA,AIV,AMAT,ADM,AIZ,T,ADSK,ADP,AN,AZO,AVGO,AVB,AVY,BHI,BLL,BAC,BK,BCR,BAX,BBT,BDX,BBBY,BMS,BRK-B,BRK-B,BIIB,BLK,BA,BWA,BXP,BSX,BMY,BRCM,BF-B,BF-B,CA,CVC,COG,CAM,CPB,COF,CAH,CFN,KMX,CCL,CAT,CBG,DLPH,CBS,CELG,CNP,CTL,CERN,CF,CHK,CVX,CMG,CB,CI,XEC,CINF,CTAS,CSCO,C,CTXS,CLX,CME,CMS,COH,KO,CCE,CTSH,CL,CMCSA,CMA,CSC,CAG,COP,CNX,ED,STZ,GLW,COST,COV,CCI,CSX,CMI,CVS,DHI,DHR,DRI,DVA,DE,DAL,DNR,XRAY,DVN,DO,DTV,DFS,DISCA,DG,DLTR,D,DOV,DOW,DPS,DTE,DD,DUK,DNB,ETFC,EMN,ETN,EBAY,ECL,EIX,EW,EA,EMC,EMR,ESV,ETR,EOG,EQT,EFX,EQR,ESS,EL,EXC,EXPE,EXPD,ESRX,XOM,FFIV,FB,FDO,FAST,FDX,FIS,FITB,FSLR,FE,FISV,FLIR,FLS,FLR,FMC,FTI,F,FOSL,BEN,FCX,FTR,GME,GCI,GPS,GRMN,GM,GD,GE,GGP,GIS,GPC,GNW,GILD,GS,GT,GOOG,GWW,HAL,HOG,HAR,HRS,HIG,HAS,HCP,HCN,HP,HSY,HES,HPQ,HD,HON,HRL,HSP,HST,HCBK,HUM,HBAN,ITW,IR,TEG,INTC,ICE,IBM,IFF,IP,IPG,INTU,ISRG,IVZ,IRM,JBL,JEC,JNJ,JCI,JNPR,KSU,K,GMCR,KEY,KMB,KIM,KMI,KLAC,KSS,KRFT,KR,LB,LLL,LH,LRCX,LM,LEG,LEN,LUK,LLY,LNC,LLTC,LMT,L,LO,LOW,LYB,MTB,MAC,M,MNK,MRO,MPC,MAR,MMC,MLM,MAS,MA,MAT,MKC,MCD,MHFI,MCK,MJN,MWV,MDT,MRK,MET,KORS,MCHP,MU,MSFT,MHK,TAP,MDLZ,MON,MNST,MCO,MS,MOS,MSI,MUR,MYL,NBR,NDAQ,NOV,NAVI,NTAP,NFLX,NWL,NFX,NEM,NWSA,NEE,NLSN,NKE,NI,NE,NBL,JWN,NSC,NU,NTRS,NOC,NRG,NUE,NVDA,ORLY,OXY,OMC,OKE,ORCL,OI,PCAR,PLL,PH,PDCO,PAYX,PNR,PBCT,POM,PEP,PKI,PRGO,PETM,PFE,PCG,PM,PSX,PNW,PXD,PBI,PCL,PNC,PPG,PPL,PX,PCP,PCLN,PFG,PG,PGR,PLD,PRU,PSA,PEG,PHM,PVH,QEP,QCOM,PWR,DGX,RL,RRC,RTN,RHT,REGN,RF,RSG,RAI,RHI,ROK,COL,ROP,ROST,R,SWY,CRM,SNDK,SCG,SLB,SCHW,SNI,SEE,SRE,SHW,SIAL,SPG,SJM,SNA,SO,LUV,SWN,SE,STJ,SWK,SPLS,SBUX,HOT,STT,SRCL,SYK,STI,SYMC,SYY,TROW,TGT,TEL,TE,THC,TDC,TSO,TXN,TXT,TMO,TIF,TWX,TWC,TJX,TMK,TSS,TSCO,RIG,TRV,TRIP,FOXA,TSN,USB,UA,UNP,UPS,URI,UTX,UNH,UHS,UNM,URBN,VLO,VAR,VTR,VRSN,VZ,VRTX,VFC,VIAB,V,VNO,VMC,WMT,WAG,DIS,WM,WAT,WLP,WFC,WDC,WU,WY,WHR,WFM,WMB,WIN,WEC,WYN,WYNN,XEL,XRX,XLNX,XL,XYL,YHOO,YUM,ZMH,ZION,ZTS,STX,AAPL,TSLA,BJRI,GPRO,TWTR,MGM,LVS,ACN";
+var array = str.split(",");
+num = 0;
+descriptionAndData(array[num]);
+
+     function nextLogo (industry) {
+          $.ajax({
+               type: "GET",
+               url: "https://www.kimonolabs.com/api/bkjhzy8q?apikey=rUAlNtyAWcprQKFvUJk5eiMTCSdo0xbB&q=" + industry,
+               success:function(data) {
+                    console.log(data);
+                    if (data.lastrunstatus == "success") {
+                         var src = data.results.collection1[0].firstimage.src;
+                         src = src.substring(src.indexOf("data:"));
+                         console.log(src);
+                         imageToDataUri(src, 150, 150);
+                         
+                    }
+                    else 
+                         nextLogo(industry);
+               },
+               xhrFields: {withCredentials: true},
+               error:function(){
+                    console.log("ERROR");
+               }
+          });
+     }
+     function imageToDataUri(img1, width, height) {
+          // create an off-screen canvas
+          var img = new Image;
+          img.src = img1;
+          $(img).on("load", function () {
+               var canvas = document.createElement('canvas'),
+               ctx = canvas.getContext('2d');
+
+               // set its dimension to target size
+               canvas.width = width;
+               canvas.height = height;
+
+               // draw source image into the off-screen canvas:
+               ctx.drawImage(img, 0, 0, width, height);
+
+               // encode image to data-uri with base64 version of compressed image
+               if (width == 30) {
+                    $("#thumbnail").attr("src" ,canvas.toDataURL());
+                    callAJAX();
+               }
+               else {
+                    $("#lolimage").attr("src" ,canvas.toDataURL());
+                    imageToDataUri(img1, 30, 30);
+               }
+          });
+     }
+
+     function descriptionAndData (companyname) {
+          $.ajax({
+               type: "GET",
+               url: "http://localhost:3000/companygroup/companybycategory",
+               data: {
+                    Name: companyname 
+               },
+               success:function(data) {
+                    console.log(data);
+                    $("#description").html(data.Description);
+                    $("#industry").html(data.Industry);
+                    $("#name").html(data.Name);
+                    $("#userid").html(data.UserId);
+                    nextLogo(data.Name);
+               },
+               xhrFields: {withCredentials: true},
+               error:function(){
+                    console.log("ERROR");
+               }
+          });
+     }
+     function callAJAX () {
+          $.ajax({
+               type: "POST",
+               url: "http://localhost:3000/companygroup/group/create",
+               data: {
+                    Name: $("#name").html(),
+                    UserID: $("#userid").html(),
+                    Description: $("#description").html(),
+                    Industry: $("#industry").html(),
+                    Picture: $("#lolimage").attr("src"),
+                    Thumbnail: $("#thumbnail").attr("src")
+               },
+               success:function(data) {
+                    alert(data);
+                    num++;
+                    descriptionAndData(array[num]);
+               },
+               xhrFields: {withCredentials: true},
+               error:function(){
+                    console.log("ERROR");
+               }
+          });
+     }
+
+</script>
+
+
+
+

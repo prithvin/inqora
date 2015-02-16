@@ -104,36 +104,41 @@ function isBreakpoint( alias ) {
 
 $( " #admin" ).on( "click", function() {
 	if( isBreakpoint('xs') ) {
-    	 $("#menu").css({
-        position: "absolute",
-        top: ($(this).offset().top+30) + "px",
-        left: "0px",
-        "z-index":9999,
-        width: "100% !IMPORTANT"
-   		 });
-   		 $("#menu a").css({
-    	width: "100% !IMPORTANT"
-    		});
+		$("#menu").css({
+			position: "absolute",
+			top: ($(this).offset().top+30) + "px",
+			left: "0px",
+			"z-index":9999,
+			width: "100% !IMPORTANT"
+		});
+		
+		$("#menu a").css({
+			width: "100% !IMPORTANT"
+		});
 	}
 	else {
-	var left = $(this).offset().left;
-	if ((left + 290) > $(window).width()) 
-		left = $(window).width()- 290;
-    //show the menu directly over the placeholder
-    $("#menu").css({
-        position: "absolute",
-        top: ($(this).offset().top+30) + "px",
-        left: left + "px",
-        "z-index":9999,
-        width: "260px !IMPORTANT"
-    });
-    $("#menu a").css({
-    	width: "260px !IMPORTANT"
-    });
+		var left = $(this).offset().left;
+		if ((left + 290) > $(window).width()) 
+			left = $(window).width()- 290;
+
+		$("#menu").css({
+			position: "absolute",
+			top: ($(this).offset().top+30) + "px",
+			left: left + "px",
+			"z-index":9999,
+			width: "260px !IMPORTANT"
+		});
+
+		$("#menu a").css({
+			width: "260px !IMPORTANT"
+		});
 	}
 
-  $( "#menu" ).fadeToggle( "fast" );
+	$( "#menu" ).fadeToggle( "fast" );
 });
+
+
+
 $(document).on("click", ".notif",  function () {
 	 $( "#admin" ).click();
 	 var notifthis = $(this);

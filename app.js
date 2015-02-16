@@ -228,6 +228,8 @@ app.use('/stockgame', stockgame);
 app.use('/accounts', accounts);
 app.use('/companygroup', companygroup);
 app.use('/marketing', marketing);
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 
 
 // catch 404 and forward to error handler

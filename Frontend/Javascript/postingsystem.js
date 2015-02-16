@@ -169,6 +169,7 @@ function linkwithfontawesome (maindiv, fontawesomeclass, linkclass, innerHTML) {
 	$(a).append(" " + innerHTML);
 }
 
+
 function createPost(postid, maindiv, appendafter) {
 	if (appendafter) {
 			var section = $("<section>").attr("id", postid).addClass("post head card viewpost").insertAfter(maindiv);

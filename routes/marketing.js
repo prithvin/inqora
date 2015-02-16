@@ -124,7 +124,38 @@ router.get('/lollol', function (req, res) {
 
 });
 
+router.get('/summarization', function (req, res) {
+	var url = req.query.URL;
+	//threshold_lines=2
+	request({'url':'http://www.tools4noobs.com/?action=ajax_summarize&theshold=70&min_sentence_length=50&min_word_length=4&url=' + req.query.URL,
+        'proxy':'http://www.tools4noobs.com'}, function (error, response, body) {
+	    if (!error && response.statusCode == 200) {
+	       res.send(cleanIt(body));
+	    }
+	})
+});
 
+function cleanIt (string) {
+var result = "";
+while (string.indexOf("<li>") != -1) {
+result += string.substring(string.indexOf("<li>") + 4, string.indexOf("</li>")) +  " ";
+string = string.substring(string.indexOf("</li>") + 5);
+}
+return result.toString().replace(new RegExp("&amp;quot;", 'g') , "'");
+}
+
+router.get('/replaceampersand', function (req, res) {
+	companies.find({}, function (err, data) {
+		for (var x =0; x < data.length; x++) {
+			if (data[x].Industry != null && data[x].Industry.indexOf("&amp;") != -1) {
+				console.log(data[x].Industry);
+				var str = (data[x].Industry.replace(new RegExp("&amp;", 'g') , "and"));
+				companies.update({UserId: data[x].UserId}, {$set: {Industry: str}}, function (err, up) {});
+			}
+			console.log(x);
+		}
+	});
+});
 module.exports = router;
 
 

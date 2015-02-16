@@ -22,7 +22,13 @@
 }
 
 
+@media screen and (max-width: 600px) {
+	#menu a
+	{
+		width:100% !IMPORTANT;
+	}
 
+}
 
 #menu a:last-child
 {

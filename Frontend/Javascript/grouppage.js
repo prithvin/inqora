@@ -9,7 +9,7 @@ function showGroup (companyname) {
 			$("#subscribe").html("Unsubscribe");
 		else
 			$("#subscribe").html("Subscribe");
-		$("#description").html(data.Description);
+		$("#description").html(" " + linkify(data.Description));
 		$("#numfollowers").html(data.NumFollowers);
 		$("#subscribe").on("click", function (ev) {
 			ev.preventDefault();
