@@ -13,6 +13,7 @@ var messaging = require('./routes/messaging');
 var stockgame = require('./routes/stockgame');
 var accounts = require('./routes/accounts');
 var marketing = require('./routes/marketing');
+var automate = require('./routes/automate')
 var companygroup = require('./routes/companygroup');
 
 cors = require('cors'); 
@@ -228,6 +229,7 @@ app.use('/stockgame', stockgame);
 app.use('/accounts', accounts);
 app.use('/companygroup', companygroup);
 app.use('/marketing', marketing);
+app.use('/automate', automate);
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 

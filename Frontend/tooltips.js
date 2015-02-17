@@ -8,11 +8,13 @@ function loadToolTips (mainobj, obj, data) {
 }
 
 function makeToolTip(maindiv, classAdd, innerHTML, link, username) {
-	var whoposted = $("<p>").addClass("tooltips " + classAdd).attr({"name" : username, 'tooltip-position': "top", 'tooltip-type': "primary" , "tooltip" : "One moment please..."}).appendTo(maindiv);
+	var whoposted = $("<p>").addClass("tooltips " + classAdd).attr({"name" : username, 'tooltip-position': "top", 'tooltip-type': "primary" , "tooltip" : "<div class='mainspantool'>Loading...</div>"}).appendTo(maindiv);
+	var spanlink = $("<a>").attr("href" , link).css("display", "inline").css("padding", "0").html(innerHTML).appendTo(whoposted);
 	callAJAX("GET", "/getusertooltip", {Username: username}, function (data2){
 		$(whoposted).attr("tooltip", data2);
 		$(whoposted).attr("name", username);
-		var spanlink = $("<a>").attr("href" , link).css("display", "inline").css("padding", "0").html(innerHTML).appendTo(whoposted);
+		$(whoposted).find('span').remove();
+		$(whoposted).append("<span>" +data2 + "</span>");
 	});
 }
 

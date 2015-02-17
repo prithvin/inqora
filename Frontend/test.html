@@ -1,0 +1,160 @@
+
+
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+<script src="manager.js"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
+<script>
+var users = ["curt", "stonemason", "fullofcrap", "yesno", "vicki", "beefboy", "kokikola", "llcoolg", "thecommonman", "elias", "browny", "donchez", "abe", "newage", "mossy", "boglehead", "crazyt", "nick", "yungfree", "tacoman", "coolio", "nik", "div", "handyman", "reeve" , "curryboy", "bubblyhon", "doubletake", "kansas2"];
+
+var commentsarr = ["I strongly dislike this company. I have had bad experiences with their products and services.",
+"Wow, this news source is not as reputable as I expect on a website like Inqora.",
+"Hey @<USERNAME> check out this article, its prertty interesting.",
+"OMG @<USERNAME> this article is full of lies.  Don't you agree?",
+"The other day @<USERNAME> was telling me about  this company. @<USERNAME> definitely thinks its a buy.",
+"Good analysis, that's a buy",
+"I don't think they are posed for growth ",
+"They have a bright future ahead of them ",
+"I think they have solid fundamentals; I see an opportunity",
+"Good idea, but I disagree",
+"With numbers like that, it's almost convincing",
+"The analysis is good",
+"It makes sense in terms of timing",
+"How do you know this information?",
+"Do you hold this company?",
+"Are you short?",
+"Are you long?",
+"@<INDUSTRY> is not doing too well this quarter.. just avoid it all together",
+"LOL NO WAY! This article is too biased.",
+"@<COMPANY> had weak earnings but it's not as bad as it sounds",
+"@<COMPANY> has a solid balance sheet ",
+"@<COMPANY> has a really strong FCF",
+"I think your analysis is good but I don't agree with your conclusion",
+"I am long this company",
+"I see @<COMPANY> making a comeback",
+"@<COMPANY> has a strong growth trajectory",
+"I am really liking @<COMPANY> but not fond of the price",
+"The bottom line is not as good as I expected",
+"This is overvalued in my opinion",
+"I think this is undervalued",
+"I am neutral on @<COMPANY>",
+"Analyst rated @<COMPANY> as a buy",
+"I'm not sure I agree with your contention",
+"They had a really solid quarter",
+"The PE is way too high",
+"They are burning through money too fast",
+"They are too overleveraged",
+"It's way too early too tell if the product will do well",
+"I am soo excited for the future of @<COMPANY>!",
+"WOW great idea~",
+"You are really really clueless about @<COMPANY>. No offense",
+"I wish I had enough cash to purchase a couple thousand shares hahaha",
+"lol this is so funny; not too sure about accuracy tho",
+"I love how you provide all these points but fail to give a decent conclusion",
+"Yolo, I'm buying this ",
+"Hahaahhahahhahahhahahahah",
+"I love the justifications behind their weak margins haha",
+"No problem, it's great analysis",
+"You are thinkng way too simple regarding this ",
+"They have a boatload of cash",
+"I'm selling @<COMPANY>. I made my quota",
+"I see @<COMPANY> produce weak results each quarter",
+"The price is not justified by its fundamentals",
+"Shit's tight yo",
+"They have a lot of room for growth, but their executions is not strong considering the past few years",
+"They are in an oversaturated market with too many discount competitors",
+"They are a company that dips its hands into everything",
+"Following you! @<USER>",
+"Thanks for the contribution!",
+"The cash flow has been weak the last quarter"];
+function getArticles (stock) {
+	$.ajax({
+		url: 'http://ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=8',
+		data: {
+			q: "http://feeds.finance.yahoo.com/rss/2.0/headline?s=" + stock + "&region=US&lang=en-US"
+		},
+		dataType: 'jsonp',
+		success: function (data) {
+			var entries = data.responseData.feed.entries;
+			var arr = [];
+			for (var x =0;x  <entries.length;x++) { 
+				arr.push(entries[x].link.substring(entries[x].link.indexOf("/*")+2)); 
+			}
+			console.log(arr);
+			// Need to call getThing method here
+		},
+		error: function () {}
+	});
+}
+function getThing(website, company) {
+	callAJAX("GET", "/automate/getdataplustitle", {URL: website}, function (data) {
+		callAJAX("GET", "/automate/getindustry", {Name: company}, function (industry) {
+			var obj = {};
+			obj.Title = data.Title;
+			obj.Content = data.Summary + " @" + industry;
+			obj.UsernameOfPoster = users[parseInt(Math.random() * users.length)];
+			obj.TimeString = new Date(parseInt(getRandomArbitrary(1423792800000, new Date().getTime()))).getTime();
+			obj.Tags = [company];
+			obj.WhoUpVoted = getPeople(7, []);
+			obj.WhoDownVoted = getPeople(5, obj.WhoUpVoted);
+			console.log(obj);
+			callAJAX("POST", "/automate/newpost", obj, function (data) {
+				console.log(data); // This is the postid
+				createComments([obj.UsernameOfPoster], obj.TimeString, company, industry, data, 0, parseInt(Math.random() * 5), []);
+			});
+		});
+	});
+}
+function createComments (postusername, timeposted, company, industry, postid, x, max, comments) {
+	if (x == max) {
+		console.log("DONE");
+	}
+	else {
+		var commentobj = {};
+		commentobj.UsernameOfPoster = users[parseInt(Math.random() * users.length)];
+		while(postusername.indexOf(commentobj.UsernameOfPoster) != -1) {
+			commentobj.UsernameOfPoster = users[parseInt(Math.random() * users.length)];
+		} 
+		postusername.push(commentobj.UsernameOfPoster);
+
+		commentobj.PostId = postid;
+
+		commentobj.WhoUpVoted = getPeople(3, []);
+		commentobj.WhoDownVoted = getPeople(2, commentobj.WhoUpVoted);
+
+		commentobj.TimeString =  new Date(parseInt(getRandomArbitrary(timeposted, new Date().getTime()))).getTime();
+		timeposted = commentobj.TimeString;
+
+		commentobj.Comment =  commentsarr[parseInt(Math.random() * commentsarr.length)];
+		while(comments.indexOf(commentobj.Comment) != -1) {
+			commentobj.Comment =  commentsarr[parseInt(Math.random() * commentsarr.length)];
+		} 
+		
+		commentobj.Comment =   commentobj.Comment.replace(new RegExp("<USERNAME>", 'g') , users[parseInt(Math.random() * users.length)]);
+		commentobj.Comment =   commentobj.Comment.replace(new RegExp("<INDUSTRY>", 'g') , industry);
+		commentobj.Comment =   commentobj.Comment.replace(new RegExp("<COMPANY>", 'g') , company);
+		callAJAX("GET", "/automate/newcomment", commentobj, function (data) {
+			createComments(postusername, timeposted, company, industry, postid, x+1, max, comments);
+		});
+	}
+
+
+
+
+}
+function getPeople (num, notfrom) {
+	var arr = [];
+	var randnum = parseInt(num * Math.random()) + 1;
+	while (arr.length != randnum) {
+		var randindex = parseInt(users.length * Math.random());
+		if (arr.indexOf(users[randindex]) == -1 && notfrom.indexOf(users[randindex]) == -1) {
+			arr.push(users[randindex]);
+		}
+	}
+	return arr;
+}
+
+function getRandomArbitrary(min, max) {
+    return Math.random() * (max - min) + min;
+}
+</script>

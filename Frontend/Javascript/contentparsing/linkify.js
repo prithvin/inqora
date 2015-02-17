@@ -20,15 +20,27 @@ function inlineTool (obj) {
    makeToolTipRemove($(obj).parent(), "", obj.innerHTML, $(obj).attr("href"), obj.innerHTML.substring(1), true);
 }
 
-function makeToolTipRemove(maindiv, classAdd, innerHTML, link, username, maindivclear) {
-  callAJAX("GET", "/getusertooltip", {Username: username}, function (data2){
-     $(maindiv).html("");
-  var whoposted = $("<p>").css("margin", 0).addClass("tooltips " + classAdd).attr({"name" : username, 'tooltip-position': "top", 'tooltip-type': "primary" , "tooltip" : data2}).appendTo(maindiv);
-  whoposted.name = username;
-
-  var spanlink = $("<a>").css("margin", 0).attr("href" , link).html(innerHTML).appendTo(whoposted);
+ callAJAX("GET", "/getusertooltip", {Username: username}, function (data2){
+    $(whoposted).attr("tooltip", data2);
+    $(whoposted).attr("name", username);
+    $(whoposted).find('span').remove();
+    $(whoposted).append("<span>" +data2 + "</span>");
   });
- 
+
+
+function makeToolTipRemove(maindiv, classAdd, innerHTML, link, username, maindivclear) {
+      $(maindiv).html("");
+  var whoposted = $("<p>").addClass("tooltips " + classAdd).attr({"name" : username, 'tooltip-position': "top", 'tooltip-type': "primary" , "tooltip" : "<div class='mainspantool'>Loading...</div>"}).appendTo(maindiv);
+  var spanlink = $("<a>").attr("href" , link).css("display", "inline").css("padding", "0").html(innerHTML).appendTo(whoposted);
+  callAJAX("GET", "/getusertooltip", {Username: username}, function (data2){
+
+     $(whoposted).attr("tooltip", data2);
+    $(whoposted).attr("name", username);
+     $(whoposted).find('span').remove();
+    $(whoposted).append("<span>" +data2 + "</span>");
+  
+  });
+
 }
 
 function linkify(text, nolink) {

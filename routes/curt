@@ -1,0 +1,210 @@
+var users = ["curt", "stonemason", "fullofcrap", "yesno", "vicki", "beefboy", "kokikola", "llcoolg", "thecommonman", "elias", "browny", "donchez", "abe", "newage", "mossy", "boglehead", "crazyt", "nick", "yungfree", "tacoman", "coolio", "nik", "div", "handyman", "reeve" , "curryboy", "bubblyhon", "doubletake", "kansas2"];
+
+callAJAX("GET", "/automate/getdataplustitle", {URL: website}, function (data) {
+	callAJAX("GET", "/automate/getindustry", {Name: company}, function (industry) {
+		var title = data.Title;
+		var content = data.Summary + " @" + industry;
+		var usernameofposter = users[parseInt(Math.random() * users.length)];
+		var timeposted = new Date(parseInt(getRandomArbitrary(1423792800000, new Date().getTime())));
+		var tags = [company];
+		var whoupvoted = getPeople(7, []);
+		var downvoted = getPeople(7, []);
+	});
+});
+function getPeople (num, notfrom) {
+	var arr = [];
+	var randnum = parseInt(num * Math.random()) + 1;
+	while (arr.length != randnum) {
+		var randindex = parseInt(users.length * Math.random());
+		if (arr.indexOf(users[randindex]) == -1 && notfrom.indexOf(users[randindex]) == -1) {
+			arr.push(users[randindex]);
+		}
+	}
+	return arr;
+}
+
+function getRandomArbitrary(min, max) {
+    return Math.random() * (max - min) + min;
+}
+
+NEW POST
+	var usernameofposter = req.body.UsernameOfPoster; // Random from list
+	var title = req.body.Title; // ARticle title
+	var content = req.body.Content; // Article content  + industry of company needs to be tagged + random company in same industry
+	var timeposted = req.body.TimeString; // Random from past 5 days
+	
+	var whoupvoted = req.body.WhoUpVoted; // Math.random from 0 to 7 and then add 7 random users
+	var whodownvoted = req.body.WhoDownVoted; // Math.random from 0 to 5 and then add 5 random users (not same as above 7)
+	var tags = req.body.Tags; // Name of company tagged
+
+NEW Comment // Math.random 0 to 8
+	var usernameofposter = req.query.UsernameOfPoster;	// random from list, not same as poster
+	var postid = req.query.PostId; // RETURNED by new post method
+	var comment = req.query.Comment; // Random from list, not same as any other in comments
+	var whoupvoted = req.query.WhoUpVoted; // Math.random from 0 to 3 and then add 3 random users
+	var whodownvoted = req.query.WhoDownVoted; // Math.random from 0 to 2 and then add 2 random users (not same as above 
+	var timeposted = req.query.TimeString; // Random from past 5 days AFTER post and AFTER any previous comments
+/automate/getdataplustitle
+	SEND "URL"
+	returns
+		{
+			Title
+			Summary
+		}
+
+/automate/newpost
+	returns 
+		newpost._id
+
+/automate/newcomment
+
+
+
+
+router.post('/create/new/automation', function (req, res) {
+	var usernameofposter = req.body.UsernameOfPoster;
+	var timeposted = req.body.TimeString;
+	var title = req.body.Title;
+	var content = req.body.Content;
+	var whoupvoted = req.body.WhoUpVoted;
+	var whodownvoted = req.body.WhoDownVoted;
+	var tags = req.body.Tags;
+
+	users.findOne({'Username' : usernameofposter}, function(err, data) {
+		if (data ==null)
+			res.send("Error. Not in session");
+		else {
+	        var temp = getTags(content);
+	        if (temp == null)
+	        	temp = [];
+	        var temp2 = tags;
+	        if (temp2 == null)
+	        	temp2 = [];
+	        var arr = temp.concat(temp2);
+	        if (arr == null)
+	            arr = [];
+	        arr.push(data.Username);
+	        var newpost = new posts ({
+	            Title: xss(title),
+	            Content: xss(content),
+	            PosterId: data._id,
+	            PosterName: data.Name,
+	            PosterUsername: data.Username,
+	            Votes: {
+	            	WhoDownvoted:whoupvoted,
+	            	WhoUpvoted:whodownvoted
+	            },
+	            Time: timeposted,
+	            Tags: arr
+	        });
+	        newpost.save(function (err, product) {
+	            if (err)
+	                return res.send(error.message);
+	            else {
+	            	var obj = {
+			        	WhoTagged: data.Username,
+			        	PostTitle: xss(title),
+			        	PostId: newpost._id,
+			        	isNew: true
+			        };
+			        var notifobj = {
+			        	TitleOfPost: xss(title),
+						PostId:newpost._id,
+						NumCommentsLast: 0,
+						wasComment: false
+			        };
+			        users.update({'Username' : usernameofposter}, {$push: {'Notifications.PostUserCommentedOrPosted' : notifobj}}, function (err, up) {});
+			        for (var x = 0; x < arr.length; x++) {
+			        	if (arr[x] != data.Username) {
+			        		users.update({Username: arr[x]}, {$push: {'Notifications.TaggedInPost' : obj}}, function (err, up) {});
+			        	}
+			        }
+					return res.send(newpost._id)
+	           	}
+	        });
+	     }
+    });
+});
+
+router.get('/newcomment/automation', function (req, res) {
+	var usernameofposter = req.query.UsernameOfPoster;
+	var postid = req.query.PostId;
+	var comment = req.query.Comment;
+	var whoupvoted = req.query.WhoUpVoted;
+	var whodownvoted = req.query.WhoDownVoted;
+	var timeposted = req.query.TimeString;
+
+	posts.findOne({_id: postid}, "Title Comments" , function (err, data) {
+		if (data == null)
+			res.send("This post does not exist");
+		else {
+			users.findOne({'Username' : usernameofposter}, "Name Username _id" ,function (err, data2) {
+				var arr = getTags(comment);
+                if (arr == null)
+                    arr = [];
+                arr.push(data2.Username);
+				var obj = {
+					Creator: data2._id,
+					CreatorName : data2.Name,
+					CreatorUsername:  data2.Username,
+					Votes: {
+				        WhoUpvoted: whoupvoted,
+				        WhoDownvoted: whodownvoted
+				    },
+					Time:  timeposted,
+					Content:  xss(comment),
+					TagsDetected: arr
+				};
+				var objsend = {
+					PosterName : obj.CreatorName,
+					PosterUsername: obj.CreatorUsername,
+					NetVotes: 0,
+					Time:  obj.Time,
+					Content:  xss(obj.Content),
+					Status: 0
+				};
+				var notifobj = {
+		        	TitleOfPost: xss(data.Title),
+					PostId:postid,
+					NumCommentsLast: data.Comments.length + 1,
+					wasComment: true
+		        };
+
+		       users.update({'Username' : usernameofposter}, {$push: {'Notifications.PostUserCommentedOrPosted' : notifobj}}, function (err, up) {});
+
+				if (data.Comments == null)
+					var comments = 0;
+				else
+					comments = data.Comments.length;
+				
+				var objnotif = {
+					CommentNum: xss(comments),
+					isNew: true,
+					TitleOfPost: xss(data.Title),
+					PostId: data._id,
+					WhoTagged: data2.Username
+				};
+				for (var x = 0; x < arr.length; x++) {
+		        	if (arr[x] != data2.Username) {
+		        		users.update({Username: arr[x]}, {$push: {'Notifications.TaggedInComment' : objnotif}}, function (err, up) {});
+		        	}
+		        }
+				res.send(objsend);
+				posts.update({_id: postid}, {$push: {Comments: obj}}, function (err, up) {});
+			});
+		}
+	});
+});
+
+function getTags (words) {
+    var tmplist = words.split(' ');
+    var hashlist = [];
+    var nonhashlist = [];
+    for(var w in tmplist){
+        if(tmplist[ w ].indexOf('@') == 0)
+            hashlist.push(tmplist[ w ].substring(1));
+        else
+            nonhashlist.push(tmplist[ w ]);
+    }
+    return hashlist;
+}

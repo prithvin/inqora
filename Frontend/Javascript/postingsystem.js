@@ -18,7 +18,8 @@ function createCommentPanel(panel, postid) {
 			var divvy= $("<div>").css("min-height", "50px").appendTo(panel);
 			var tably = $("<table>").css("width", "100%").css("font-size","1em").appendTo(divvy);
 				var td2 = $("<td>").appendTo(tably);
-				makeToolTip(td2, "zeromargin", "@" + data[x].PosterUsername + " (" + data[x].PosterName + "): " , "userpage.html?id=" + data[x].PosterUsername, data[x].PosterUsername);
+				var minispan = $("<span>").appendTo(td2);
+				makeToolTip(minispan, "zeromargin", "@" + data[x].PosterUsername + " (" + data[x].PosterName + "): " , "userpage.html?id=" + data[x].PosterUsername, data[x].PosterUsername);
 				var content = $("<span>").html(linkify(data[x].Content)).appendTo(td2);
 
 				var upvoteclass = "commentvotespan";
