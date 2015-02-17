@@ -100,12 +100,12 @@ function getThing(website, company) {
 			console.log(obj);
 			callAJAX("POST", "/automate/newpost", obj, function (data) {
 				console.log(data); // This is the postid
-				createComments([obj.UsernameOfPoster], obj.TimeString, company, industry, data, 0, parseInt(Math.random() * 5), []);
+				createComments([obj.UsernameOfPoster], obj.TimeString, company, industry, data, 0, parseInt(Math.random() * 5), [], website);
 			});
 		});
 	});
 }
-function createComments (postusername, timeposted, company, industry, postid, x, max, comments) {
+function createComments (postusername, timeposted, company, industry, postid, x, max, comments, website) {
 	if (x == max) {
 		console.log("DONE");
 	}
@@ -134,7 +134,7 @@ function createComments (postusername, timeposted, company, industry, postid, x,
 		commentobj.Comment =   commentobj.Comment.replace(new RegExp("<INDUSTRY>", 'g') , industry);
 		commentobj.Comment =   commentobj.Comment.replace(new RegExp("<COMPANY>", 'g') , company);
 		callAJAX("GET", "/automate/newcomment", commentobj, function (data) {
-			createComments(postusername, timeposted, company, industry, postid, x+1, max, comments);
+			createComments(postusername, timeposted, company, industry, postid, x+1, max, comments, website);
 		});
 	}
 
