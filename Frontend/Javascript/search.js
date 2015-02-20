@@ -7,8 +7,9 @@
           data: {
           },
           success:function(data) {
-            if (data.trim() == "Session destroyed")
-              window.location.assign("loginpage.html");
+            if (data.trim() == "Session destroyed") {
+              window.location.reload();
+            }
             else
                window.location.assign("newsfeed.html");
           },

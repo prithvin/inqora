@@ -1,4 +1,4 @@
-var express = require('express');
+ var express = require('express');
 var router = express.Router();
 var xss = require('xss');
 
@@ -11,8 +11,6 @@ function isSess (req) {
     else
         return false;
 }
-
-
 
 router.post('/newpost/', function (req, res) {
 	var usernameofposter = req.body.UsernameOfPoster;
