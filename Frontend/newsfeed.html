@@ -2,8 +2,8 @@
 	<head>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
- 		<link rel="stylesheet" href="//cdn.jsdelivr.net/pure/0.5.0/pure-min.css">
-		<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+ 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.5.0/pure-min.css">
+		<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css" />
 		<link rel="stylesheet" type="text/css" href="CSS/cardlayout.css">
 		<link rel="stylesheet" type="text/css" href="CSS/post.css">
@@ -49,7 +49,7 @@
 				<a onclick="document.getElementById('accountsettingsbutton').click()" class="pure-button button greenparty" ><i class="fa fa-cog"></i></a>
 				<a id="myprof" class="pure-button button" style="background-color:#674172;color:white;"><i class="fa fa-user" title="My Profile"></i></a>
 				<a id="admin" style="background-color:#96281B;color:white;" class="pure-button button">  <i id="numnotifs" class="fa fa-bell"> 1</i></a>
-				<a id=""  onclick="$('#messagingmodalbutton').click()" class="pure-button pure-button-primary button"><i class="fa fa-comment" title="My Profile"></i></a>
+				<a id=""  onclick="window.location='messaging.html'" class="pure-button pure-button-primary button"><i class="fa fa-comment" title="Messaging"></i></a>
 				<a onclick="logout()" class="hidden-xs hidden-sm pure-button button-error"><i class="fa"> Log out</i></a>
 				<a onclick="logout()" class="hidden-md hidden-lg pure-button button-error"><i class="fa fa-sign-out"></i></a>
 				<br>
@@ -112,34 +112,6 @@
 	<div id="menu" style="z-index:999;">
 	</div>
   <modalwindows>
-  		<input id="messagingmodalbutton" value="" style="display:none;" type="button" data-toggle="modal" data-target="#messagingmodal" onclick="getList();">
-		<div class="modal fade" id="messagingmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		  <div  class="modal-dialog" style="width:95%;">
-		    <div class="modal-content">
-		      <div class="modal-header">
-		        <button type="button" class="close" id="messagingbutton" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-		            <center><h1 class="modal-title" id="myModalLabel"><font color="black" id="thistitleformodalmessaging">Messaging</h1></center>
-		          </div>
-		          <div class="modal-body" style="width:100%;height:550 ;background-color:white;">
-		          		<table style="max-height:100%;overflow-y:hidden;">
-	<td class="messagingmaintd" >
-		<div style="max-height:525px;overflow:auto;overflow-y:scroll" id="messagelist">
-		</div>
-	</td>
-	<td style="width:100%;">
-		<div style="height:100%;display:inline-block;width:100%;">
-			<section id="messages"></section>
-			<form id="messager" class="pure-form">
-				<textarea  id="textinputm" type="textarea" placeholder="Send a message..." style="width:100%;"></textarea>
-				<button id="buttonsubmit" class="pure-button pure-button-primary" style="width:100%;">Send Message</button>
-			</form>
-		</div>
-	</td>
-</table>
-		          </div>
-		      </div>
-		  </div>
-		</div>
 
 		<input id="loginmodalbutton" value="" style="display:none;" type="button" data-toggle="modal" data-target="#loginmodal">
 		<div class="modal fade" id="loginmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -246,9 +218,10 @@
 <div class="device-lg visible-lg"></div>
 	</modalwindows>
 	<footer>
-		<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-		<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
 		<script src="manager.js"></script>
 		<script src="tooltips.js"></script>
 		<script src="Javascript/newsfeed.js"></script>
@@ -273,18 +246,14 @@
 			}
 			else if (data == "false"){
 				callAJAX ("POST", "/users/authenticate", {User: "demo", Password:"demo"}, function (data) {
-					onPageLoad();
-					disableLinks();
-					$("#notloggedin").show();
+					window.location.reload();
 				});
 				
 			}
 			else if (data == "demo") {
-				callAJAX ("POST", "/users/authenticate", {User: "demo", Password:"demo"}, function (data) {
-					onPageLoad();
-					disableLinks();
-					$("#notloggedin").show();
-				});
+				onPageLoad();
+				disableLinks();
+				$("#notloggedin").show();
 			}
 		});
 		function onPageLoad () {

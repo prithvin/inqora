@@ -1,0 +1,319 @@
+<html style="background-color: #DADFE1;">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+ 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.5.0/pure-min.css">
+		<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css" />
+		<link rel="stylesheet" type="text/css" href="CSS/cardlayout.css">
+		<link rel="stylesheet" type="text/css" href="CSS/post.css">
+		<link rel="stylesheet" type="text/css" href="CSS/tooltips.css">
+		<link rel="stylesheet" type="text/css" href="CSS/alert.css">
+		<link rel="stylesheet" type="text/css" href="CSS/companypage.css">
+		<link rel="stylesheet" type="text/css" href="CSS/notifications.css">
+		<link rel="stylesheet" type="text/css" href="CSS/search.css">
+		<link rel="stylesheet" type="text/css" href="CSS/loginmodal.css">
+		<link rel="stylesheet" type="text/css" href="CSS/messaging.css">
+		<link rel="stylesheet" type="text/css" href="CSS/viewstocks.css">
+		<link rel="icon" href="favicon.png" type="image/x-icon" />
+		<script type="text/javascript" src="//w.sharethis.com/button/buttons.js "></script>
+		<script type="text/javascript">var switchTo5x=true;stLight.options({publisher: "3b51f3e7-db26-4944-a02f-89bcecc33f19", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>
+		<style>
+		.tooltips {
+				display:inline;padding:0;
+			}
+		</style>
+		<title>Inqora - Messaging</title>
+	</head>
+
+	<body style="background-color: #DADFE1;">
+		<div class="btn-group btn-group-lg bottombar col-xs-12 hidden-sm hidden-md hidden-lg" style="padding:0;margin:0;" role="group"  class=""> <br><br>
+
+			</div>
+			<div id="navsearchmainsearch" class="regularfluff row  navbar-fixed-top navbar" style="">
+			<p></p>
+			<div class="col-md-3 col-sm-3 hidden-xs" style="text-align:center;">
+				<a href="newsfeed.html"><span class="col-xs-10 col-sm-10 col-md-offset-2 col-md-10 col-md-offset-2" style="margin-left:20px;font-size:2em;top:-2px;color:white;height:50px;"><i class="fa fa-area-chart"></i> Inqora</span></a>
+			</div>
+			<div class="hidden-md hidden-sm hidden-lg col-xs-2" style="">
+				<a href="newsfeed.html"><span class="col-xs-10 col-sm-10 col-md-offset-2 col-md-10 col-md-offset-2" style="margin-right:5px;font-size:2em;top:2px;color:white;height:50px;"><i class="fa fa-area-chart"></i></span></a>
+			</div>
+			<div class="col-lg-6 col-md-5 col-sm-8 col-sm-offset-0 col-xs-9" style="">
+				<form class="pure-form">
+					<input id="project" placeholder="Search for Companies, Groups and People" class="col-xs-* center-block" style="width:100%;">
+				</form>
+			</div>
+
+			<div class="col-xs-12 col-lg-3 col-md-4 col-sm-12" style="text-align:center;margin-bottom:10px;">
+				<a onclick="document.getElementById('accountsettingsbutton').click()" class="pure-button button greenparty" ><i class="fa fa-cog"></i></a>
+				<a id="myprof" class="pure-button button" style="background-color:#674172;color:white;"><i class="fa fa-user" title="My Profile"></i></a>
+				<a id="admin" style="background-color:#96281B;color:white;" class="pure-button button">  <i id="numnotifs" class="fa fa-bell"> 1</i></a>
+				<a id=""  onclick="window.location='messaging.html'" class="pure-button pure-button-primary button"><i class="fa fa-comment" title="Messaging"></i></a>
+				<a onclick="logout()" class="hidden-xs hidden-sm pure-button button-error"><i class="fa"> Log out</i></a>
+				<a onclick="logout()" class="hidden-md hidden-lg pure-button button-error"><i class="fa fa-sign-out"></i></a>
+				<br>
+			</div>
+			<iframe id="logout" style="height:0;width:0;" frameborder="0" hidden></iframe>
+
+				<br>
+				<a id="notloggedin" href="loginpage.html" class="col-xs-12 col-md-12 col-sm-12  pure-button" style="display:none;color:white;background-color:rgba(242, 38, 19, 0.6);">Not Logged In. Limited Functionality.</a>
+				<a id="verifyemailbar" href="loginpage.html" class="col-xs-12 col-md-12 col-sm-12  pure-button" style="display:none;color:white;background-color:rgba(113, 255, 0, 0.5);">Please verify your email to access full functionality. Click here to resend email</a>
+		</div>
+		<div class="fixedtop" style="margin-top:10px;">
+			<div  class="col-xs-12 col-sm-4 col-md-4 col-lg-4" id="otherpanel" style="margin-top:15px;">			
+				<div class="pure-menu pure-menu-open panel companypanel" id="subscriptionspanel" style="box-shadow: 1px 1px 3px #888888;">
+					<a class="link headertiny pure-menu-heading">My Messages</a>
+					<ul id="messaginglist" style="padding:0 20px;padding-bottom:10px;">
+						<hr>
+						To Message a new user, go to their profile page and click message
+					</ul>
+					<br>
+				</div>
+			</div>
+			<div style="margin-top:15px;" id="messagingpanel" class="hidden-xs col-xs-12 col-sm-8 col-md-8 col-lg-8">
+				<section id="messagingplace" class="post head card viewpost" style="overflow:scroll">
+					<span style="font-size: 1.5em;">
+						<center><button  onclick="$('#messagingpanel').addClass('hidden-xs');
+			$('#otherpanel').removeClass('hidden-xs');$('#usernameformessage').html('')" class="pure-button pure-button-primary  hidden-sm hidden-md hidden-lg" style="font-size:0.75em;border-radius:10px;float:left;" ><i class="fa fa-arrow-left"></i></button> Messaging with @<span id="usernameformessage"></span></center>
+					</span>
+					<br>
+					<hr style="margin: 5px;">
+					<br>
+					<td style="width:100%;">
+						<section id="messages" style=''>
+							
+						</section>
+						<br>
+						<form id="messager" class="pure-form">
+							<textarea id="textinputm" type="textarea" placeholder="Send a message..." style="width:100%;"></textarea>
+							<button id="buttonsubmit" class="pure-button pure-button-primary" style="width:100%;">Send Message</button>
+						</form>
+				</td>
+				</section>
+			</div>
+		</div>
+		<div id="menu" style="z-index:999;"></div>
+	</body>
+  	<modalwindows>
+		<input id="loginmodalbutton" value="" style="display:none;" type="button" data-toggle="modal" data-target="#loginmodal">
+		<div class="modal fade" id="loginmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		  <div  class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" id="loginmodal" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+		            <center><h1 class="modal-title" id="myModalLabel"><font color="black" id="thistitleformodal">Please Log In</h1></center>
+		          </div>
+		          <div class="modal-body" >
+		          	<form id="loginform-modal-window"class="loginform">
+					  <div class="group">
+					    <input class="myinput" placeholder="Username/ Email" id="username-modal-window" type="text"><span class="highlight"></span><span class="bar"></span>
+		
+					  </div>
+					  <div class="group">
+					    <input placeholder="password" class="myinput" id="password-modal-window" type="password"><span class="highlight"></span><span class="bar"></span>
+					   
+					  </div>
+					  <button type="submit" class="loginbutton buttonBlue">Login
+					    <div class="ripples buttonRipples"><span class="ripplesCircle"></span></div>
+					  </button>
+					</form>
+		          </div>
+		      </div>
+		  </div>
+		</div>
+
+
+		<input id="accountsettingsbutton" value="" style="display:none;" type="button" data-toggle="modal" data-target="#accountsettings">
+		<div class="modal fade" id="accountsettings" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" id="accountsettingsbuttonclose" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+		            <center><h1 class="modal-title" id="myModalLabel"><font color="black" id="thistitleformodal">Account Management</h1></center>
+		          </div>
+		          <div class="modal-body">
+					<form id="updatedetails">
+						<div class="pure-menu pure-menu-open">
+						    <a class="pure-menu-heading">Edit Account Settings</a>
+							    <ul>
+							        <li style="height:2em;">
+							        	<a style="color:black;">
+						        			<b>Name:</b>
+						        			<span id="changename">Loading...</span>
+						        			<input id="editname" style="display:none;"></input>
+						        			<input id="undoname" class="pure-button undobutton" type="button" value="Undo Edit">
+						        			<i style="position:relative;color:#428bca;float:right;top:-2px;" id="nameedit" class="fa fa-edit fa-2x"></i>
+							        	</a>
+							        </li>
+							         <li style="height:2em;">
+							        	<a style="color:black;">
+						        			<b>Email:</b>
+						        			<span id="changeemail">Loading...</span>
+						        			<input type="email" id="editemail" style="display:none;" ></input>
+						        			<input id="undoemail" class="pure-button undobutton" type="button" value="Undo Edit">
+						        			<i style="position:relative;color:#428bca;float:right;top:-2px;" id="emailedit" class="fa fa-edit fa-2x"></i>
+							        	</a>
+							        </li>
+							        <li style="height:2em;">
+							        	<a style="color:black;">
+						        			<b>Password:</b>
+						        			<span id="changepassword">********</span>
+						        			<input id="editpassword" style="display:none;" type="password"></input>
+						        			<input id="undopassword" class="pure-button undobutton" type="button" value="Cancel">
+						        			<i style="position:relative;color:#428bca;float:right;top:-2px;" id="passwordedit" class="fa fa-edit fa-2x"></i>
+							        	</a>
+							        </li>
+							        <li >
+							        	<a style="color:black;">
+							        		<b>Profile Picture:</b> 
+							        		<i  id="imageedit" style="position:relative;color:#428bca;float:right;top:-2px;" class="fa fa-edit fa-2x"></i>
+							        		<i class="fa fa-remove fa-2x"  id="imagecancel" style="position:relative;color:#D24D57;float:right;top:-2px;display:none;"></i>
+							        		<br>
+							        		<center><img id="changepicture" style="height:150px;"></img></center>
+							        		<div id="newpicstuff" style="display:none;">
+
+							        			<div class="fileUpload">
+													<center><canvas id="picture" width="150" height="150" ></canvas><br><br>
+												    <span>New Profile Picture</span>
+												    <input id="inputFileToLoad" type="file" accept="image/*" class="pure-button pure-button-primary" >
+												    <input onclick="resetUploadPics()" class="pure-button" value="Default Profile Picture"></input></center>
+												</div>
+							        		</div>
+							        	</a>
+							       	</li>
+							        <li class="pure-menu-heading">Update Changes</li>
+							        <li><a><b>Current Password:</b> <input id="oldpass" type="password"></input></a></li>
+							        <li><a href="" style="text-decoration:none;"><button style="width:90%;margin-left:5%;margin-right:5%;" type="submit"  class="pure-button pure-button-primary">Update Account Settings</button></a></li>
+							    </ul>
+						</div>
+						 </form>
+					 <canvas id="thumbnail" width="30" height="30" hidden></canvas>
+					 <canvas width="150" height="150" id="lol" hidden></canvas>
+					<input id="uploadFile" placeholder="Choose File" disabled="disabled" hidden/>
+		          </div>
+		      </div>
+		  </div>
+		</div>
+		<div class="device-xs visible-xs"></div>
+		<div class="device-sm visible-sm"></div>
+		<div class="device-md visible-md"></div>
+		<div class="device-lg visible-lg"></div>
+	</modalwindows>
+<footer>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
+	<script src="manager.js"></script>
+	<script src="tooltips.js"></script>
+	<script src="Javascript/newsfeed.js"></script>
+	<script src="Javascript/postingsystem.js"></script>
+	<script src="Javascript/postinglisteners.js"></script>
+	<script src="Javascript/contentparsing/linkify.js"></script>
+	<script src="Javascript/contentparsing/textcomplete.js"></script>
+	<script src="Javascript/contentparsing/textcompleteoverlay.js"></script>
+	<script src="Javascript/newpost.js"></script>
+	<script src="Javascript/displayfeed.js"></script>
+	<script src="Javascript/messaging.js"></script>
+	<script src="Javascript/notifications.js"></script>
+	<script src="Javascript/accountsettings.js"></script>
+	<script src="Javascript/totalstock.js"></script>
+	<script src="Javascript/search.js"></script>
+	<script src="Javascript/loginmodal.js"></script>
+	<script src="Javascript/subscriptions.js"></script>
+	<script>
+		getInbox();
+		function getInbox() {
+			$("#messages").css("height",  Math.max(document.documentElement.clientHeight, window.innerHeight || 0) - $("#messages").offset().top - $("#messager").height() - 50);
+			callAJAX ("GET", "/messaging/inboxlist", {}, function (data) {
+				$( ".messagingtoolname" ).remove();
+				for (var x =0; x < data.length; x++) {
+					var table = $("<table>").css("width", "100%").prependTo("#messaginglist").addClass("messagingtoolname");
+					var tr = $("<tr>").appendTo(table);
+					var td = $("<td>").css("font-size", "85%").appendTo(tr);
+						var innerlink = $("<a>").addClass("link otherpanellink").attr("href", "Javascript:messageUser ('" + data[x].Username + "');$('#messagingpanel').removeClass('hidden-xs');	$('#otherpanel').addClass('hidden-xs'); $('#messages').css('height',  Math.max(document.documentElement.clientHeight, window.innerHeight || 0) - $('#messages').offset().top - $('#messager').height() - 50);").html(data[x].Name + "( " + linkify ("@" + data[x].Username) + " )").appendTo(td);
+					var td2 = $("<td>").css("font-size", "85%").appendTo(tr);
+					if (data[x].isNew) 
+						var button = $("<button>").addClass("badge pure-button pure-button-primary messagingbuttonclass").html("<i class='fa fa-asterisk'> New </i>").appendTo(td2);
+				}
+			});
+		}
+		$(document).on(".otherpanellink", function (ev) {
+			console.log("HEHEYHEY");
+			
+		});
+
+
+
+		function messageUser (username) {
+			$("#messages").css("height",  Math.max(document.documentElement.clientHeight, window.innerHeight || 0) - $("#messages").offset().top - $("#messager").height() - 50);
+			if (username != $("#usernameformessage").html()) {
+				$("#usernameformessage").html(username);
+				$("#messages").html("");
+				$( ".lolmessage" ).remove();
+				keepCalling(username);
+			}
+		}
+		function keepCalling (usernamepassed) {
+			var username = $("#usernameformessage").html();
+			if (username != usernamepassed) {
+				
+			}
+			else {
+				var messagelength = $(".lolmessage").length; // starts from zero
+				callAJAX ("GET", "/messaging/getmessagesforuser/" + username + "/" + messagelength, {}, function (data) {
+					for (var x =0; x < data.length; x++) {
+						var onediv = $("<div>").addClass("lolmessage").appendTo("#messages");
+						if (data[x].FromMe == true) {
+							$(onediv).addClass("from-me");
+							var timespan = $("<span>").css("font-size", "75%").css("color" , "white").html("Sent at " + (new Date(data[x].Time).toLocaleString("en-us")))
+						}
+						else {
+							$(onediv).addClass("from-them"); 
+							var timespan = $("<span>").css("font-size", "75%").css("color" , "#6C7A89").html("Sent at " + (new Date(data[x].Time).toLocaleString("en-us")))
+						}
+						$(onediv).html(data[x].Messaging + "<br>");
+						$(timespan).appendTo(onediv);
+							var hr = $("<hr>").css("visibility", "hidden").appendTo("#messages");
+					}
+					if (data.length != 0) {
+						$('#messages').animate({scrollTop: $('#messages').get(0).scrollHeight}, 2000);
+					}
+
+		$('#messages').css('height',  Math.max(document.documentElement.clientHeight, window.innerHeight || 0) - $('#messages').offset().top - $('#messager').height() - 50);
+					keepCalling(usernamepassed);
+				});
+			}
+		}
+		$("#messager").on("submit", function (ev) {
+			ev.preventDefault();
+			var username = $("#usernameformessage").html();
+			callAJAX ("POST", "/messaging/newmessage/", {OtherUser: username, Content: $("#textinputm").val()}, function (data) {
+				alert(data);
+				$("#textinputm").val("");
+			});
+		});
+		$("#messager").keypress(function (e) {
+			var username = $("#usernameformessage").html();
+			if(e.keyCode==13 && e.shiftKey == false) {
+				callAJAX ("POST", "/messaging/newmessage/", {OtherUser: username, Content: $("#textinputm").val()}, function (data) {
+					alert(data);
+					$("#textinputm").val("");
+				});
+			}
+		});
+		if(getQueryVariable("id")) {
+			messageUser (getQueryVariable("id"));
+			$('#messagingpanel').removeClass('hidden-xs');	
+			$('#otherpanel').addClass('hidden-xs');
+		}
+
+		
+	</script>
+
+</footer>
+
+
+
+
+

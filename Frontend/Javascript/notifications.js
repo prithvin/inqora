@@ -10,8 +10,7 @@ callAJAX ("GET", "/users/notifications", {}, function (data) {
 });
 $(document).on("click", ".messagingnotif", function (ev) {
 				ev.preventDefault();
-				$('#messagingmodalbutton').click();
-				setUser($(this).attr("name"));
+				window.location = "messaging.html?id=" + $(this).attr("name");
 			});
 
 function neworOld (typer, len, data) {

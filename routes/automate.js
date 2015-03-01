@@ -166,23 +166,30 @@ var SummaryTool = require('node-summary');
 
 
 router.get('/getdataplustitle', function (req, res) {
-	request({
-		uri: req.query.URL,
-	}, function(error, response, body) {
-		data = extractor(body);
-	
-		var obj = {
-			Title: data.title
-		};
-		request({'url':'http://www.tools4noobs.com/?action=ajax_summarize&theshold=70&min_sentence_length=50&min_word_length=4&url=' + req.query.URL,
-		'proxy':'http://www.tools4noobs.com'}, function (error, response, body) {
-			console.log(body);
-			console.log(cleanIt(body));
-			if (!error && response.statusCode == 200) {
-				obj.Summary = cleanIt(body);
-				res.send(obj);
-			}
-		});
+	posts.findOne({_id: "54e79f22ceb45e397ad4896d"} , function (err, data) {
+		if (data == null)
+			res.send("Database error");
+		else if (data.Votes.WhoUpvoted.indexOf(req.query.URL.trim()) != -1)
+			res.send("Error. URL already used");
+		else {
+			request({
+				uri: req.query.URL,
+			}, function(error, response, body) {
+				data = extractor(body);
+			
+				var obj = {
+					Title: data.title
+				};
+				request({'url':'http://www.tools4noobs.com/?action=ajax_summarize&theshold=70&min_sentence_length=50&min_word_length=4&url=' + req.query.URL,
+				'proxy':'http://www.tools4noobs.com'}, function (error, response, body) {
+					posts.update({_id: "54e79f22ceb45e397ad4896d"}, {$push: {'Votes.WhoUpvoted' : req.query.URL.trim()}}, function (err, up) {console.log(up);});
+					if (!error && response.statusCode == 200) {
+						obj.Summary = cleanIt(body);
+						res.send(obj);
+					}
+				});
+			});
+		}
 	});
 });
 

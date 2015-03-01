@@ -13,6 +13,152 @@ function isSess (req) {
         return false;
 }
 
+router.get('/inboxlist', function(req, res) {
+	users.findOne({_id: req.session.UserId}, function (err, data) {
+		if (data == null)
+			res.send("Error. Not in session");
+		else {
+			var messaging = data.MessagingSystem; // JSON Object 
+			var resobj = [];
+			// Username
+			// Name
+			// isNew
+			for (var key in messaging) {
+			  	var obj = {
+			  		Username: key,
+			  		Name: messaging[key].Name,
+			  		isNew: messaging[key].isNew
+			  	}
+			  	resobj.push(obj);
+			}
+			res.send(resobj);
+		}
+	});
+});
+
+router.post('/newmessage', function (req, res) {
+	var otheruser = req.body.OtherUser;
+	var thissessionobj = {
+		FromMe: true,
+		Messaging: xss(req.body.Content),
+		Time: (new Date()).getTime()
+	};
+	var otheruserobj = {
+		FromMe: false,
+		Messaging: xss(req.body.Content),
+		Time: (new Date()).getTime()
+	};
+	users.findOne({_id: req.session.UserId}, function (err, data) {
+		if (data == null)
+			res.send("Error. Not in session");
+		else if (data.MessagingSystem == null || data.MessagingSystem[otheruser] == null) {
+			var newforthissession = {
+				Name: "",
+				isNew: false,
+				Content: [thissessionobj]
+			};
+			var newforotheruser = {
+				Name: data.Name,
+				isNew: true,
+				Content: [otheruserobj]
+			};
+			users.findOne({Username: otheruser}, function (err, data2) {
+				if (data2 == null)
+					res.send("Error. Other user does not exist");
+				else {
+					newforthissession.Name = data2.Name;
+					var obj1 = {};
+					obj1['MessagingSystem.' + otheruser] = newforthissession;
+					users.update({_id: req.session.UserId}, {$set: obj1}, function (err, up) {
+						var obj2 = {};
+						obj2['MessagingSystem.' + data.Username] = newforotheruser;
+						users.update({Username: otheruser}, {$set: obj2}, function (err, up) {
+							res.send("Message sent to new user");
+						});
+					});
+				}
+			});
+		}
+		else {
+			var obj3 = {};
+			obj3["MessagingSystem." + otheruser + ".Content"] =  thissessionobj;
+			users.update({_id: req.session.UserId}, {$push: obj3}, function (err, up) {
+				var obj4 = {};
+				obj4["MessagingSystem." + data.Username + ".Content"] = otheruserobj;
+				users.update({Username: otheruser}, {$push: obj4}, function (err, up) {
+					var obj5 = {};
+					obj5["MessagingSystem." + data.Username + ".isNew"] = true;
+					users.update({Username: otheruser}, {$set: obj5}, function (err, up) {
+						var obj6 = {};
+						obj6["MessagingSystem." + otheruser + ".isNew"] = false;
+						users.update({_id: req.session.UserId}, {$set: obj6}, function (err, up) {
+							res.send("Message sent");
+						});
+					});
+				});
+			});
+		}
+	});
+});
+
+
+router.get('/getmessagesforuser/:username', function (req, res) {
+	var otheruser = req.params.username;
+	users.findOne({_id: req.session.UserId}, function (err, data) {
+		if (data == null)
+			res.send("Error. Not in session");
+		else if (data.MessagingSystem[otheruser] == null) {
+			res.send([])
+		}
+		else {
+			var obj5 = {};
+			obj5["MessagingSystem." + otheruser + ".isNew"] =  false;
+			users.update({_id: req.session.UserId},{$set: obj5}, function (err, up) {
+				res.send(data.MessagingSystem[otheruser].Content);
+			});
+		}
+	});
+});
+
+router.get('/getmessagesforuser/:username/:afternumber', function (req, res) { // Assuming first message is at 0, sends all messages index (afternumber + 1) and greater
+	var otheruser = req.params.username;
+	var afternumber = req.params.afternumber;
+	users.findOne({_id: req.session.UserId}, function (err, data) {
+		if (data == null)
+			res.send("Error. Not in session");
+		else if (data.MessagingSystem[otheruser] == null) {
+			console.log("HEY");
+			res.send([])
+		}
+		else {
+			var obj5 = {};
+			obj5["MessagingSystem." + otheruser + ".isNew"] =  false;
+			users.update({_id: req.session.UserId},{$set: obj5}, function (err, up) {
+				console.log(data.MessagingSystem[otheruser].Content);
+				console.log(afternumber+1);
+				res.send(data.MessagingSystem[otheruser].Content.splice(afternumber));
+			});
+		}
+	});
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 router.get('/getinbox', function (req, res) {
 	users.findOne({_id: req.session.UserId}, "Messaging" , function(err, user) {
@@ -24,16 +170,25 @@ router.get('/getinbox', function (req, res) {
 				var obj = {
 					'Name' : user.Messaging[x].PartnerName,
 					'Username' : user.Messaging[x].PartnerId,
-					'New' : user.Messaging[x].New,
-					'Time' : user.Messaging[x].Chat[user.Messaging[x].Chat.length - 1].Time
+					'New' : user.Messaging[x].New
 				}
 				datatosend.push(obj);
-				console.log(obj);
 			}
 			res.send(datatosend);
 		}
 	});
 });
+
+router.get('/getallmessages/:username', function (req, res) {
+	users.findOne({_id: req.session.UserId}, "Messaging", function (err, data) {
+		if (data == null)
+			res.send("Error. Not in session");
+		else {
+			var messagelist = {};
+		}
+	});
+});
+
 
 router.get('/getbyusername', function (req,res) {
 	var username = req.query.Username;

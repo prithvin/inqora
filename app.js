@@ -59,8 +59,17 @@ usersch = new Schema ({
         Groups: []
     },
     Points: {
-        LastCalculated: Number,
-        NumPoints: Number
+        NumPoints: Number,
+        BonusPoints: Number,
+        NumPointsRedeemed: Number,
+        DatesRedeemed: []
+        // 
+        //    [
+        //        {
+        //            DateRedeemed:
+        //            PointsRedeemed: 
+        //        }
+        //    ]
     },
     InvitesUsed: Number, 
     StockFollowing: [],
@@ -74,7 +83,8 @@ usersch = new Schema ({
         TaggedInComment: [],
         PostUserCommentedOrPosted: []
     },
-    Messaging: []
+    Messaging: [],
+    MessagingSystem: {}
 });
 users = mongoose.model('User', usersch, 'usercol');
 

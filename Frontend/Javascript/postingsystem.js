@@ -171,15 +171,19 @@ function linkwithfontawesome (maindiv, fontawesomeclass, linkclass, innerHTML) {
 }
 
 
-function createPost(postid, maindiv, appendafter) {
+function createPost(postid, maindiv, appendafter, callback) {
 	if (appendafter) {
 			var section = $("<section>").attr("id", postid).addClass("post head card viewpost").insertAfter(maindiv);
 		}
 		else {
 			var section = $("<section>").attr("id", postid).addClass("post head card viewpost").appendTo(maindiv);
 		}
-		$(section).html("<div class='load-1'><div class='line'></div><div class='line'></div><div class='line'></div></div>");
+		$(section).html("<br><br><br><br><br><br><br><br><center><div class='load-3' style='height:300px;vertical-align:middle;position:relative;'>  <div class='line'></div>  <div class='line'></div>  <div class='line'></div></div>");
+	 setTimeout(function () {
+		       
+		    }, 1000);
 	callAJAX ("GET", "/posting/getpost", {PostId: postid}, function (data) {
+		callback();
 		$(section).html("");
 		var h1 = $("<h1>").addClass("align-center").html(data.Title).appendTo(section);
 		var h2 = $("<h2>").addClass("description align-center").appendTo(section);

@@ -76,9 +76,13 @@ router.post('/removesub', function (req, res){
 						}
 						else if (typer.Type == "Company" || typer.Type == "Group") {
 							companies.update({'UserId': newsub} , {$inc: {NumFollowers: -1}}, function (err, up){});
-							if (typer.Type = 'Company"')
+							console.log(typer.Type);
+							if (typer.Type == 'Company') {
+								console.log("LOOOL");
 								users.update({'Username' : data.Username}, {$pull: {'FollowingAccs.Companies' : newsub}}, function(err, ups)  {console.log(ups);});
+							}
 							else {
+								console.log("OOOMG");
 								users.update({'Username' : data.Username}, {$pull: {'FollowingAccs.Groups' : newsub}}, function(err, ups)  {console.log(ups);});
 							}
 							users.update({'Username' : data.Username}, {$pull: {type : newsub}}, function(err, ups)  {});
@@ -141,9 +145,8 @@ router.get('/getfollowers', function (req, res) {
 				Users: []
 			};
 			var usernames = data.Followers;
-			console.log(usernames);
 			if (data._id == req.session.UserId) 
-				getNameAndAdd(arr, usernames, 0, true, res, []);
+				getNameAndAdd(arr, usernames, 0, false, res, data.FollowingAccs);
 			else {
 				users.findOne({_id: req.session.UserId}, function (err, data2) {
 					getNameAndAdd(arr, usernames, 0, false, res, data2.FollowingAccs);

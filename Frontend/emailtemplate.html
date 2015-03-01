@@ -1,0 +1,143 @@
+
+		
+<style>
+.fixedtop {
+    width:100%;
+    position:relative;
+}
+align-center {
+  text-align: center;
+}
+
+#myprof {
+  background:#6C7A89;
+  color: white;
+}
+.regularfluff {
+  background-color:rgba(34, 49, 63, 1);padding-top:10px;padding-bottom:10px;
+}
+.card {
+  animation:fly-in-from-left .5s 1s ease both;
+  background:white;
+  border-radius:3px;
+    box-shadow: 2px 2px 4px #aaa;
+  margin: 1rem 0;
+  padding:1rem 1rem 1.5rem 1.5rem;
+  user-select:none;
+  transform-origin:top left;
+  font-weight:100;
+}
+
+hr {
+  background: #f3f3f3; 
+  border: none; 
+  clear: both; 
+  float: none;
+  height: 1px;
+  width: 100%; 
+}
+
+
+
+h1 {
+  color: #707070;
+  font-size: 2rem;
+  font-weight: 300;
+  line-height: 2.4rem;
+  margin: 0;
+}
+
+h2 {
+  font-size:.9rem;
+  color:gray;
+  font-weight:400;
+  line-height: 1.250rem;
+  margin: 0;
+}
+
+
+        html * {
+            font-family: 'Open Sans', sans-serif !IMPORTANT;
+        }
+.fa {
+  font-family: FontAwesome !IMPORTANT;
+    content: "\f0c4" !IMPORTANT;
+
+}
+
+.card {
+  animation:fly-in-from-left .5s 1s ease both;
+  background:white;
+  border-radius:3px;
+    box-shadow: 2px 2px 4px #aaa;
+  margin: 1rem 0;
+  padding:1rem 1rem 1.5rem 1.5rem;
+  user-select:none;
+  transform-origin:top left;
+}
+
+
+</style>
+		<body style="background-color: #DADFE1;">
+			
+			<div id="navsearchmainsearch" style="width:100%;margin:0;" class="regularfluff" style="">
+			<div style="text-align:center;width:100%;padding:0;margin:0;top:0;left:0;">
+				<a href="newsfeed.html" style="text-decoration:none;"><span style="margin-left:20px;font-size:2em;top:-2px;color:white;height:50px;"><img src="data:image/png;base64,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" style="height:2em;"></span></a>
+			</div>
+			</div>
+			<div class="fixedtop">
+			<center>
+			<section class="post head card viewpost" style="width:75%;">
+			<h1 class="align-center">Welcome to Inqora</h1>
+			<hr>
+			<h2 style="text-align:left;padding:20px;">
+				Hey Prithvi, 
+				<br><br>
+				Thank you for joining Inqora.<br>
+				I look forward to hearing your opinions on the latest investment trends and topics. Whether you are interested in <a href="http://www.inqora.com/companypage.html?id=AAPL">@AAPL</a> or <a href="http://www.inqora.com/company.html?id=YUM">@YUM</a>, Inqora has got you covered!<br><br>
+				All you have to do now is verify your email by clicking <a href="">Here</a>
+				<br><br>
+				I look forward to discussing your favorite investment topics on Inqora. And if you plan on beating your peers in our online stock-trading game, may the odds be ever in your favor ;).<br><br>
+				Regards,
+				<br><br>
+				Prithvi Narasimhan - Co-Founder/CTO<br><br>
+				<a href="http://www.inqora.com">http://www.inqora.com</a>
+			</h2>
+			</section>
+			</center>
+			</div>
+
+
+			/*
+			<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html><body style="background-color:#DADFE1;font-family:'Open Sans', sans-serif !IMPORTANT;">
+ 
+			<div id="navsearchmainsearch" style="width:100%;margin:0;font-family:'Open Sans', sans-serif !IMPORTANT;background-color:rgba(34, 49, 63, 1);padding-top:10px;padding-bottom:10px;" class="regularfluff">
+			<div style="text-align:center;width:100%;padding:0;margin:0;top:0;left:0;font-family:'Open Sans', sans-serif !IMPORTANT;">
+				<a href="newsfeed.html" style="text-decoration:none;font-family:'Open Sans', sans-serif !IMPORTANT;"><span style="margin-left:20px;font-size:2em;top:-2px;color:white;height:50px;font-family:'Open Sans', sans-serif !IMPORTANT;"><img src="http://www.inqora.com/emaillogo.png" style="height:2em;font-family:'Open Sans', sans-serif !IMPORTANT;"></span></a>
+			</div>
+			</div>
+			<div class="fixedtop" style="font-family:'Open Sans', sans-serif !IMPORTANT;width:100%;position:relative;">
+			<center style="font-family: 'Open Sans', sans-serif !IMPORTANT;">
+			<section class="post head card viewpost" style="width:75%;font-family:'Open Sans', sans-serif !IMPORTANT;animation:fly-in-from-left .5s 1s ease both;background:white;border-radius:3px;box-shadow:2px 2px 4px #aaa;margin:1rem 0;padding:1rem 1rem 1.5rem 1.5rem;user-select:none;transform-origin:top left;font-weight:100;"><h1 class="align-center" style="color:#707070;font-size:2rem;font-weight:300;line-height:2.4rem;margin:0;font-family:'Open Sans', sans-serif !IMPORTANT;">Welcome to Inqora</h1>
+			<hr style="background:#f3f3f3;border:none;clear:both;float:none;height:1px;width:100%;font-family:'Open Sans', sans-serif !IMPORTANT;">
+<h2 style="text-align:left;padding:20px;font-size:.9rem;color:gray;font-weight:400;line-height:1.250rem;margin:0;font-family:'Open Sans', sans-serif !IMPORTANT;">
+				Hey Prithvi, 
+				<br style="font-family: 'Open Sans', sans-serif !IMPORTANT;"><br style="font-family: 'Open Sans', sans-serif !IMPORTANT;">
+				Thank you for joining Inqora.<br style="font-family: 'Open Sans', sans-serif !IMPORTANT;">
+				I look forward to hearing your opinions on the latest investment trends and topics. Whether you are interested in <a href="http://www.inqora.com/companypage.html?id=AAPL" style="font-family: 'Open Sans', sans-serif !IMPORTANT;">@AAPL</a> or <a href="http://www.inqora.com/company.html?id=YUM" style="font-family: 'Open Sans', sans-serif !IMPORTANT;">@YUM</a>, Inqora has got you covered!<br style="font-family: 'Open Sans', sans-serif !IMPORTANT;"><br style="font-family: 'Open Sans', sans-serif !IMPORTANT;">
+				All you have to do now is verify your email by clicking <a href="" style="font-family: 'Open Sans', sans-serif !IMPORTANT;">Here</a>
+				<br style="font-family: 'Open Sans', sans-serif !IMPORTANT;"><br style="font-family: 'Open Sans', sans-serif !IMPORTANT;">
+				I look forward to discussing your favorite investment topics on Inqora. And if you plan on beating your peers in our online stock-trading game, may the odds be ever in your favor ;).<br style="font-family: 'Open Sans', sans-serif !IMPORTANT;"><br style="font-family: 'Open Sans', sans-serif !IMPORTANT;">
+				Regards,
+				<br style="font-family: 'Open Sans', sans-serif !IMPORTANT;"><br style="font-family: 'Open Sans', sans-serif !IMPORTANT;">
+				Prithvi Narasimhan - Co-Founder/CTO<br style="font-family: 'Open Sans', sans-serif !IMPORTANT;"><br style="font-family: 'Open Sans', sans-serif !IMPORTANT;"><a href="http://www.inqora.com" style="font-family: 'Open Sans', sans-serif !IMPORTANT;">http://www.inqora.com</a>
+			</h2>
+			</section>
+</center>
+			</div>
+</body></html>
+ 
+ */
+
+ <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'> <html xmlns='http://www.w3.org/1999/xhtml'> <head> <meta http-equiv='Content-Type' content='text/html; charset=utf-8' /> <title>[SUBJECT]</title> <style type='text/css'> body { padding-top: 0 !important; padding-bottom: 0 !important; padding-top: 0 !important; padding-bottom: 0 !important; margin:0 !important; width: 100% !important; -webkit-text-size-adjust: 100% !important; -ms-text-size-adjust: 100% !important; -webkit-font-smoothing: antialiased !important; } .tableContent img { border: 0 !important; display: block !important; outline: none !important; } a{ color:#382F2E; } p, h1{ color:#382F2E; margin:0; } p{ text-align:left; color:#999999; font-size:14px; font-weight:normal; line-height:19px; } a.link1{ color:#382F2E; } a.link2{ font-size:16px; text-decoration:none; color:#ffffff; } h2{ text-align:left; color:#222222; font-size:19px; font-weight:normal; } div,p,ul,h1{ margin:0; } .bgBody{ background: #ffffff; } .bgItem{ background: #ffffff; } </style> <script type='colorScheme' class='swatch active'> { 'name':'Default', 'bgBody':'ffffff', 'link':'382F2E', 'color':'999999', 'bgItem':'ffffff', 'title':'222222' } </script> </head> <body paddingwidth='0' paddingheight='0' style='padding-top: 0; padding-bottom: 0; padding-top: 0; padding-bottom: 0; background-repeat: repeat; width: 100% !important; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; -webkit-font-smoothing: antialiased;' offset='0' toppadding='0' leftpadding='0'> <table width='100%' border='0' cellspacing='0' cellpadding='0' class='tableContent bgBody' align='center' style='font-family:Helvetica, Arial,serif;'> <tr><td height='35'></td></tr> <tr> <td> <table width='600' border='0' cellspacing='0' cellpadding='0' align='center' class='bgItem'> <tr> <td width='40'></td> <td width='520'> <table width='520' border='0' cellspacing='0' cellpadding='0' align='center'> <!-- =============================== Header ====================================== --> <tr><td height='75'></td></tr> <!-- =============================== Body ====================================== --> <tr> <td class='movableContentContainer ' valign='top'> <div class='movableContent'> <table width='520' border='0' cellspacing='0' cellpadding='0' align='center'> <tr> <td valign='top' align='center'> <div class='contentEditableContainer contentTextEditable'> <div class='contentEditable'> <p style='text-align:center;margin:0;font-family:Georgia,Time,sans-serif;font-size:26px;color:#222222;'>Welcome to Inqora</p> </div> </div> </td> </tr> </table> </div> <div class='movableContent'> <table width='520' border='0' cellspacing='0' cellpadding='0' align='center'> <tr> <td valign='top' align='center'> <div class='contentEditableContainer contentImageEditable'> <div class='contentEditable'> <img src='http://www.inqora.com/line.png' width='251' height='43' alt='' data-default='placeholder' data-max-width='560'> </div> </div> </td> </tr> </table> </div> <div class='movableContent'> <table width='520' border='0' cellspacing='0' cellpadding='0' align='center'> <tr><td height='55'></td></tr> <tr> <td align='left'> <div class='contentEditableContainer contentTextEditable'> <div class='contentEditable' align='center'> <h2 >Thanks for joining, Bob! I cannot wait to hear your opinions on Inqora!</h2> </div> </div> </td> </tr> <tr><td height='15'> </td></tr> <tr> <td align='left'> <div class='contentEditableContainer contentTextEditable'> <div class='contentEditable' align='center'> <p > We are hard at work, developing new features and making your experience on Inqora better. <br><br> Whether you like to talk about the latest investment trends or about that 'hot' new industry, Inqora is definitely the right place for you! <br><br>Even if you are still learning about investment, the discussions and guidance from Inqora will help you on your investment journey!<br><br> So hop on now, and discuss your favorite companies, including everything from <a href='http://www.inqora.com/companypage.html?id=AAPL'>@AAPL (Apple)</a> or <a href='http://www.inqora.com/company.html?id=ZTS'>@ZTS (Zoetis)</a>, Inqora has got you covered!<br><br> I look forward to discussing your favorite investment topics on Inqora. And if you plan on beating your peers in our online stock-trading game, may the odds be ever in your favor ;).<br><br> Regards, <br><br> Prithvi Narasimhan - Co-Founder/CTO<br><br> <a href='http://www.inqora.com'>http://www.inqora.com</a> </p> </div> </div> </td> </tr> <tr><td height='55'></td></tr> <tr> <td align='center'> <table> <tr> <td align='center' bgcolor='#1A54BA' style='background:#1A54BA; padding:15px 18px;-webkit-border-radius: 4px; -moz-border-radius: 4px; border-radius: 4px;'> <div class='contentEditableContainer contentTextEditable'> <div class='contentEditable' align='center'> <a target='' href='#' class='link2' style='color:#ffffff;'>Very your Email</a> </div> </div> </td> </tr> </table> </td> </tr> <tr><td height='20'></td></tr> </table> </div> </td> </tr> <!-- =============================== footer ====================================== --> </table> </td> <td width='40'></td> </tr> </table> </td> </tr> <tr><td height='88'></td></tr> </table> </body> </html>

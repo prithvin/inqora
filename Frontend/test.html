@@ -64,52 +64,229 @@ var commentsarr = ["I strongly dislike this company. I have had bad experiences 
 "They have a lot of room for growth, but their executions is not strong considering the past few years",
 "They are in an oversaturated market with too many discount competitors",
 "They are a company that dips its hands into everything",
-"Following you! @<USER>",
+"Following you! @<USERNAME>",
 "Thanks for the contribution!",
-"The cash flow has been weak the last quarter"];
-function getArticles (stock) {
+"The cash flow has been weak the last quarter",
+,"That is some solid analysis",
+"I agree with most your points",
+"There are some flaws in your argument ",
+"Nice!!",
+"Great idea",
+"I think the next quarter will be an interesting one",
+"The next quarter will be an interesting one in terms of growth ",
+"The next quarter will be an interesting one in terms of product intros",
+"I concur",
+"YOu are not wrong on that part",
+"You make some very good points",
+"Top line looks good",
+"I’m worried about their revenue growth",
+"Management is very efficient i can tell",
+"There is always room for growth",
+"That’s the idea",
+"Next year is going to be a turbulent one",
+"Great analysis",
+"Post here more often!!",
+"Nice post",
+"Really solid idea",
+"There is someting I really like about all this",
+"@<COMPANY> is doing well this quarter",
+"I think the price is unjustified",
+"The value behind this can be mistaken",
+"After some cleaning, there’s a lot of value to be revealed",
+"Some points are off IMO",
+"You have some interesting points",
+"Really great ideas",
+"@<INDUSTRY> companies can be out of the ordinary",
+"@<USERNAME> great point!",
+"The numbers don’t lie",
+"I really like how @<COMPANY> is run",
+"Great quarter",
+"Are there other companies like @<COMPANY>",
+"THier FCF is lookin good",
+"I like how @<COMPANY> is managed",
+"Ok i see where you are coming from",
+"Thier PE is too high",
+"Well run business",
+"@<USERNAME> you have great post!Q!",
+"Source?",
+"@<COMPANY> has great fundamentals",
+"@<COMPANY> has a bright future",
+"I am long @<COMPANY> ",
+"I am short @<COMPANY>",
+"I am holding 25 shares",
+"Should I sell?",
+"@<COMPANY> has a great track record",
+"@<COMPANY> ",
+"I don;t really agree with you",
+"Can you expand ?",
+"Hey, @<USERNAME> check out this post",
+"They have a ton of cash",
+"It is normal to have all this debt?",
+"What is their D/E?",
+"What’s their capital structure like?",
+"I try not to look at net income as much in this particular company.",
+"I am right there with you",
+"Great piece once again!",
+"I ran @<COMPANY> through a DCF model and got close to their current value",
+"I see an uptrend",
+"I see a downtrend",
+"I hope your conclusion is right",
+"They are easily overvalued ",
+"They are undervalued",
+"I really am excited for their fuutre product offerings",
+"I expect a jump in price the next few weeks",
+"DId you run any models on this?",
+"You should run some models on @<COMPANY>",
+"looks like a great buy",
+"I’m not too sure about the future of this company",
+"Looks really solid in terms of numbers",
+"They have a fair p/b",
+"P/E is alright",
+"Didn’t approach it from your pov",
+"Are you holding?",
+"How many shares do you hold?",
+"I have about 15 shares ",
+"I expect short squeeze",
+"Their fundamentals are shaky",
+"i fear for the future lol",
+"They borrow too much cash",
+"I wonder what analyst think about this", 
+"What do WST analyst say?",
+"The value reflects the price",
+"Do you think there’s a margin of safety?",
+"You know me, I like to buy cheap",
+"Are you playing the options on this?",
+"You should play the options on this",
+"Buy some calls",
+"Get some put options",
+"I feel neurtral on this company",
+"Intrinsic value?",
+"The earnings are gonna be great!",
+"I’m waiting for my tax returns to get in",
+"This accounts for a pretty big portion of my portfolio",
+"I am just swing trading this",
+"The momentum is great"];
+
+function getCompanyList () {
 	$.ajax({
-		url: 'http://ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=8',
+		url: getLocalhost() + "/companygroup/getsearch",
 		data: {
-			q: "http://feeds.finance.yahoo.com/rss/2.0/headline?s=" + stock + "&region=US&lang=en-US"
 		},
-		dataType: 'jsonp',
 		success: function (data) {
-			var entries = data.responseData.feed.entries;
 			var arr = [];
-			for (var x =0;x  <entries.length;x++) { 
-				arr.push(entries[x].link.substring(entries[x].link.indexOf("/*")+2)); 
+			for (var x =0; x < data.length; x++) {
+				if (data[x].Type == "Company")
+					arr.push(data[x].Username);
 			}
-			console.log(arr);
-			// Need to call getThing method here
+			var articlearr = {};
+			getArticles(articlearr, arr, 0);
 		},
 		error: function () {}
 	});
 }
-function getThing(website, company) {
-	callAJAX("GET", "/automate/getdataplustitle", {URL: website}, function (data) {
-		callAJAX("GET", "/automate/getindustry", {Name: company}, function (industry) {
-			var obj = {};
-			obj.Title = data.Title;
-			obj.Content = data.Summary + " @" + industry;
-			obj.UsernameOfPoster = users[parseInt(Math.random() * users.length)];
-			obj.TimeString = new Date(parseInt(getRandomArbitrary(1423792800000, new Date().getTime()))).getTime();
-			obj.Tags = [company];
-			obj.WhoUpVoted = getPeople(7, []);
-			obj.WhoDownVoted = getPeople(5, obj.WhoUpVoted);
-			console.log(obj);
-			callAJAX("POST", "/automate/newpost", obj, function (data) {
-				console.log(data); // This is the postid
-				createComments([obj.UsernameOfPoster], obj.TimeString, company, industry, data, 0, parseInt(Math.random() * 5), [], website);
-			});
+function getArticles (articlearr, arr, x) {
+	console.log(x);
+	if (x == arr.length)
+		startNewsStuff(articlearr);
+	else {
+		$.ajax({
+			url: "https://api.import.io/store/data/d5350d7a-f923-42d3-a878-0951e8323c0a/_query?input/webpage/url=http%3A%2F%2Fwww.marketwatch.com%2Finvesting%2Fstock%2F" +  arr[x] + "&_user=e0b9ed2b-cff6-46ee-9336-57359a6d89af&_apikey=7b1pFzBsMqSW4llRnNFCViSfI4uxxVZUT6JYiNWrdgo6hFn62aTeWDl55xh3xCWWcQcDvfAdwalQUQgc4Cahrw%3D%3D",
+			data: {
+			},
+			success: function (data) {
+				var list = data.results;
+				console.log(list);
+				for (var y =0; list != null && y < list.length; y++) {
+					if (articlearr[list[y].href] == null )
+						articlearr[list[y].href] = [arr[x]];
+					else if (articlearr[list[y].href].length == 0) {
+						articlearr[list[y].href] = [arr[x]];
+					}
+					else {
+						articlearr[list[y].href].push(arr[x]);
+					}
+				}
+				getArticles(articlearr, arr, x+1);
+			},
+			error: function () {
+				getArticles(articlearr, arr, x+1);
+			}
 		});
+	}
+}
+function startNewsStuff(articlearr) {
+	recursiveNewsStuff(0, articlearr);  
+}
+function recursiveNewsStuff (indexnum, articlearr) {
+	key=Object.keys(articlearr);
+	console.log(key[indexnum]);
+	if (indexnum == key.length)
+		console.log("HELLA DONE");
+	else {
+		var arr = shuffle(articlearr[key[indexnum]]);
+	   	var firstele = arr.shift();
+	   	if (arr.length <= 3)
+	   		getThing(key[indexnum], firstele, arr, articlearr, indexnum);
+	   	else {
+	   		recursiveNewsStuff(indexnum+1, articlearr);
+	   	}
+	}
+}
+function shuffle(o){ //v1.0
+    for(var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
+    return o;
+};
+
+
+function getThing(website, company, othercompanies, articlearr, indexnum) {
+	callAJAX("GET", "/automate/getdataplustitle", {URL: website}, function (data) {
+		if (data != "Error. URL already used") {
+			callAJAX("GET", "/automate/getindustry", {Name: company}, function (industry) {
+				var obj = {};
+				obj.Title = data.Title;
+				obj.Content = data.Summary + " @" + industry;
+				for (var x =0;x  < othercompanies.length; x++) {
+					obj.Content += " @" + othercompanies[x];
+				}
+				obj.UsernameOfPoster = users[parseInt(Math.random() * users.length)];
+				var twodaysago = new Date().getTime() -172800000;
+				obj.TimeString = new Date(parseInt(getRandomArbitrary(twodaysago, new Date().getTime()))).getTime();
+				obj.Tags = [company];
+				obj.WhoUpVoted = getPeople(7, []);
+				obj.WhoDownVoted = getPeople(5, obj.WhoUpVoted);
+				console.log(obj);
+				callAJAX("POST", "/automate/newpost", obj, function (data) {
+					console.log(data); // This is the postid
+					createComments([obj.UsernameOfPoster], obj.TimeString, company, industry, data, 0, parseInt(Math.random() * 5)+ 1, [], website, articlearr, indexnum);
+				});
+			});
+		}
+		else {
+			console.log(data);
+			recursiveNewsStuff (indexnum+1, articlearr)
+		}
 	});
 }
-function createComments (postusername, timeposted, company, industry, postid, x, max, comments, website) {
+function createComments (postusername, timeposted, company, industry, postid, x, max, comments, website, articlearr, indexnum) {
 	if (x == max) {
 		console.log("DONE");
+		recursiveNewsStuff (indexnum+1, articlearr)
+	}
+	else if (x == 0) {
+		console.log("x is zero");
+		var commentobj = {};
+		commentobj.UsernameOfPoster = postusername[0];
+		commentobj.PostId = postid;
+		commentobj.WhoUpVoted = getPeople(3, []);
+		commentobj.WhoDownVoted = getPeople(2, commentobj.WhoUpVoted);
+		commentobj.TimeString = timeposted;
+		commentobj.Comment = "Article from " + website;
+		callAJAX("GET", "/automate/newcomment", commentobj, function (data) {
+			createComments(postusername, timeposted, company, industry, postid, x+1, max, comments, website, articlearr, indexnum);
+		});
 	}
 	else {
+		console.log(x + " is not zero");
 		var commentobj = {};
 		commentobj.UsernameOfPoster = users[parseInt(Math.random() * users.length)];
 		while(postusername.indexOf(commentobj.UsernameOfPoster) != -1) {
@@ -126,15 +303,17 @@ function createComments (postusername, timeposted, company, industry, postid, x,
 		timeposted = commentobj.TimeString;
 
 		commentobj.Comment =  commentsarr[parseInt(Math.random() * commentsarr.length)];
-		while(comments.indexOf(commentobj.Comment) != -1) {
+		while(comments.indexOf(commentobj.Comment) != -1 || commentobj.Comment == null) {
 			commentobj.Comment =  commentsarr[parseInt(Math.random() * commentsarr.length)];
 		} 
-		
-		commentobj.Comment =   commentobj.Comment.replace(new RegExp("<USERNAME>", 'g') , users[parseInt(Math.random() * users.length)]);
-		commentobj.Comment =   commentobj.Comment.replace(new RegExp("<INDUSTRY>", 'g') , industry);
-		commentobj.Comment =   commentobj.Comment.replace(new RegExp("<COMPANY>", 'g') , company);
+		console.log(commentobj.Comment);
+		if (commentobj.Comment != null) {
+			commentobj.Comment =   commentobj.Comment.replace(new RegExp("<USERNAME>", 'g') , users[parseInt(Math.random() * users.length)]);
+			commentobj.Comment =   commentobj.Comment.replace(new RegExp("<INDUSTRY>", 'g') , industry);
+			commentobj.Comment =   commentobj.Comment.replace(new RegExp("<COMPANY>", 'g') , company);
+		}
 		callAJAX("GET", "/automate/newcomment", commentobj, function (data) {
-			createComments(postusername, timeposted, company, industry, postid, x+1, max, comments, website);
+			createComments(postusername, timeposted, company, industry, postid, x+1, max, comments, website, articlearr, indexnum);
 		});
 	}
 

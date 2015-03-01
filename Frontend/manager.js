@@ -1,7 +1,11 @@
+$(document).ready(function() {
+            $("body").css("display", "none");
+            $("body").fadeIn(500);
+    });
 		function getLocalhost() {
-			//return "http://localhost:3000";
+			return "http://localhost:3000";
 		//return "https://inqora2.herokuapp.com"
-		return "http://104.131.30.72/api";
+		//return "http://104.131.30.72/api";
 		}
 function callAJAX (mytype, url, datastruct, callback) {
 	$.ajax({
@@ -16,6 +20,8 @@ function callAJAX (mytype, url, datastruct, callback) {
 	});
 }
 $(".fixedtop").css("top", $("#navsearchmainsearch").height() + "px");
+if ($("#messages").offset() != null)
+	$("#messages").css("height",  Math.max(document.documentElement.clientHeight, window.innerHeight || 0) - $("#messages").offset().top - $("#messager").height() - 50);
 $(window).resize(function(){
 	$(".fixedtop").css("top", $("#navsearchmainsearch").height() + "px");
 	if( isBreakpoint('xs') ) {
@@ -24,14 +30,17 @@ $(window).resize(function(){
 	else {
 		$(".fixedtop").css("position", "absolute");
 	}
+	$("#messages").css("height",  Math.max(document.documentElement.clientHeight, window.innerHeight || 0) - $("#messages").offset().top - $("#messager").height() - 50);
 });
 
 function isBreakpoint( alias ) {
     return $('.device-' + alias).is(':visible');
 }
 
+callAJAX ("GET", "/users/getuser", {}, function (data) {
+	$("#myprof").attr("href", "userpage.html?id=" + data);	
+});
 
-	
 
 callAJAX ("GET", "/accounts/isverified", {}, function (data) {
 	if (data == "N") {

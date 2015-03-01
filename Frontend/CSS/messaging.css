@@ -1,5 +1,8 @@
+.messagingbuttonclass {
+	text-align: center; float: right; margin-right: 5px; padding: 3px 7px; margin-left: 2px;
+}
 .messagingmaintd {
-		width:250px;min-height:525px;border-right:2px solid #989898;vertical-align:text-top;
+		width:250px;border-right:2px solid #989898;vertical-align:text-top;
 	}
 	.regularmessage {
 		width:250px;
@@ -21,7 +24,7 @@
 }
 	
 #messages {
-	height:calc(525px - 100px);padding-left:10px;position:relative;overflow-y:auto;overflow-x:visible;overflow-y:auto;
+	padding-left:10px;position:relative;overflow-y:auto;overflow-x:visible;overflow-y:auto;
 }
 
 .from-me {

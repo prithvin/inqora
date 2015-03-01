@@ -25,7 +25,9 @@ function emailsend (messagebody, messageattachment, toname, toemail) {
 	server.send(message, function(err, message) { console.log(err); console.log(message);  });
 }
 
+router.get('/whoinvited', function (req, res){ 
 
+});
 router.get('/notifications', function(req, res) {
 	users.findOne({_id: req.session.UserId}, function (err, data) {
 		if (data == null) {
@@ -34,10 +36,11 @@ router.get('/notifications', function(req, res) {
 		else {
 			var arr = JSON.parse(JSON.stringify(data.Notifications));
 			arr.NewMessages = [];
-			for (var x = 0; x < data.Messaging.length; x++) {
-				console.log(data.Messaging[x].New);
-				if (data.Messaging[x].New == true) {
-					arr.NewMessages.push(data.Messaging[x].PartnerId)
+			var messaging = data.MessagingSystem;
+			for (var key in messaging) {
+				console.log(messaging[key].isNew);
+				if (messaging[key].isNew == true) {
+					arr.NewMessages.push(key)
 				}
 			}
 			var temp  = arr.PostUserCommentedOrPosted;
@@ -272,7 +275,9 @@ router.post('/create', function(req, res) {
 		},
 		Points: {
 			LastCalculated: 0, 
-			NumPoints: 5
+			NumPoints: 5,
+        	BonusPoints: 0,
+        	NumPointsRedeemed: 0
 		},
 		InvitesUsed:  0,
 		StockFollowing: [],
@@ -301,6 +306,13 @@ router.post('/create', function(req, res) {
 	});
 	newuser.save(function (err) {
 		console.log("IM HERE");
+		var url = req.headers.host;
+		if (req.headers.host.indexOf("http://") == -1)
+			url = "http://" + url;
+		var link = "<a href='" + url + "/users/verify/" + newuser._id + "' style='display: inline-block;-webkit-box-sizing: content-box;-moz-box-sizing: content-box;box-sizing: content-box;cursor: pointer;  padding: 4px 26px;  border: 1px solid #018dc4;  -webkit-border-radius: 25px / 19px;  border-radius: 25px / 19px;  font: normal 16px/normal , Helvetica, sans-serif;  color: rgba(255,255,255,0.9);  -o-text-overflow: clip;  text-overflow: clip;  background: #0199d9;  -webkit-box-shadow: 0 0 11px 0 rgba(0,0,0,0.2) ;  box-shadow: 0 0 11px 0 rgba(0,0,0,0.2) ;  text-shadow: -1px -1px 0 rgba(0,97,255,0.66) ;  -webkit-transition: all 300ms cubic-bezier(0.42, 0, 0.58, 1);  -moz-transition: all 300ms cubic-bezier(0.42, 0, 0.58, 1);  -o-transition: all 300ms cubic-bezier(0.42, 0, 0.58, 1);  transition: all 300ms cubic-bezier(0.42, 0, 0.58, 1);'>Verify Email</a>";
+		var relelink = "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'> <html xmlns='http://www.w3.org/1999/xhtml'> <head> <meta http-equiv='Content-Type' content='text/html; charset=utf-8' /> <title>[SUBJECT]</title> <style type='text/css'> body { padding-top: 0 !important; padding-bottom: 0 !important; padding-top: 0 !important; padding-bottom: 0 !important; margin:0 !important; width: 100% !important; -webkit-text-size-adjust: 100% !important; -ms-text-size-adjust: 100% !important; -webkit-font-smoothing: antialiased !important; } .tableContent img { border: 0 !important; display: block !important; outline: none !important; } a{ color:#382F2E; } p, h1{ color:#382F2E; margin:0; } p{ text-align:left; color:#999999; font-size:14px; font-weight:normal; line-height:19px; } a.link1{ color:#382F2E; } a.link2{ font-size:16px; text-decoration:none; color:#ffffff; } h2{ text-align:left; color:#222222; font-size:19px; font-weight:normal; } div,p,ul,h1{ margin:0; } .bgBody{ background: #ffffff; } .bgItem{ background: #ffffff; } </style> <script type='colorScheme' class='swatch active'> { 'name':'Default', 'bgBody':'ffffff', 'link':'382F2E', 'color':'999999', 'bgItem':'ffffff', 'title':'222222' } </script> </head> <body paddingwidth='0' paddingheight='0' style='padding-top: 0; padding-bottom: 0; padding-top: 0; padding-bottom: 0; background-repeat: repeat; width: 100% !important; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; -webkit-font-smoothing: antialiased;' offset='0' toppadding='0' leftpadding='0'> <table width='100%' border='0' cellspacing='0' cellpadding='0' class='tableContent bgBody' align='center' style='font-family:Helvetica, Arial,serif;'> <tr><td height='35'></td></tr> <tr> <td> <table width='600' border='0' cellspacing='0' cellpadding='0' align='center' class='bgItem'> <tr> <td width='40'></td> <td width='520'> <table width='520' border='0' cellspacing='0' cellpadding='0' align='center'> <!-- =============================== Header ====================================== --> <tr><td height='75'></td></tr> <!-- =============================== Body ====================================== --> <tr> <td class='movableContentContainer ' valign='top'> <div class='movableContent'> <table width='520' border='0' cellspacing='0' cellpadding='0' align='center'> <tr> <td valign='top' align='center'> <div class='contentEditableContainer contentTextEditable'> <div class='contentEditable'> <p style='text-align:center;margin:0;font-family:Georgia,Time,sans-serif;font-size:26px;color:#222222;'>Welcome to Inqora</p> </div> </div> </td> </tr> </table> </div> <div class='movableContent'> <table width='520' border='0' cellspacing='0' cellpadding='0' align='center'> <tr> <td valign='top' align='center'> <div class='contentEditableContainer contentImageEditable'> <div class='contentEditable'> <img src='http://www.inqora.com/line.png' width='251' height='43' alt='' data-default='placeholder' data-max-width='560'> </div> </div> </td> </tr> </table> </div> <div class='movableContent'> <table width='520' border='0' cellspacing='0' cellpadding='0' align='center'> <tr><td height='55'></td></tr> <tr> <td align='left'> <div class='contentEditableContainer contentTextEditable'> <div class='contentEditable' align='center'> <h2 >Thanks for joining, " + req.body.Name + "! I cannot wait to hear your opinions on Inqora!</h2> </div> </div> </td> </tr> <tr><td height='15'> </td></tr> <tr> <td align='left'> <div class='contentEditableContainer contentTextEditable'> <div class='contentEditable' align='center'> <p > We are hard at work, developing new features and making your experience on Inqora better. <br><br> Whether you like to talk about the latest investment trends or about that 'hot' new industry, Inqora is definitely the right place for you! <br><br>Even if you are still learning about investment, the discussions and guidance from Inqora will help you on your investment journey!<br><br> So hop on now, and discuss your favorite companies, including everything from <a href='http://www.inqora.com/companypage.html?id=AAPL'>@AAPL (Apple)</a> or <a href='http://www.inqora.com/company.html?id=ZTS'>@ZTS (Zoetis)</a>, Inqora has got you covered!<br><br> I look forward to discussing your favorite investment topics on Inqora. And if you plan on beating your peers in our online stock-trading game, may the odds be ever in your favor ;).<br><br> Regards, <br><br> Prithvi Narasimhan - Co-Founder/CTO<br><br> <a href='http://www.inqora.com'>http://www.inqora.com</a> </p> </div> </div> </td> </tr> <tr><td height='55'></td></tr> <tr> <td align='center'> <table> <tr> <td align='center' bgcolor='#1A54BA' style='background:#1A54BA; padding:15px 18px;-webkit-border-radius: 4px; -moz-border-radius: 4px; border-radius: 4px;'> <div class='contentEditableContainer contentTextEditable'> <div class='contentEditable' align='center'> " + link + " </div> </div> </td> </tr> </table> </td> </tr> <tr><td height='20'></td></tr> </table> </div> </td> </tr> <!-- =============================== footer ====================================== --> </table> </td> <td width='40'></td> </tr> </table> </td> </tr> <tr><td height='88'></td></tr> </table> </body> </html>";
+		emailsend("", relelink, req.body.Name, req.body.Email);
+		res.send("Account successfully created. Please check your email for verification");
 		if (err)
 			return res.send(error.message);
 		else {
@@ -312,38 +324,22 @@ router.post('/create', function(req, res) {
 					TimeAdded: new Date().getTime()
 				};
 				users.update({_id: req.body.InvitedBy}, {$push : {'Notifications.WhoJoined' : inviteduser}}, function (err, up) {
-					if (up == 1)
-						return res.send("Account successfully created");
-					else if (up == 0)
-						return res.send("Account successfully created. The user who invited you does not exist.");
+					if (up == 1);
+					//	return res.send("Account successfully created");
+					else if (up == 0);
+						//return res.send("Account successfully created. The user who invited you does not exist.");
 				});
 			}
-			else 
-				return res.send("Account successfully created")
+			else  {
+				//return res.send("Account successfully created");
+			}
 		}
 	});
 	
-	var attachment = "<h1>Welcome to Inqora&nbsp;</h1><p>Hi " + req.body.Name + ",</p><p>We are pleased that";
-	attachment += " you have agreed to act as a Beta Test Site for Inqora.</p><p>Here&rsquo;s a quick snippet";
-	attachment += " of what Inqora is and what we represent:</p><p>Inqora is a user contributed collaborative network";
-	attachment += "&nbsp;aimed at helping investors connect with relevant &nbsp;information through our state of the";
-	attachment += " art personalization system. We view investing as a knowledge centric activity, in which &nbsp;the";
-	attachment += " investor can make the best decision by having access to diverse perspectives. Our goal is to personify"; 
-	attachment += " our motto of &ldquo;Invest wisely. Invest together.&rdquo; by helping our users, investors, aggregate";
-	attachment += " the entire spectrum of investment topics into a central hub.</p><p>Upon completion of the Beta Test, ";
-	attachment += "we believe that Inqora will provide exciting new capabilities that will further enhance the value of your";
-	attachment += " online investing experience</p><p>. &nbsp;Test results indicate that the product is ready for actual Beta Test";
-	attachment += " in a customer environment where we can gather data on how the product operates at full traffic load and identify";
-	attachment += " and undiscovered problems.</p><p>Normally, the test requires 1 week of Beta Testing at the customer&rsquo;s";
-	attachment += " site. &nbsp;During the trial, Inqora will coordinate and provide assistance to your distributor to insure the";
-	attachment += " best possible service while accomplishing the goals of the test. We hope Inqora&nbsp;can be something of value to";
-	attachment += " your daily investing experience.<br>On a second note, please verify your email at "; 
-	attachment += "<a href='" + req.headers.host + "/users/verify/" + newuser._id + "'> Here</a>";
-	attachment += " or go to " + req.headers.host + "/users/verify/" + newuser._id + "! </p>";
-	attachment +=  "<p>-Inqora Team</p><p>Contact Prithvi at this email for bug reports!</p><p>";
-	attachment += "<img src='http://www.inqora.com/logo.png' style='height:108px; width:200px' /></p>";
+	
 
-	emailsend("", attachment, req.body.Name, req.body.Email);
+
+	
 	
 });
 
@@ -395,6 +391,13 @@ function randomstring(L){
     while(s.length< L) s+= randomchar();
     return s;
 }
-
-
+router.get('/getuser', function (req, res) {
+	users.findOne({_id: req.session.UserId}, function (err, data) {
+		if (data == null)
+			res.send("Error. Not in session");
+		else {
+			res.send(data.Username);
+		}
+	});
+});
 module.exports = router;

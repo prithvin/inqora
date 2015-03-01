@@ -121,5 +121,98 @@ router.get('/getuserprofile', function (req, res) {
 	});
 });
 
+/*
+	Create posts			10 points
+	Get likes on a post		3 points	
+	Get comments on your post		5 points per comment
+
+Comment on other posts 	1 ppoint
+	Get likes on the comments THAT YOU MAKE (Notrandom user commenting on your psot)	5 points per like
+Like other posts		1 point
+Invite other users		100 points
+Get followed by another user		15 points
+
+“Buy” Companies		0 - 100 based on S&P ranking beat (total average and average of S&P based on time periods whne it is bought)
+
+
+*/
+
+router.get('/pointval' , function (req, res) {
+	users.findOne({_id: req.session.UserId}, function (err, data) {
+		pointstable = {
+			PostCreatedByGivenUser: [], // In frotned, just link to user profile
+			/*{
+				PostId: 
+				PostTitle: 
+				NumComments:
+				NetLikes: 
+			}*/
+			CommentOnOtherPosts: {}, // In frontend, just link to user "commented"
+			/*
+			PostId IS KEY
+			PostTitle
+			NumLikesOnComments
+			*/
+		};
+		if (data == null)
+			res.send("Error. User not in session");
+		else {
+			var posts = data.Notifications.PostUserCommentedOrPosted;
+			var postsusermade = [];
+			var postsusercommented = [];
+			for (var x= 0; x < posts.length; x++) {
+				if (posts[x].wasComment == false)
+					postsusermade.push(posts[x].PostId);
+				else 
+					postsusercommented.push(posts[x].PostId);
+			}
+			getPostLikesAndCommentsLOL(postsusermade, 0, function (pointstable) {
+				getWhoInteractedWithMyComments(postsusercommented, 0, pointstable, req.session.UserId,  function (){ 
+
+				});
+			}, pointstable); // gets recursively posts lieks and comments
+		}
+	});
+});
+
+function getWhoInteractedWithMyComments(arr, x, pointstable, sessionid, callback) {
+	if (arr.length == x)
+		callback(pointstable);
+	else {
+		posts.findOne({_id: arr[x]}, function (err, data) {
+			if (pointstable.CommentOnOtherPosts[arr[x]] == null) {
+				var obj = {
+					PostId: arr[x],
+					PostTitle: data.Title,
+					NumLikesOnComments: 0
+				};
+				for (var i = 0; i < data.Comments.length; i++) {
+					if (data.Comments[i].Creator == sessionid) {
+						obj.NumLikesOnComments += (data.Comments[i].Votes.WhoUpvoted - data.Comments[i].Votes.WhoDownvoted);
+					}
+				}
+			}
+		});
+	}
+}
+
+function getPostLikesAndCommentsLOL(arr, x, callback, pointstable) {
+	if (arr.length == x)
+		callback(pointstable);
+	else {
+		posts.findOne({_id: arr[x]}, function (err, data) {
+			var obj = {
+				PostId: arr[x],
+				PostTitle: data.Title,
+				NumComments: data.Comments.length,
+				NetLikes: data.Votes.WhoUpvoted - data.Votes.WhoDownvoted
+			};
+			pointstable.push(obj);
+			getPostLikesAndCommentsLOL(arr, x+1, callback, pointstable);
+		});
+	}
+}
+
+
 
 module.exports = router;

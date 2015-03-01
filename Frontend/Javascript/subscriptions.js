@@ -39,6 +39,7 @@ function createUser(name, username, subbed, maindiv, link) {
 					$(button).html("<i class='fa fa-trash'></i>");
 				}
 				$(button).attr("name", subbed);
+				console.log($(table).get(0));
 	$(maindiv).append(table);
 }
 
