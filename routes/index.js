@@ -34,10 +34,14 @@ router.get('/test', function (req, res) {
 
 router.get('/numpoints', function(req, res) {
 	var username = "";
-	if (req.query.Username != null)
+	var sessionid = req.session.UserId;
+	if (req.query.Username != null && req.query.Username != "") {
 		username = req.query.Username;
+		console.log("HEYHEYHEY");
+		sessionid = null;
+	}
 	if(isSess(req)) {
-		users.findOne({$or: [{'_id': req.session.UserId}, {"Username" : username}]}, function (err, data) {
+		users.findOne({$or: [{_id: sessionid},  {"Username" : username}]}, function (err, data) {
 			if (data == null)
 				res.send("user not valid");
 			else {

@@ -100,12 +100,14 @@ router.post('/removesub', function (req, res){
 router.get('/getsubs', function (req, res) {
 	var username = "aqeasfsdfasdfasdfasdfasdfasdfasdfsadfasdfasdfasdfasdfasdf";
 	console.log(req.query.Username);
+	var sessionid = req.session.UserId;
 	if (req.query.Username != null && req.query.Username != "") {
 		username = req.query.Username;
 		console.log("HEYHEYHEY");
+		sessionid = null;
 	}
 	if(isSess(req)) {
-		users.findOne({$or: [{_id: req.session.UserId}, {"Username" : username}]}, function (err, data) {
+		users.findOne({$or: [{_id: sessionid}, {"Username" : username}]}, function (err, data) {
 			var arr = {
 				Companies: [],
 				Groups: [],
@@ -134,11 +136,14 @@ router.get('/getsubs', function (req, res) {
 
 router.get('/getfollowers', function (req, res) {
 	var username = "aqeasfsdfasdfasdfasdfasdfasdfasdfsadfasdfasdfasdfasdfasdf";
+	var sessionid = req.session.UserId;
 	if (req.query.Username != null && req.query.Username != "") {
 		username = req.query.Username;
+		console.log("HEYHEYHEY");
+		sessionid = null;
 	}
 	if(isSess(req)) {
-		users.findOne({$or: [{'_id': req.session.UserId}, {"Username" : username}]}, function (err, data) {
+		users.findOne({$or: [{_id: sessionid},  {"Username" : username}]}, function (err, data) {
 			var arr = {
 				Companies: [],
 				Groups: [],

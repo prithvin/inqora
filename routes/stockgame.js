@@ -177,12 +177,14 @@ router.get('/isOwnedNow', function(req, res){
 router.get('/allcompanydata', function (req, res) {
 	var username = "aqeasfsdfasdfasdfasdfasdfasdfasdfsadfasdfasdfasdfasdfasdf";
 	console.log(req.query.Username);
+	var sessionid = req.session.UserId;
 	if (req.query.Username != null && req.query.Username != "") {
 		username = req.query.Username;
 		console.log("HEYHEYHEY");
+		sessionid = null;
 	}
 	if(isSess(req)) {
-		users.findOne({$or: [{_id: req.session.UserId}, {"Username" : username}]}, function (err, data) {
+		users.findOne({$or: [{_id: sessionid},  {"Username" : username}]}, function (err, data) {
 			if (data == null)
 				res.send("Error. This user does not exist");
 			else {

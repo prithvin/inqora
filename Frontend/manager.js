@@ -3,9 +3,9 @@ $(document).ready(function() {
             $("body").fadeIn(500);
     });
 		function getLocalhost() {
-			//return "http://localhost:3000";
+			return "http://localhost:3000";
 		//return "https://inqora2.herokuapp.com"
-		return "http://104.131.30.72/api";
+		//return "http://104.131.30.72/api";
 		}
 function callAJAX (mytype, url, datastruct, callback) {
 	$.ajax({
