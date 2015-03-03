@@ -50,7 +50,7 @@ function createCommentPanel(panel, postid) {
 		var submit = $("<textarea>").attr("type", "text").attr("id", "newcomment-" + postid).css("width", "100%").css("resize", "none").attr("placeholder", "New Comment").css("height","50px").appendTo(form).attr("name", postid);
 		$("<input>").attr("type", "submit").css("display","none").appendTo(form);
 	$(submit).keypress(function(e){
-		if ($(this).val().trim() == "")
+		if ($(this).val().trim() == "" && e.keyCode==13 && e.shiftKey == false)
 			alert("Please do not post blank comments");
 		else if(e.keyCode==13 && e.shiftKey == false) {
 			var obj = {
@@ -183,7 +183,8 @@ function createPost(postid, maindiv, appendafter, callback) {
 		       
 		    }, 1000);
 	callAJAX ("GET", "/posting/getpost", {PostId: postid}, function (data) {
-		callback();
+		if (callback != null)
+			callback();
 		$(section).html("");
 		var h1 = $("<h1>").addClass("align-center").html(data.Title).appendTo(section);
 		var h2 = $("<h2>").addClass("description align-center").appendTo(section);

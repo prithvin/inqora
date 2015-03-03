@@ -26,7 +26,7 @@
 		<title>Inqora - Messaging</title>
 	</head>
 
-	<body style="background-color: #DADFE1;">
+	<body style="background-color: #DADFE1;overflow-y:hidden;">
 		<div class="btn-group btn-group-lg bottombar col-xs-12 hidden-sm hidden-md hidden-lg" style="padding:0;margin:0;" role="group"  class=""> <br><br>
 
 			</div>
@@ -222,7 +222,24 @@
 	<script src="Javascript/loginmodal.js"></script>
 	<script src="Javascript/subscriptions.js"></script>
 	<script>
-		getInbox();
+
+		callAJAX("GET", "/accounts/issess", {}, function (data) {
+			if (data == "true")  {
+				getInbox();
+			}
+			else if (data == "false"){
+				callAJAX ("POST", "/users/authenticate", {User: "demo", Password:"demo"}, function (data) {
+					window.location.reload();
+				});
+				
+			}
+			else if (data == "demo") {
+				getInbox();
+				disableLinks();
+				$("#notloggedin").show();
+			}
+		});
+		
 		function getInbox() {
 			$("#messages").css("height",  Math.max(document.documentElement.clientHeight, window.innerHeight || 0) - $("#messages").offset().top - $("#messager").height() - 50);
 			callAJAX ("GET", "/messaging/inboxlist", {}, function (data) {
@@ -252,6 +269,7 @@
 				$("#messages").html("");
 				$( ".lolmessage" ).remove();
 				keepCalling(username);
+				 getInbox();
 			}
 		}
 		function keepCalling (usernamepassed) {
@@ -277,7 +295,7 @@
 							var hr = $("<hr>").css("visibility", "hidden").appendTo("#messages");
 					}
 					if (data.length != 0) {
-						$('#messages').animate({scrollTop: $('#messages').get(0).scrollHeight}, 2000);
+						$('#messages').animate({scrollTop: $('#messages').get(0).scrollHeight}, 0);
 					}
 
 		$('#messages').css('height',  Math.max(document.documentElement.clientHeight, window.innerHeight || 0) - $('#messages').offset().top - $('#messager').height() - 50);
@@ -291,6 +309,7 @@
 			callAJAX ("POST", "/messaging/newmessage/", {OtherUser: username, Content: $("#textinputm").val()}, function (data) {
 				alert(data);
 				$("#textinputm").val("");
+				 getInbox()
 			});
 		});
 		$("#messager").keypress(function (e) {
@@ -299,6 +318,7 @@
 				callAJAX ("POST", "/messaging/newmessage/", {OtherUser: username, Content: $("#textinputm").val()}, function (data) {
 					alert(data);
 					$("#textinputm").val("");
+					 getInbox()
 				});
 			}
 		});
@@ -307,6 +327,11 @@
 			$('#messagingpanel').removeClass('hidden-xs');	
 			$('#otherpanel').addClass('hidden-xs');
 		}
+		function showPost (id) {
+			window.location = "newsfeed.html?userpostid=" + id;
+		}
+
+
 
 		
 	</script>

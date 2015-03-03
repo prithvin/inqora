@@ -17,6 +17,8 @@ function showUser(id) {
 					if (data.trim() == "Success") {
 						$(button).html("Unsubscribe");
 						$("#numfollowers").html(parseInt($("#numfollowers").html()) + 1);
+						$("#followerpanel").html("");
+						getFollowers(id);
 					}
 					else 
 						alert(data);
@@ -27,6 +29,8 @@ function showUser(id) {
 					if (data == "Success") {
 						button.innerHTML = "Subscribe";
 						$("#numfollowers").html(parseInt($("#numfollowers").html()) -1);
+						$("#followerpanel").html("");
+						getFollowers(id);
 					}
 					else 
 						alert(data);
@@ -36,8 +40,9 @@ function showUser(id) {
 		$("#messageuser").attr("name", id);
 		$("#messageuser").on("click", function (ev) {
 			ev.preventDefault();
-			$('#messagingmodalbutton').click();
-			setUser($(this).attr("name"));
+			//$('#messagingmodalbutton').click();
+			//setUser($(this).attr("name"););
+			window.location = "messaging.html?id=" + $(this).attr("name");
 		});
 		getSubs(id);
 		getFollowers(id);

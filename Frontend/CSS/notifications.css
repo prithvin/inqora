@@ -1,8 +1,11 @@
 .inmessage {
 	background-color:#E4F1FE;
 	}
-#menu { display: none; }
+#menu { display: none;position:relative;}
 
+#menu {
+	height:50%;overflow:scroll;z-index:999;width:100%;
+}
 .false-false {
 	background-color:#DADFE1 !IMPORTANT;
 }

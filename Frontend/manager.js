@@ -30,6 +30,7 @@ $(window).resize(function(){
 	else {
 		$(".fixedtop").css("position", "absolute");
 	}
+	if ($("#messages") != [])
 	$("#messages").css("height",  Math.max(document.documentElement.clientHeight, window.innerHeight || 0) - $("#messages").offset().top - $("#messager").height() - 50);
 });
 
@@ -39,6 +40,10 @@ function isBreakpoint( alias ) {
 
 callAJAX ("GET", "/users/getuser", {}, function (data) {
 	$("#myprof").attr("href", "userpage.html?id=" + data);	
+	if (window.location.pathname.indexOf("userpage") != -1 && getQueryVariable("id") == data) {
+			$("#subscribe").css("display", "none");
+			$("#messageuser").css("display", "none");
+	}
 });
 
 

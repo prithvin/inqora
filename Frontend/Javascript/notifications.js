@@ -1,19 +1,70 @@
-callAJAX ("GET", "/users/notifications", {}, function (data) {
+var notifkeeper = $("<div>").css("display", "none").appendTo("#admin").attr("id", "notifkeeper");
 
-	var len = 0;
-	$("#menu").html("");
+function getNotifsLOOOOOOL(calledfirs) {
+	callAJAX ("GET", "/users/notifications", {}, function (data) {
+		var len = 0;
+		$("#menu").html("");
 
-	len += neworOld(true, 0, data);
-	neworOld(false, 0, data);
-	$("#numnotifs").html(" " + len)
+		len += neworOld(true, 0, data, calledfirs);
+		neworOld(false, 0, data);
+		$("#numnotifs").html(" " + len);
+	
 
-});
-$(document).on("click", ".messagingnotif", function (ev) {
-				ev.preventDefault();
-				window.location = "messaging.html?id=" + $(this).attr("name");
-			});
+	});
+}
 
-function neworOld (typer, len, data) {
+/*
+ Notification.requestPermission(function (perm) {
+    if (perm == "granted") {
+      var notification = new Notification("<a href='http://www.google.com'>Hello! How are you today?</a>" , {
+        dir: "auto",
+        lang: "hi",
+        icon: "http://api.randomuser.me/0.2/portraits/women/31.jpg",
+        
+      });
+      notification.onshow = function(){
+        var self = this;
+        setTimeout(function(){
+          self.close();
+        }, 20000);
+      }
+       notification.onclick = function () {
+       	console.log("HEYHEYHEY");
+       }
+    }
+  })
+  */
+function createNotif (image, text, link) {
+	Notification.requestPermission(function (perm) {
+    if (perm == "granted") {
+      var notification = new Notification(text , {
+        dir: "auto",
+        lang: "hi",
+        icon: image,
+        
+      });
+      notification.onshow = function(){
+        var self = this;
+        setTimeout(function(){
+          self.close();
+        }, 20000);
+      }
+       notification.onclick = function () {
+       	window.location = link;
+       }
+    }
+  })
+}
+
+getNotifsLOOOOOOL(true)
+window.setInterval(function () {
+	if ($("#menu").css("display") == "none") {
+		getNotifsLOOOOOOL(false)
+	}
+}, 3000);
+
+
+function neworOld (typer, len, data, calledfirs) {
 	if (data.WhoJoined != null) {
 		for (var x =0; x < data.WhoJoined.length; x++) {
 			if (data.WhoJoined[x].isNew == typer) {
@@ -23,6 +74,18 @@ function neworOld (typer, len, data) {
 				link.attr("data-type", "WhoJoined").attr("data-notif", JSON.stringify(data.WhoJoined[x])).addClass(typer + "-false");
 				if(typer) {len++};
 				link.addClass("notif");
+
+				var linkjusttext = $(link).html().substring($(link).html().indexOf("\">") + 2);
+				if(typer == true && $("#notifkeeper").html().indexOf(linkjusttext) == -1 && calledfirs != null && calledfirs == false) {
+					$("#notifkeeper").html($("#notifkeeper").html() + " " + linkjusttext);
+					$(img).val(linkjusttext).attr("data-href", $(link).attr("href"));
+					setImage(img, null, function (maindiv, data) {
+						createNotif($(data).attr("src"), $(data).val(), $(data).attr("data-href"));
+					});
+				}
+				if (typer == true && calledfirs == true) {
+					$("#notifkeeper").html($("#notifkeeper").html() + " " + linkjusttext);
+				}
 			}
 		}
 	}
@@ -30,11 +93,23 @@ function neworOld (typer, len, data) {
 	if (data.NewMessages != null && typer == true) {
 		for (var x= 0; x < data.NewMessages.length; x++) {
 			var img = $("<img>").attr("name", data.NewMessages[x]);
-			setImage(img);
 			var link = $("<a>").append(img).append(" @" + data.NewMessages[x] + " messaged you.").appendTo("#menu").attr("name", data.NewMessages[x]).addClass("messagingnotif");
 			link.attr("data-type", "NewMessages").attr("data-notif", JSON.stringify(data.NewMessages[x])).addClass(typer + "-false");
+			link.attr("href" , "messaging.html?id=" +  data.NewMessages[x]);
 			if(typer) {len++};
 			link.addClass("notif");
+
+			var linkjusttext = $(link).html().substring($(link).html().indexOf("\">") + 2);
+			if(typer == true && $("#notifkeeper").html().indexOf(linkjusttext) == -1 && calledfirs != null && calledfirs == false) {
+				$("#notifkeeper").html($("#notifkeeper").html() + " " + linkjusttext);
+				$(img).val(linkjusttext).attr("data-href", $(link).attr("href"));
+				setImage(img, null, function (maindiv, data) {
+					createNotif($(data).attr("src"), $(data).val(), $(data).attr("data-href"));
+				});
+			}
+			if (typer == true && calledfirs == true) {
+				$("#notifkeeper").html($("#notifkeeper").html() + " " + linkjusttext);
+			}
 		}
 	}
 	if (data.NewFollowers != null) {
@@ -46,6 +121,18 @@ function neworOld (typer, len, data) {
 				link.attr("data-type", "NewFollowers").attr("data-notif", JSON.stringify(data.NewFollowers[x])).addClass(typer + "-false");
 				if(typer) {len++};
 				link.addClass("notif");
+
+				var linkjusttext = $(link).html().substring($(link).html().indexOf("\">") + 2);
+				if(typer == true && $("#notifkeeper").html().indexOf(linkjusttext) == -1 && calledfirs != null && calledfirs == false) {
+					$("#notifkeeper").html($("#notifkeeper").html() + " " + linkjusttext);
+					$(img).val(linkjusttext).attr("data-href", $(link).attr("href"));
+					setImage(img, null, function (maindiv, data) {
+						createNotif($(data).attr("src"), $(data).val(), $(data).attr("data-href"));
+					});
+				}
+				if (typer == true && calledfirs == true) {
+					$("#notifkeeper").html($("#notifkeeper").html() + " " + linkjusttext);
+				}
 			}	
 		}
 	}
@@ -59,6 +146,18 @@ function neworOld (typer, len, data) {
 				link.attr("data-type", "TaggedInPost").attr("data-notif", JSON.stringify(data.TaggedInPost[x])).addClass(typer + "-false");
 				if(typer) {len++};
 				link.addClass("notif");
+
+				var linkjusttext = $(link).html().substring($(link).html().indexOf("\">") + 2);
+				if(typer == true && $("#notifkeeper").html().indexOf(linkjusttext) == -1 && calledfirs != null && calledfirs == false) {
+					$("#notifkeeper").html($("#notifkeeper").html() + " " + linkjusttext);
+					$(img).val(linkjusttext).attr("data-href", $(link).attr("href"));
+					setImage(img, null, function (maindiv, data) {
+						createNotif($(data).attr("src"), $(data).val(), $(data).attr("data-href"));
+					});
+				}
+				if (typer == true && calledfirs == true) {
+					$("#notifkeeper").html($("#notifkeeper").html() + " " + linkjusttext);
+				}
 			}
 		}
 	}
@@ -72,6 +171,18 @@ function neworOld (typer, len, data) {
 				link.attr("data-type", "TaggedInComment").attr("data-notif", JSON.stringify(data.TaggedInComment[x])).addClass(typer + "-false");
 				if(typer) {len++};
 				link.addClass("notif");
+
+				var linkjusttext = $(link).html().substring($(link).html().indexOf("\">") + 2);
+				if(typer == true && $("#notifkeeper").html().indexOf(linkjusttext) == -1 && calledfirs != null && calledfirs == false) {
+					$("#notifkeeper").html($("#notifkeeper").html() + " " + linkjusttext);
+					$(img).val(linkjusttext).attr("data-href", $(link).attr("href"));
+					setImage(img, null, function (maindiv, data) {
+						createNotif($(data).attr("src"), $(data).val(), $(data).attr("data-href"));
+					});
+				}
+				if (typer == true && calledfirs == true) {
+					$("#notifkeeper").html($("#notifkeeper").html() + " " + linkjusttext);
+				}
 			}
 		}
 	}
@@ -90,6 +201,18 @@ function neworOld (typer, len, data) {
 				link.attr("data-type", "PostUserCommentedOrPosted").attr("data-notif", temp.PostId).addClass(typer + "-false");
 				if(typer) {len++};
 				link.addClass("notif");
+
+				var linkjusttext = $(link).html().substring($(link).html().indexOf("\">") + 2);
+				if(typer == true && $("#notifkeeper").html().indexOf(linkjusttext) == -1 && calledfirs != null && calledfirs == false) {
+					$("#notifkeeper").html($("#notifkeeper").html() + " " + linkjusttext);
+					$(img).val(linkjusttext).attr("data-href", $(link).attr("href"));
+					setImage(img, null, function (maindiv, data) {
+						createNotif($(data).attr("src"), $(data).val(), $(data).attr("data-href"));
+					});
+				}
+				if (typer == true && calledfirs == true) {
+					$("#notifkeeper").html($("#notifkeeper").html() + " " + linkjusttext);
+				}
 			}
 		}
 	}
