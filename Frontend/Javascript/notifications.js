@@ -83,7 +83,7 @@ function neworOld (typer, len, data, calledfirs) {
 						createNotif($(data).attr("src"), $(data).val(), $(data).attr("data-href"));
 					});
 				}
-				if (typer == true && calledfirs == true) {
+				if (typer == true  && calledfirs != null  &&  calledfirs == true) {
 					$("#notifkeeper").html($("#notifkeeper").html() + " " + linkjusttext);
 				}
 			}
@@ -107,7 +107,7 @@ function neworOld (typer, len, data, calledfirs) {
 					createNotif($(data).attr("src"), $(data).val(), $(data).attr("data-href"));
 				});
 			}
-			if (typer == true && calledfirs == true) {
+			if (typer == true  && calledfirs != null  &&  calledfirs == true) {
 				$("#notifkeeper").html($("#notifkeeper").html() + " " + linkjusttext);
 			}
 		}
@@ -130,7 +130,7 @@ function neworOld (typer, len, data, calledfirs) {
 						createNotif($(data).attr("src"), $(data).val(), $(data).attr("data-href"));
 					});
 				}
-				if (typer == true && calledfirs == true) {
+				if (typer == true  && calledfirs != null  &&  calledfirs == true) {
 					$("#notifkeeper").html($("#notifkeeper").html() + " " + linkjusttext);
 				}
 			}	
@@ -155,7 +155,7 @@ function neworOld (typer, len, data, calledfirs) {
 						createNotif($(data).attr("src"), $(data).val(), $(data).attr("data-href"));
 					});
 				}
-				if (typer == true && calledfirs == true) {
+				if (typer == true  && calledfirs != null  &&  calledfirs == true) {
 					$("#notifkeeper").html($("#notifkeeper").html() + " " + linkjusttext);
 				}
 			}
@@ -180,7 +180,7 @@ function neworOld (typer, len, data, calledfirs) {
 						createNotif($(data).attr("src"), $(data).val(), $(data).attr("data-href"));
 					});
 				}
-				if (typer == true && calledfirs == true) {
+				if (typer == true  && calledfirs != null  &&  calledfirs == true) {
 					$("#notifkeeper").html($("#notifkeeper").html() + " " + linkjusttext);
 				}
 			}
@@ -210,7 +210,7 @@ function neworOld (typer, len, data, calledfirs) {
 						createNotif($(data).attr("src"), $(data).val(), $(data).attr("data-href"));
 					});
 				}
-				if (typer == true && calledfirs == true) {
+				if (typer == true  && calledfirs != null  &&  calledfirs == true) {
 					$("#notifkeeper").html($("#notifkeeper").html() + " " + linkjusttext);
 				}
 			}
