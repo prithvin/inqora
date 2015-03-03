@@ -227,9 +227,9 @@ function createPost(postid, maindiv, appendafter, callback) {
 
 			var sharepanel = $("<div>").addClass("sharepanel").attr("id" , "sharepanel-" + postid).appendTo(section);
 			var myString ="<p class='hr2'></p>";
-			myString += "<a href='https://api.addthis.com/oexchange/0.8/forward/facebook/offer?url=" + window.location.href + "&pubid=ra-5237971b387d9041&ct=1&title=Inqora&pco=tbxnj-1.0' target='_blank'><img src='https://cache.addthiscdn.com/icons/v2/thumbs/32x32/facebook.png' border='0' alt='Facebook'/></a>";
-			myString += "<a href='https://api.addthis.com/oexchange/0.8/forward/twitter/offer?url=" + window.location.href + "&pubid=ra-5237971b387d9041&ct=1&title=Inqora&pco=tbxnj-1.0' target='_blank'><img src='https://cache.addthiscdn.com/icons/v2/thumbs/32x32/twitter.png' border='0' alt='Twitter'/></a>";
-			myString += "<a href='https://www.addthis.com/bookmark.php?source=tbx32nj-1.0&v=300&&url=" + window.location.href + "&pubid=ra-5237971b387d9041&ct=1&title=Inqora&pco=tbxnj-1.0' target='_blank'><img src='https://cache.addthiscdn.com/icons/v2/thumbs/32x32/addthis.png' border='0' alt='Addthis'/></a>";
+			myString += "<a class='sharebuttonpress' href='https://api.addthis.com/oexchange/0.8/forward/facebook/offer?url=" + "HAILINQORA" + "&pubid=ra-5237971b387d9041&ct=1&title=Inqora&pco=tbxnj-1.0' target='_blank'><img src='https://cache.addthiscdn.com/icons/v2/thumbs/32x32/facebook.png' border='0' alt='Facebook'/></a>";
+			myString += "<a class='sharebuttonpress' href='https://api.addthis.com/oexchange/0.8/forward/twitter/offer?url=" + "HAILINQORA" +  "&pubid=ra-5237971b387d9041&ct=1&title=Inqora&pco=tbxnj-1.0' target='_blank'><img src='https://cache.addthiscdn.com/icons/v2/thumbs/32x32/twitter.png' border='0' alt='Twitter'/></a>";
+			myString += "<a class='sharebuttonpress' href='https://www.addthis.com/bookmark.php?source=tbx32nj-1.0&v=300&&url=" + "HAILINQORA" +  "&pubid=ra-5237971b387d9041&ct=1&title=Inqora&pco=tbxnj-1.0' target='_blank'><img src='https://cache.addthiscdn.com/icons/v2/thumbs/32x32/addthis.png' border='0' alt='Addthis'/></a>";
 
 
 		

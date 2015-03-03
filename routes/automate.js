@@ -193,6 +193,13 @@ router.get('/getdataplustitle', function (req, res) {
 	});
 });
 
+router.get('/shorturl', function (req, res) {
+	request({'url':'http://po.st/api/shorten?apiKey=B34EBF5C-8A4E-4CA1-B272-8C5DB6F50307&longUrl=' + req.query.URL,
+	'proxy':'http://po.st'}, function (error, response, body) {
+		res.send(JSON.parse(body).short_url);
+	});
+});
+
 
 function cleanIt (string) {
 var result = "";

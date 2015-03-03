@@ -19,6 +19,8 @@ $(document).on("click", ".upvotebutton", function (ev) {
 	});
 });
 
+
+
 $(document).on("click", ".downvotebutton", function (ev) {
 	ev.preventDefault();
 	var postid = $(this).attr("name");
@@ -39,6 +41,17 @@ $(document).on("click", ".downvotebutton", function (ev) {
 		alert(data);
 	});
 });
+
+$(document).on("click", ".sharebuttonpress", function (ev) {
+		ev.preventDefault(); 
+		var clicker = this;
+		callAJAX("GET", "/automate/shorturl", {URL: window.location.href}, function (data) {
+			var str = $(clicker).attr("href").replace("HAILINQORA", data);
+			$("#sharethisframe").attr("src", str);
+			$("#sharethismodal").click();
+	
+		});
+	});
 
 $(document).on("click", ".commentpost", function (ev) {
 	ev.preventDefault();
