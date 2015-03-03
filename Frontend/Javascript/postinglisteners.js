@@ -47,8 +47,14 @@ $(document).on("click", ".sharebuttonpress", function (ev) {
 		var clicker = this;
 		callAJAX("GET", "/automate/shorturl", {URL: window.location.href}, function (data) {
 			var str = $(clicker).attr("href").replace("HAILINQORA", data);
-			$("#sharethisframe").attr("src", str);
-			$("#sharethismodal").click();
+			console.log(str);
+			//var importantStuff = window.open('', '_blank');
+			//importantStuff.onload = function() { importantStuff.location.href = str;alert("HEY"); };
+			$("#bobbbb").attr("href", str);
+			$("#bobbbb").get(0).click();
+			
+			//$("#sharethisframe").attr("src", str);
+			//$("#sharethismodal").click();
 	
 		});
 	});
