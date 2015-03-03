@@ -1,7 +1,4 @@
-$(document).ready(function() {
-            $("body").css("display", "none");
-            $("body").fadeIn(500);
-    });
+
 		function getLocalhost() {
 			//return "http://localhost:3000";
 		//return "https://inqora2.herokuapp.com"
