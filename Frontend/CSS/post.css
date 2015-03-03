@@ -1,4 +1,6 @@
-
+body {
+	overflow: hidden;
+}
 .line {
     display: inline-block;
     width: 15px;
