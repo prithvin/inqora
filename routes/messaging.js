@@ -123,23 +123,25 @@ router.get('/getmessagesforuser/:username', function (req, res) {
 router.get('/getmessagesforuser/:username/:afternumber', function (req, res) { // Assuming first message is at 0, sends all messages index (afternumber + 1) and greater
 	var otheruser = req.params.username;
 	var afternumber = req.params.afternumber;
-	users.findOne({_id: req.session.UserId}, function (err, data) {
-		if (data == null)
-			res.send("Error. Not in session");
-		else if (data.MessagingSystem[otheruser] == null) {
-			console.log("HEY");
-			res.send([])
-		}
-		else {
-			var obj5 = {};
-			obj5["MessagingSystem." + otheruser + ".isNew"] =  false;
-			users.update({_id: req.session.UserId},{$set: obj5}, function (err, up) {
-				console.log(data.MessagingSystem[otheruser].Content);
-				console.log(afternumber+1);
-				res.send(data.MessagingSystem[otheruser].Content.splice(afternumber));
-			});
-		}
-	});
+	var timer = setInterval(function(){
+		users.findOne({_id: req.session.UserId}, function (err, data2) {
+			if (data2 == null) {
+				res.send("Error. Not in session");
+				clearTimeout(timer);
+			}
+			else if (data2.MessagingSystem[otheruser] != null) {
+				var content = data2.MessagingSystem[otheruser].Content.splice(afternumber);
+				if (content.length != 0)  {
+					var obj5 = {};
+					obj5["MessagingSystem." + otheruser + ".isNew"] =  false;
+					users.update({_id: req.session.UserId},{$set: obj5}, function (err, up) {
+						res.send(content);
+						clearTimeout(timer);
+					});
+				}
+			}
+		});
+	}, 1000);
 });
 
 

@@ -20,14 +20,6 @@ function inlineTool (obj) {
    makeToolTipRemove($(obj).parent(), "", obj.innerHTML, $(obj).attr("href"), obj.innerHTML.substring(1), true);
 }
 
- callAJAX("GET", "/getusertooltip", {Username: username}, function (data2){
-    $(whoposted).attr("tooltip", data2);
-    $(whoposted).attr("name", username);
-    $(whoposted).find('span').remove();
-    $(whoposted).append("<span>" +data2 + "</span>");
-  });
-
-
 function makeToolTipRemove(maindiv, classAdd, innerHTML, link, username, maindivclear) {
       $(maindiv).html("");
   var whoposted = $("<p>").addClass("tooltips " + classAdd).attr({"name" : username, 'tooltip-position': "top", 'tooltip-type': "primary" , "tooltip" : "<div class='mainspantool'>Loading...</div>"}).appendTo(maindiv);

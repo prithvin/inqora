@@ -1,4 +1,4 @@
-  showName();
+
 
    function logout() {
         $.ajax({

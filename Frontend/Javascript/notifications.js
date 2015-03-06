@@ -1,4 +1,6 @@
 var notifkeeper = $("<div>").css("display", "none").appendTo("#admin").attr("id", "notifkeeper");
+var audiocontrols = $("<audio>").appendTo(notifkeeper).attr("id", "audiocontrlonotif").attr("controls", "false");
+var source = $("<source>").attr("type", "audio/mpeg").attr("src", "Javascript/notif.mp3").appendTo("#audiocontrlonotif");
 
 function getNotifsLOOOOOOL(calledfirs) {
 	callAJAX ("GET", "/users/notifications", {}, function (data) {
@@ -35,6 +37,8 @@ function getNotifsLOOOOOOL(calledfirs) {
   })
   */
 function createNotif (image, text, link) {
+	$("#audiocontrlonotif").get(0).currentTime=0;
+$("#audiocontrlonotif").get(0).play();
 	Notification.requestPermission(function (perm) {
     if (perm == "granted") {
       var notification = new Notification(text , {
@@ -56,12 +60,6 @@ function createNotif (image, text, link) {
   })
 }
 
-getNotifsLOOOOOOL(true)
-window.setInterval(function () {
-	if ($("#menu").css("display") == "none") {
-		getNotifsLOOOOOOL(false)
-	}
-}, 3000);
 
 
 function neworOld (typer, len, data, calledfirs) {

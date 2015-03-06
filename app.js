@@ -52,6 +52,7 @@ usersch = new Schema ({
     Email: String,
     Username: String,
     Password: String,
+    FBAuthToken: String,
     Verified: Boolean,
     FollowingAccs: {
         Users: [],

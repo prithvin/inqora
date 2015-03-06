@@ -1,8 +1,52 @@
+$.ajax ({
+	type: "GET",
+	url: getLocalhost() + "/accounts/issess",
+	data: {},
+	success: function (data) {
+		if (data == "true")  {
+			semiProp();
+		}
+		else if (data == "false") {
+			callAJAX ("POST", "/users/authenticate", {User: "demo", Password:"demo"}, function (data) {
+				semiProp();
+				disableLinks();
+				$("#notloggedin").show();
+			});
+			
+		}
+		else if (data == "demo") {
+			semiProp();
+			disableLinks();
+			$("#notloggedin").show();
+		}
+	},
+	xhrFields: {withCredentials: true},
+	error:function(){
+		console.log("ERROR");
+	}
+})
 
+function semiProp () {
+	  showName();
+	getUserData();
+	getNotifsLOOOOOOL(true)
+window.setInterval(function () {
+	if ($("#menu").css("display") == "none") {
+		getNotifsLOOOOOOL(false)
+	}
+}, 3000);
+
+	proper();
+}
+
+
+
+
+console.log("\n\n\nHey there! We could really use your help in developing the Inqora community. \nIf you see any bugs, please contact narasimhan.prithvi@gmail.com.\nHope you are enjoying Inqora as much as we enjoyed building it! Keep investing!! #inqora ")
 		function getLocalhost() {
-			//return "http://localhost:3000";
+			return "http://localhost:3000";
 		//return "https://inqora2.herokuapp.com"
-		return "http://104.131.30.72/api";
+		//return "http://104.131.30.72/api";
 		}
 function callAJAX (mytype, url, datastruct, callback) {
 	$.ajax({
@@ -17,7 +61,7 @@ function callAJAX (mytype, url, datastruct, callback) {
 	});
 }
 $(".fixedtop").css("top", $("#navsearchmainsearch").height() + "px");
-if ($("#messages").offset() != null)
+if ($("#messages").length != 0 && $("#messages").offset() != null)
 	$("#messages").css("height",  Math.max(document.documentElement.clientHeight, window.innerHeight || 0) - $("#messages").offset().top - $("#messager").height() - 50);
 $(window).resize(function(){
 	$(".fixedtop").css("top", $("#navsearchmainsearch").height() + "px");
@@ -27,8 +71,8 @@ $(window).resize(function(){
 	else {
 		$(".fixedtop").css("position", "absolute");
 	}
-	if ($("#messages") != [])
-	$("#messages").css("height",  Math.max(document.documentElement.clientHeight, window.innerHeight || 0) - $("#messages").offset().top - $("#messager").height() - 50);
+	if ($("#messages").length != 0)
+		$("#messages").css("height",  Math.max(document.documentElement.clientHeight, window.innerHeight || 0) - $("#messages").offset().top - $("#messager").height() - 50);
 });
 
 function isBreakpoint( alias ) {
@@ -104,6 +148,7 @@ $('#loginmodal').on('hidden.bs.modal', function () {
 })
 $('#loginform-modal-window').on('submit', function (ev) {
 	ev.preventDefault();
+	console.log("Signing in");
 	callAJAX ("POST", "/users/authenticate", {User: $("#username-modal-window").val(), Password:$("#password-modal-window").val()}, function (data) {
 		if (data == "Successfully authenticated")
 			window.location.replace(window.location.href);

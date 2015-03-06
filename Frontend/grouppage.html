@@ -256,28 +256,9 @@
 		<script src="Javascript/search.js"></script>
 		<script src="Javascript/loginmodal.js"></script>
 		<script>
-		callAJAX("GET", "/accounts/issess", {}, function (data) {
-			if (data == "true")  {
-				onPageLoad();
-			}
-			else if (data == "false"){
-				callAJAX ("POST", "/users/authenticate", {User: "demo", Password:"demo"}, function (data) {
-					onPageLoad();
-					disableLinks();
-					$("#notloggedin").show();
-				});
-				
-			}
-			else if (data == "demo") {
-				callAJAX ("POST", "/users/authenticate", {User: "demo", Password:"demo"}, function (data) {
-					onPageLoad();
-					disableLinks();
-					$("#notloggedin").show();
-				});
-			}
-		});
+		
 
-		function onPageLoad () {
+		function proper () {
 			if (getQueryVariable("userpostid") != false) {
 				showPost(getQueryVariable("userpostid"));
 				getGroupPageMain(getQueryVariable("id"), true);

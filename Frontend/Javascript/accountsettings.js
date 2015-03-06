@@ -72,6 +72,19 @@ updatedetails.addEventListener('submit',function(event){
 
 });
 
+function isImage(filename) {
+    var ext = filename.substring(filename.length - 3);
+    switch (ext.toLowerCase()) {
+    case 'jpg':
+    case 'gif':
+    case 'bmp':
+    case 'png':
+        return true;
+    }
+    return false;
+}
+
+
 
 document.getElementById("inputFileToLoad").onchange = function () {
   var filesSelected = document.getElementById("inputFileToLoad").files;
@@ -124,7 +137,7 @@ document.getElementById("inputFileToLoad").onchange = function () {
 
 
 
-getUserData();
+
 function getUserData () {
 	$.ajax({
 			type: "GET",

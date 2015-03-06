@@ -59,7 +59,7 @@ router.get('/loadnewsfeed', function(req,res) {
                         for (var x =0; x < arr.length; x++) {
                             newarr.push(arr[x]._id);
                         }
-                        console.log(newarr);
+                       // console.log(newarr);
                         res.send(newarr);
                     }
                 });
@@ -152,7 +152,7 @@ router.get('/postscommented', function (req, res) {
                     }
                 }
                posts.find({'_id': {$in: myarr}}, "Time _id" , function(err,user) {
-                    console.log(user);
+                    //console.log(user);
                     if (user == null)
                        res.send("SORRY, could not find anything");
                     else {

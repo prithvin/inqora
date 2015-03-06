@@ -25,9 +25,6 @@ function emailsend (messagebody, messageattachment, toname, toemail) {
 	server.send(message, function(err, message) { console.log(err); console.log(message);  });
 }
 
-router.get('/whoinvited', function (req, res){ 
-
-});
 router.get('/notifications', function(req, res) {
 	users.findOne({_id: req.session.UserId}, function (err, data) {
 		if (data == null) {
@@ -334,12 +331,36 @@ router.post('/create', function(req, res) {
 				//return res.send("Account successfully created");
 			}
 		}
+	});	
+});
+
+
+var request = require('request');
+router.get('/whoinvited', function (req, res) {
+	users.findOne({_id: req.session.UserId}, function (err, data) {
+		if(data == null)
+			res.send("Error. User not in session");
+		else {
+			url = "104.131.30.72/createaccount.html?inviteid=" + req.session.UserId;
+			request({'url':'http://po.st/api/shorten?apiKey=B34EBF5C-8A4E-4CA1-B272-8C5DB6F50307&longUrl=' + url,
+			'proxy':'http://po.st'}, function (error, response, body) {
+				var tempobj = JSON.parse(JSON.stringify(data.Notifications.WhoJoined));
+				for (var x= 0; x < tempobj.length; x++) {
+					if (data.FollowingAccs.Users.indexOf(tempobj[x].Username) != -1)
+						tempobj[x].Subbed = true;
+					else
+						tempobj[x].Subbed = false;
+				}
+				var obj = {
+					UserId: req.session.UserId,
+					Invited: tempobj,
+					URL: JSON.parse(body).short_url
+				};
+				res.send(obj);
+				});
+			
+		}
 	});
-	
-	
-
-
-	
 	
 });
 

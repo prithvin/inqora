@@ -69,14 +69,12 @@ function createCommentPanel(panel, postid) {
 		}
 	});
 	callAJAX("GET", "/companygroup/getSearch", {}, function (searchres) {
-		console.log("IN HERE");
 		var textarea = document.getElementById("newcomment-" + postid);
 		var arr = [];
 		for (var x = 0 ;x  < searchres.length; x++) {
 			var img = "<img style='margin:0;padding:0;position:relative;left:0;margin-right:5px;' src='"+getLocalhost()+ "/companygroup/getThumbnailAct?Username=" + searchres[x].Username +  "'>";
 			arr.push(img + " " + searchres[x].Name + " (@"  + searchres[x].Username + ") - " + searchres[x].Type);
 		}
-		console.log("IN HERE");
 		$(textarea).textcomplete([
 		    { // html
 		        mentions: arr,
@@ -109,8 +107,9 @@ function createCommentPanel(panel, postid) {
 function newComment (data, panel, postid, x) {
 	var divvy= $("<div>").css("min-height", "50px").insertAfter(panel);
 	var tably = $("<table>").css("width", "100%").appendTo(divvy).css("font-size","1em");
+		var tdlol =  $("<td>").appendTo(tably).html();
 		var td2 = $("<td>").appendTo(tably);
-		makeToolTip(td2, "zeromargin", "@" + data.PosterUsername + "(" + data.PosterName + "):" , "userpage.html?id=" + data.PosterUsername, data.PosterUsername);
+		makeToolTip(td2, "zeromargin", "@" + data.PosterUsername + "(" + data.PosterName + "): " , "userpage.html?id=" + data.PosterUsername, data.PosterUsername);
 		var content = $("<span>").html(linkify(data.Content)).appendTo(td2);
 		var upvoteclass = "commentvotespan";
 		var downvoteclass = "commentvotespan";
@@ -124,6 +123,7 @@ function newComment (data, panel, postid, x) {
 				var linknet = $("<span>").addClass("votespan").html(data.NetVotes + " Votes").appendTo(lisecond).attr("id", "netvotecounter-" +  postid + "-" + x).attr("name", postid).attr("value", x);
 
 			$(ul1).append(" - ");
+			$*ul1
 			var lifirst = $("<span>").appendTo(ul1).attr("id", postid + "-" + x + "-upvote").attr("name", postid).attr("value", x).addClass("lifirst");
 				var linkup = $("<a>").addClass(upvoteclass).attr("href" , "").html("<i class='fa fa-arrow-up'></i> Upvote").appendTo(lifirst);
 			$(ul1).append(" - ");
@@ -173,20 +173,18 @@ function linkwithfontawesome (maindiv, fontawesomeclass, linkclass, innerHTML) {
 
 function createPost(postid, maindiv, appendafter, callback) {
 	if (appendafter) {
-			var section = $("<section>").attr("id", postid).addClass("post head card viewpost").insertAfter(maindiv);
+			var section = $("<section>").attr("id", postid).addClass("post bordercard head card viewpost").insertAfter(maindiv);
 		}
 		else {
-			var section = $("<section>").attr("id", postid).addClass("post head card viewpost").appendTo(maindiv);
+			var section = $("<section>").attr("id", postid).addClass("post bordercard head card viewpost").appendTo(maindiv);
 		}
-		$(section).html("<br><br><br><br><br><br><br><br><center><div class='load-3' style='height:300px;vertical-align:middle;position:relative;'>  <div class='line'></div>  <div class='line'></div>  <div class='line'></div></div>");
-	 setTimeout(function () {
-		       
-		    }, 1000);
+		$(section).html("<div id='loadingstuff-" + postid + "'<center><div class='load-3 centerloadingthing' style='height:300px;vertical-align:middle;position:relative;'>  <div class='line'></div>  <div class='line'></div>  <div class='line'></div></div></div>");
 	callAJAX ("GET", "/posting/getpost", {PostId: postid}, function (data) {
 		if (callback != null)
 			callback();
-		$(section).html("");
-		var h1 = $("<h1>").addClass("align-center").html(data.Title).appendTo(section);
+		//$(section).html("");
+		var img = $("<img>").addClass("profpicclassindicatormaincard").attr("src", data.Thumbnail);
+		var h1 = $("<h1>").addClass("align-center").html(data.Title).prepend(img).appendTo(section);
 		var h2 = $("<h2>").addClass("description align-center").appendTo(section);
 			var timeposted = $("<span>").html("Posted " + msToTime((new Date).getTime() - data.TimePosted) + " by ").appendTo(h2);
 			makeToolTip(h2, "", "@" + data.PosterUsername + " (" + data.PosterName + ")","userpage.html?id=" + data.PosterUsername, data.PosterUsername);
@@ -246,5 +244,7 @@ function createPost(postid, maindiv, appendafter, callback) {
 			else
 				$(commentpanel).find("a").removeClass("selected");
 			createCommentPanel(commentpanel, id);
+			$("#loadingstuff-" + postid).remove();
+			//console.log("#loadingstuff-" + postid);
 	});
 }

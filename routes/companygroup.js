@@ -289,14 +289,14 @@ router.get('/company/get/:stock', function(req,res) {
 });
 
 router.get('/companiesingroup', function (req, res) {
-	console.log(req.query.Industry);
+	//console.log(req.query.Industry);
 	companies.find({Industry: req.query.Industry}, "UserId", function (err, data) {
 		res.send(data);
 	});
 });
 
 router.get('/companybycategory', function (req, res) {
-	console.log(req.query.Name);
+	//console.log(req.query.Name);
 	companies.findOne({UserId: req.query.Name}, function (err, data) {
 		if (data == null)
 			res.send("DOES NOT EXIST");

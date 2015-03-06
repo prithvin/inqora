@@ -182,7 +182,7 @@ router.get('/getdataplustitle', function (req, res) {
 				};
 				request({'url':'http://www.tools4noobs.com/?action=ajax_summarize&theshold=70&min_sentence_length=50&min_word_length=4&url=' + req.query.URL,
 				'proxy':'http://www.tools4noobs.com'}, function (error, response, body) {
-					posts.update({_id: "54e79f22ceb45e397ad4896d"}, {$push: {'Votes.WhoUpvoted' : req.query.URL.trim()}}, function (err, up) {console.log(up);});
+					posts.update({_id: "54e79f22ceb45e397ad4896d"}, {$push: {'Votes.WhoUpvoted' : req.query.URL.trim()}}, function (err, up) {});
 					if (!error && response.statusCode == 200) {
 						obj.Summary = cleanIt(body);
 						res.send(obj);

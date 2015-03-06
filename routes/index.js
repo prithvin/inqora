@@ -19,14 +19,14 @@ router.get('/logout', function(req,res ) {
 });
 
 router.get('/test', function (req, res) {
-	console.log(req.headers.host);
+	//console.log(req.headers.host);
 	yahooFinance.snapshot(
 		{
 			symbol: 'AAPL'
 			///fields: ['s', 'n', 'd1', 'l1', 'y', 'r'],
 		}, 
 		function (err, snapshot) {
-			console.log(snapshot.lastTradePriceOnly);
+			//console.log(snapshot.lastTradePriceOnly);
 			res.send(snapshot);
 		}
 	);
@@ -37,7 +37,7 @@ router.get('/numpoints', function(req, res) {
 	var sessionid = req.session.UserId;
 	if (req.query.Username != null && req.query.Username != "") {
 		username = req.query.Username;
-		console.log("HEYHEYHEY");
+		//console.log("HEYHEYHEY");
 		sessionid = null;
 	}
 	if(isSess(req)) {
@@ -184,7 +184,6 @@ router.get('/getusertooltip', function (req, res) {
 
 function getPercentChanges(StockFollowing, x, res, avgarr, obj, parallelarray){
 	if (StockFollowing.length -1 < x) {
-		console.log(avgarr);
 		var sumper = 0;
 		for (var x =0; x < avgarr.length; x++) {
 			var sum = 0;

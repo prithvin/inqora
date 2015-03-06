@@ -241,22 +241,11 @@
 	<script src="Javascript/subscriptions.js"></script>
 	<script>
 
-		callAJAX("GET", "/accounts/issess", {}, function (data) {
-			if (data == "true")  {
-				getInbox();
-			}
-			else if (data == "false"){
-				callAJAX ("POST", "/users/authenticate", {User: "demo", Password:"demo"}, function (data) {
-					window.location.reload();
-				});
-				
-			}
-			else if (data == "demo") {
-				getInbox();
-				disableLinks();
-				$("#notloggedin").show();
-			}
-		});
+		
+
+		function proper () {
+			getInbox();
+		}
 		
 		function getInbox() {
 			$("#messages").css("height",  Math.max(document.documentElement.clientHeight, window.innerHeight || 0) - $("#messages").offset().top - $("#messager").height() - 50);
@@ -297,7 +286,12 @@
 			}
 			else {
 				var messagelength = $(".lolmessage").length; // starts from zero
-				callAJAX ("GET", "/messaging/getmessagesforuser/" + username + "/" + messagelength, {}, function (data) {
+				if (messagelength == 0)
+					var str = "/messaging/getmessagesforuser/" + username + "/" ;
+				else
+					var str = "/messaging/getmessagesforuser/" + username + "/" + messagelength
+				callAJAX ("GET", str, {}, function (data) {
+					console.log(data);
 					for (var x =0; x < data.length; x++) {
 						var onediv = $("<div>").addClass("lolmessage").appendTo("#messages");
 						if (data[x].FromMe == true) {
@@ -318,7 +312,7 @@
 
 		$('#messages').css('height',  Math.max(document.documentElement.clientHeight, window.innerHeight || 0) - $('#messages').offset().top - $('#messager').height() - 50);
 					keepCalling(usernamepassed);
-				});
+				}, 1000);
 			}
 		}
 		$("#messager").on("submit", function (ev) {

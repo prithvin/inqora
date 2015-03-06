@@ -28,15 +28,19 @@ router.get('/getpost', function (req, res) {
 					PosterUsername: data.PosterUsername,
 					PosterName: data.PosterName,
 					TimePosted: data.Time,
-					VoteStatus: 0
+					VoteStatus: 0,
+					Thumbnail: ""
 				};
 				users.findOne({_id: req.session.UserId}, function (err, data2) {
 					if (data.Votes.WhoDownvoted.indexOf(data2.Username) != -1)
 						post.VoteStatus = -1;
 					else if (data.Votes.WhoUpvoted.indexOf(data2.Username) != -1)
 						post.VoteStatus = 1;
-
-					res.send(post);
+					users.findOne({Username: data.PosterUsername}, "Thumbnail", function (err, data3) {
+						post.Thumbnail = data3.Thumbnail;
+						res.send(post);
+					});
+					
 				});
 			}
 		});
@@ -308,10 +312,10 @@ router.post('/create/new', function (req, res) {
 	        var arr = temp.concat(temp2);
 	        if (arr == null)
 	            arr = [];
-	        console.log(arr);
+	       // console.log(arr);
 	        arr.push(data.Username);
-	        console.log(data.Username);
-	        console.log(arr);
+	       // console.log(data.Username);
+	       // console.log(arr);
 	        var newpost = new posts ({
 	            Title: xss(req.body.Title),
 	            Content: xss(req.body.Content),

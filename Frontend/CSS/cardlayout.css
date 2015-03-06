@@ -147,6 +147,13 @@ hyphens: auto !IMPORTANT;
   float: right;
 }
 
+.profpicclassindicatormaincard {
+    border-radius: 10px;
+  height: 42px;
+  float: left;
+  border: 1px solid #67809F;
+
+}
 hr {
   background: #f3f3f3; 
   border: none; 
@@ -160,6 +167,10 @@ hr {
   text-align: center;
 }
 
+.bordercard {
+   border-top:5px solid #446CB3 !IMPORTANT;
+ 
+}
 .card {
   animation:fly-in-from-left .5s 1s ease both;
   background:white;
@@ -171,9 +182,27 @@ hr {
   transform-origin:top left;
 }
 
+.centerloadingthing {
+/* Internet Explorer 10 */
+display:-ms-flexbox;
+-ms-flex-pack:center;
+-ms-flex-align:center;
 
+/* Firefox */
+display:-moz-box;
+-moz-box-pack:center;
+-moz-box-align:center;
 
+/* Safari, Opera, and Chrome */
+display:-webkit-box;
+-webkit-box-pack:center;
+-webkit-box-align:center;
 
+/* W3C */
+display:box;
+box-pack:center;
+box-align:center;
+}
 h1 {
   color: #707070;
   font-size: 2rem;

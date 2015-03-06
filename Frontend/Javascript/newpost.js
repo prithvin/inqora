@@ -2,7 +2,6 @@ function taggingEnableThing () {
 	callAJAX("GET", "/companygroup/getSearch", {}, function (searchres) {
 		var textarea = document.getElementById("newpost");
 		var arr = [];
-		console.log("HERE");
 		for (var x = 0 ;x  < searchres.length; x++) {
 			var img = "<img style='margin:0;padding:0;position:relative;left:0;margin-right:5px;' src='"+getLocalhost()+ "/companygroup/getThumbnailAct?Username=" + searchres[x].Username +  "'>";
 			arr.push(img + " " + searchres[x].Name + " (@"  + searchres[x].Username + ") - " + searchres[x].Type);
@@ -71,6 +70,7 @@ function newPost (autotag, maindiv) {
 }
 
 function getTags (words) {
+	words = words.replace('\n' , ' ');
     var tmplist = words.split(' ');
     var hashlist = [];
     var nonhashlist = [];
@@ -82,6 +82,14 @@ function getTags (words) {
     }
     return hashlist;
 }
+
+$(document).on("keypress", "#newpost" ,  function (e) {
+
+	if(e.keyCode==13) {
+		e.preventDefault();
+		$("#newpost").val($("#newpost").val() + " \n");
+	}
+})
 
 function newPostNewsFeed (autotag, maindiv) {
 	var section = $("<section>").addClass("post head card viewpost").appendTo(maindiv);
@@ -95,7 +103,7 @@ function newPostNewsFeed (autotag, maindiv) {
 	$(form).on("submit", function (ev) {
 		ev.preventDefault();
 		if ($("#newpost").val().trim() == "") {
-			alert("Oops! Looks lie you forgot to write a post");
+			alert("Oops! Looks like you forgot to write a post");
 		}
 		else if(getTags($("#newpost").val().trim()).length == 0) {
 			alert("Please tag 1 or more companies, groups and users.");
