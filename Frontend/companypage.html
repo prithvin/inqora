@@ -186,7 +186,7 @@
 		          </div>
 		          <div class="modal-body" >
 		          	 	<form id="loginform-modal-window"class="loginform">
-<center>		          	 <fb:login-button id="fblogin"  scope="public_profile,email" onlogin="autoFill()">Login with Facebook</fb:login-button></center>
+<center>		          	 <button id="fblogin" class="pure-button pure-button-primary" onclick="login()">Login with Facebook</button>
 					  <div class="group">
 					    <input class="myinput" placeholder="Username/ Email" id="username-modal-window" type="text"><span class="highlight"></span><span class="bar"></span>
 		
@@ -290,6 +290,7 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
 		<script src="manager.js"></script>
 		<script src="tooltips.js"></script>
+			<script src="Javascript/fb.js"></script>
 		<script src="Javascript/companypage.js"></script>
 		<script src="Javascript/postingsystem.js"></script>
 		<script src="Javascript/postinglisteners.js"></script>

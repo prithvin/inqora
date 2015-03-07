@@ -1,0 +1,12 @@
+<form id="createaccount">
+	<input id="referraltoken" hidden></input>
+	<input id="facebookauthtoken" hidden></input>
+	<input id="name" placeholder="Full Name"></input>
+	<input id="username" placeholder="Username"></input>
+	<input id="email" placeholder="Email"></input>
+	<input id="password" placeholder="Password"></input>
+	<input id="confirmpass" placeholder="Confirm Password"></input>
+	<br><br>
+	Select Profile Picture<br>
+	<input type="file" id="myFile">
+</form>

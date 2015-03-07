@@ -16,7 +16,7 @@
 		<link rel="stylesheet" type="text/css" href="CSS/messaging.css">
 		<link rel="stylesheet" type="text/css" href="CSS/viewstocks.css">
 		<link rel="icon" href="favicon.png" type="image/x-icon" />
-		<script type="text/javascript" src="//w.sharethis.com/button/buttons.js "></script>
+		<script type="text/javascript" src="https://w.sharethis.com/button/buttons.js "></script>
 		<script type="text/javascript">var switchTo5x=true;stLight.options({publisher: "3b51f3e7-db26-4944-a02f-89bcecc33f19", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>
 		<style>
 		.tooltips {
@@ -194,7 +194,7 @@
 		          </div>
 		          <div class="modal-body" >
 		          	 	<form id="loginform-modal-window"class="loginform">
-<center>		          	 <fb:login-button id="fblogin"  scope="public_profile,email" onlogin="autoFill()">Login with Facebook</fb:login-button></center>
+<center>		          	 <button id="fblogin" class="pure-button pure-button-primary" onclick="login()">Login with Facebook</button>
 					  <div class="group">
 					    <input class="myinput" placeholder="Username/ Email" id="username-modal-window" type="text"><span class="highlight"></span><span class="bar"></span>
 		
@@ -296,7 +296,8 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
 		<script src="manager.js"></script>
-		<script src="tooltips.js"></script>
+		<script src="tooltips.js"></script>	
+		<script src="Javascript/fb.js"></script>
 		<script src="Javascript/userpage.js"></script>
 		<script src="Javascript/postingsystem.js"></script>
 		<script src="Javascript/postinglisteners.js"></script>

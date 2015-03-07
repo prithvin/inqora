@@ -3,7 +3,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
  		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/0.5.0/pure-min.css">
-		<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+		<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css" />
 		<link rel="stylesheet" type="text/css" href="CSS/cardlayout.css">
 		<link rel="stylesheet" type="text/css" href="CSS/post.css">
@@ -16,7 +16,7 @@
 		<link rel="stylesheet" type="text/css" href="CSS/messaging.css">
 		<link rel="stylesheet" type="text/css" href="CSS/viewstocks.css">
 		<link rel="icon" href="favicon.png" type="image/x-icon" />
-		<script type="text/javascript" src="//w.sharethis.com/button/buttons.js "></script>
+		<script type="text/javascript" src="https://w.sharethis.com/button/buttons.js "></script>
 		<script type="text/javascript">var switchTo5x=true;stLight.options({publisher: "3b51f3e7-db26-4944-a02f-89bcecc33f19", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>
 		<style>
 		.tooltips {
@@ -171,7 +171,7 @@
 		          </div>
 		          <div class="modal-body" >
 		          	<form id="loginform-modal-window"class="loginform">
-<center>		          	 <fb:login-button id="fblogin"  scope="public_profile,email" onlogin="autoFill()">Login with Facebook</fb:login-button></center>
+<center>		          	 <button id="fblogin" class="pure-button pure-button-primary" onclick="login()">Login with Facebook</button>
 					  <div class="group">
 					    <input class="myinput" placeholder="Username/ Email" id="username-modal-window" type="text"><span class="highlight"></span><span class="bar"></span>
 		
@@ -274,6 +274,7 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
 		<script src="manager.js"></script>
 		<script src="tooltips.js"></script>
+			<script src="Javascript/fb.js"></script>
 		<script src="Javascript/newsfeed.js"></script>
 		<script src="Javascript/postingsystem.js"></script>
 		<script src="Javascript/postinglisteners.js"></script>

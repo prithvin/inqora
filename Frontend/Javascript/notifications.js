@@ -15,50 +15,48 @@ function getNotifsLOOOOOOL(calledfirs) {
 	});
 }
 
- (function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/en_US/sdk.js";
-  fjs.parentNode.insertBefore(js, fjs);
-  }(document, 'script', 'facebook-jssdk'));
+// Defaults to sessionStorage for storing the Facebook token
+     openFB.init({appId: '649452745161437'});
 
-  function autoFill () {
-    FB.api('/me', function(data) {
-     	callAJAX ("POST", "/users/authenticate", {User: data.email, FBAuth:data.id}, function (data) {
-			if (data == "Successfully authenticated") {
-				if (window.location.href.indexOf("login.html") != -1)
-					window.location = "newsfeed.html";
-				else 
-					window.location.replace(window.location.href);
-			}
-			else
-				alert(data);
-		});
-    });
-  }
-  window.fbAsyncInit = function() {
-    FB.init({
-      appId      : '649452745161437',
-      cookie     : true,  // enable cookies to allow the server to access the session
-      xfbml      : true,  // parse social plugins on this page
-      version    : 'v2.2' // use version 2.2
-    });
-    FB.getLoginStatus(function(response) {
-      if (response.status == "connected") {
-        callAJAX ("POST", "/users/authenticate", {User: data.email, FBAuth:data.id}, function (data) {
-			if (data == "Successfully authenticated") {
-				if (window.location.href.indexOf("login.html") != -1)
-					window.location = "newsfeed.html";
-				else 
-					window.location.replace(window.location.href);
-			}
-			else
-				console.log(data);
-		});
-      }
-    });
-  };
+    //  Uncomment the line below to store the Facebook token in localStorage instead of sessionStorage
+    //  openFB.init({appId: 'YOUR_FB_APP_ID', tokenStore: window.localStorage});
+ 
+
+    function errorHandler(error) {
+        alert(error.message);
+    }
+
+
+    function login() {
+        openFB.login(function(response) {
+            if(response.status === 'connected') {
+                alert('Facebook login succeeded');
+                loginTry();
+            } else {
+                alert('Facebook login failed: ' + response.error);
+            }
+        }, {scope: 'email,public_profile'});
+    }
+    function loginTry() {
+        openFB.api({
+            path: '/me',
+            success: function(data) {
+                callAJAX ("POST", "/users/authenticate", {User: data.email, FBAuth:data.id}, function (data) {
+                    console.log(data);
+                    if (data == "Successfully authenticated") {
+                        if (window.location.href.indexOf("index.html") != -1)
+                            window.location = "newsfeed.html";
+                        else 
+                            window.location.replace(window.location.href);
+                    }
+                    else
+                        console.log(data);
+                });
+            },
+            error: errorHandler
+        });
+         
+    }
 /*
  Notification.requestPermission(function (perm) {
     if (perm == "granted") {

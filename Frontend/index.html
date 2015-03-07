@@ -21,7 +21,7 @@
 <form id="loginform-modal-window"class="loginform" style="max-width:600px;">
  <center >
       <h1 style="font-size:3em;">Inqora Beta</h1><br>
-      <fb:login-button id="fblogin"  scope="public_profile,email" onlogin="autoFill()">Connect with Facebook</fb:login-button>
+      <button id="fblogin" class="pure-button pure-button-primary" onclick="login()">Login with Facebook</button>
     </center>
             <div class="group">
               <input class="myinput" placeholder="Username/ Email" id="username-modal-window" type="text"><span class="highlight"></span><span class="bar"></span>
@@ -47,9 +47,53 @@
 
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-<script src="manager.js"></script>
-<script src="Javascript/notifications.js"></script>
-<script>
 
- 
+<script src="manager.js"></script>
+<script src="Javascript/fb.js"></script>
+
+<script>
+     // Defaults to sessionStorage for storing the Facebook token
+     openFB.init({appId: '649452745161437'});
+
+    //  Uncomment the line below to store the Facebook token in localStorage instead of sessionStorage
+    //  openFB.init({appId: 'YOUR_FB_APP_ID', tokenStore: window.localStorage});
+
+    function login() {
+        openFB.login(function(response) {
+            if(response.status === 'connected') {
+                alert('Facebook login succeeded')
+                loginTry();
+            } else {
+                alert('Facebook login failed: ' + response.error);
+            }
+        }, {scope: 'email,public_profile'});
+    }
+    function loginTry() {
+        openFB.api({
+            path: '/me',
+            success: function(data) {
+                callAJAX ("POST", "/users/authenticate", {User: data.email, FBAuth:data.id}, function (data) {
+                    console.log(data);
+                    if (data == "Successfully authenticated") {
+                        if (window.location.href.indexOf("index.html") != -1)
+                            window.location = "newsfeed.html";
+                        else 
+                            window.location.replace(window.location.href);
+                    }
+                    else
+                        console.log(data);
+                });
+            },
+            error: errorHandler
+        });
+         
+    }
+
+
+  
+
+    function errorHandler(error) {
+        alert(error.message);
+    }
+
 </script>
