@@ -11,6 +11,7 @@
 }
 #menu a
 {
+	border-bottom:1px solid black;
 	  display: block;
 	  background: #F8F8F8;
 	  width: 260px;

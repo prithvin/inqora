@@ -44,9 +44,9 @@ window.setInterval(function () {
 
 console.log("\n\n\nHey there! We could really use your help in developing the Inqora community. \nIf you see any bugs, please contact narasimhan.prithvi@gmail.com.\nHope you are enjoying Inqora as much as we enjoyed building it! Keep investing!! #inqora ")
 		function getLocalhost() {
-			//return "http://localhost:3000";
+			return "http://localhost:3000";
 		//return "https://inqora2.herokuapp.com"
-		return "http://104.131.30.72/api";
+		//return "http://104.131.30.72/api";
 		}
 function callAJAX (mytype, url, datastruct, callback) {
 	$.ajax({
@@ -150,8 +150,12 @@ $('#loginform-modal-window').on('submit', function (ev) {
 	ev.preventDefault();
 	console.log("Signing in");
 	callAJAX ("POST", "/users/authenticate", {User: $("#username-modal-window").val(), Password:$("#password-modal-window").val()}, function (data) {
-		if (data == "Successfully authenticated")
-			window.location.replace(window.location.href);
+		if (data == "Successfully authenticated") {
+			if (window.location.href.indexOf("login.html") != -1)
+				window.location = "newsfeed.html";
+			else 
+				window.location.replace(window.location.href);
+		}
 		else
 			alert(data);
 	});

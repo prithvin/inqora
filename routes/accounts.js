@@ -1,6 +1,9 @@
 var express = require('express');
 var router = express.Router();
 
+var yahooFinance = require('yahoo-finance');
+
+
 function isSess (req) {
     if (req.session.UserId == null)
         return false;
@@ -122,97 +125,92 @@ router.get('/getuserprofile', function (req, res) {
 });
 
 /*
-	Create posts			10 points
-	Get likes on a post		3 points	
-	Get comments on your post		5 points per comment
+	Invite other users		20 points
+“Buy” Companies		0 - 10 based on S&P ranking beat (total average and average of S&P based on time periods whne it is bought)
+Get followed by another user		3 points
+Get likes on a post		1 points		
+Get comments on your post	2 points per comment
 
-Comment on other posts 	1 ppoint
-	Get likes on the comments THAT YOU MAKE (Notrandom user commenting on your psot)	5 points per like
-Like other posts		1 point
-Invite other users		100 points
-Get followed by another user		15 points
 
-“Buy” Companies		0 - 100 based on S&P ranking beat (total average and average of S&P based on time periods whne it is bought)
-
+Get likes on the comments	1 points per like
 
 */
 
 router.get('/pointval' , function (req, res) {
 	users.findOne({_id: req.session.UserId}, function (err, data) {
-		pointstable = {
-			PostCreatedByGivenUser: [], // In frotned, just link to user profile
-			/*{
-				PostId: 
-				PostTitle: 
-				NumComments:
-				NetLikes: 
-			}*/
-			CommentOnOtherPosts: {}, // In frontend, just link to user "commented"
-			/*
-			PostId IS KEY
-			PostTitle
-			NumLikesOnComments
-			*/
-		};
 		if (data == null)
 			res.send("Error. User not in session");
 		else {
-			var posts = data.Notifications.PostUserCommentedOrPosted;
-			var postsusermade = [];
-			var postsusercommented = [];
-			for (var x= 0; x < posts.length; x++) {
-				if (posts[x].wasComment == false)
-					postsusermade.push(posts[x].PostId);
-				else 
-					postsusercommented.push(posts[x].PostId);
-			}
-			getPostLikesAndCommentsLOL(postsusermade, 0, function (pointstable) {
-				getWhoInteractedWithMyComments(postsusercommented, 0, pointstable, req.session.UserId,  function (){ 
+			var obj = {
+				Invites: 0,
+				StockFollowing: 0,
+				FollowedBy: 0,
+				NumPosts: 0,
+				LikesOnPost: 0,
+				CommentsOnPost: 0,
+				NumCommentMade: 0,
+				LikesOnMyComments:0
+			};
 
-				});
-			}, pointstable); // gets recursively posts lieks and comments
+			//How many invites
+			obj.Invites =  data.Notifications.WhoJoined.length;
+
+			//How many followers
+			obj.FollowedBy = data.Followers.length;
+
+			//How many likes and comments
+			posts.find({PosterUsername: data.Username},function (err, data2) {
+				if (data == null)
+					console.log("Sorry, you made no posts");
+				else {
+					obj.NumPosts = data2.length;
+					var commentcounter = 0;
+					var likecounter = 0;
+					for (var x= 0; x < data2.length; x++) {
+						likecounter += data2[x].Votes.WhoUpvoted.length - data2[x].Votes.WhoDownvoted.length;
+						commentcounter += data2[x].Comments.length;
+					}
+					obj.LikesOnPost= likecounter;
+					obj.CommentsOnPost = commentcounter;
+
+					var stuff = data.Notifications.PostUserCommentedOrPosted;
+					var ids = [];
+					for (var x =0;x  < stuff.length;x++) {
+						if (stuff[x].wasComment == true)
+							ids.push(stuff[x].PostId);
+					}
+					obj.NumCommentMade = ids.length;
+					recursiveCheck(ids,obj, 0, 0, data, res);
+					
+				}
+			});	
 		}
 	});
 });
 
-function getWhoInteractedWithMyComments(arr, x, pointstable, sessionid, callback) {
-	if (arr.length == x)
-		callback(pointstable);
+
+function recursiveCheck(ids, obj, x, numlikes, data, res) {
+	if (x == ids.length) {
+		console.log(numlikes);
+		obj.LikesOnMyComments = numlikes;
+		res.send(obj);
+	}
 	else {
-		posts.findOne({_id: arr[x]}, function (err, data) {
-			if (pointstable.CommentOnOtherPosts[arr[x]] == null) {
-				var obj = {
-					PostId: arr[x],
-					PostTitle: data.Title,
-					NumLikesOnComments: 0
-				};
-				for (var i = 0; i < data.Comments.length; i++) {
-					if (data.Comments[i].Creator == sessionid) {
-						obj.NumLikesOnComments += (data.Comments[i].Votes.WhoUpvoted - data.Comments[i].Votes.WhoDownvoted);
+		posts.findOne({_id: ids[x]}, function (err, data2) {
+			if (data2 == null) {
+				recursiveCheck(ids, obj, (x+1), numlikes, data, res);
+			}
+			else {
+				for (var i =0; i < data2.Comments.length; i++) {
+					if (data2.Comments[i].Creator == data._id) {
+						numlikes += data2.Comments[i].Votes.WhoUpvoted.length -  data2.Comments[i].Votes.WhoDownvoted.length;
 					}
 				}
+				recursiveCheck(ids, obj, (x+1), numlikes, data, res);
 			}
 		});
 	}
 }
-
-function getPostLikesAndCommentsLOL(arr, x, callback, pointstable) {
-	if (arr.length == x)
-		callback(pointstable);
-	else {
-		posts.findOne({_id: arr[x]}, function (err, data) {
-			var obj = {
-				PostId: arr[x],
-				PostTitle: data.Title,
-				NumComments: data.Comments.length,
-				NetLikes: data.Votes.WhoUpvoted - data.Votes.WhoDownvoted
-			};
-			pointstable.push(obj);
-			getPostLikesAndCommentsLOL(arr, x+1, callback, pointstable);
-		});
-	}
-}
-
 
 
 module.exports = router;

@@ -2,6 +2,9 @@
         html * {
             font-family: 'Open Sans', sans-serif !IMPORTANT;
         }
+        body {
+          padding-bottom:90px !IMPORTANT;
+        }
 .fa {
   font-family: FontAwesome !IMPORTANT;
     content: "\f0c4" !IMPORTANT;

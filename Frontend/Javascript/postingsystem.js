@@ -183,6 +183,8 @@ function createPost(postid, maindiv, appendafter, callback) {
 		if (callback != null)
 			callback();
 		//$(section).html("");
+		if (data.Title == "S Rathinam Manohar is eating TKGL for lunch.")
+			$(section).remove();
 		var img = $("<img>").addClass("profpicclassindicatormaincard").attr("src", data.Thumbnail);
 		var h1 = $("<h1>").addClass("align-center").html(data.Title).prepend(img).appendTo(section);
 		var h2 = $("<h2>").addClass("description align-center").appendTo(section);

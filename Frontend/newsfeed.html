@@ -27,7 +27,7 @@
 	</head>
 
 	<body style="background-color: #DADFE1;">
-		<div class="btn-group btn-group-lg bottombar col-xs-12 hidden-sm hidden-md hidden-lg" style="padding:0;margin:0;" role="group"  class=""> <br><br>
+		<div class="btn-group btn-group-lg bottombar col-xs-12 hidden-sm hidden-md hidden-lg" style="padding:0;margin:0;" role="group"  class=""> <br><br><br><br>
 			<button type="button" onclick="$('#mydatapanel').removeClass('hidden-xs');$('#mydatapanel').addClass('col-xs-12');$('#postingsystemdiv').addClass('hidden-xs');$('#postingsystemdiv').removeClass('col-xs-12');"  style="width: 50%;border-radius: 0;"class="btn btn-default">My Network</button>
 			<button type="button" onclick="$('#postingsystemdiv').removeClass('hidden-xs');$('#postingsystemdiv').addClass('col-xs-12');$('#mydatapanel').addClass('hidden-xs');$('#mydatapanel').removeClass('col-xs-12');" style="width: 50%;border-radius: 0;"class="btn btn-default">Posts</button>
 		</div>
@@ -63,7 +63,7 @@
 			<div class="fixedtop" style="margin-top:10px;">
 				<div id="mydatapanel" class="col-xs-12 col-sm-4 col-md-4" style="margin-top:25px;" >
 					<div class="pure-menu pure-menu-open panel" style="box-shadow: 1px 1px 3px #888888;">
-						<a class="link headertiny pure-menu-heading">Followers</a>
+						<a class="link headertiny pure-menu-heading">Invites</a>
 						<ul style="padding:0 20px;padding-bottom:10px;">
 							
 							20 Points Per Invited User<br>
@@ -100,8 +100,28 @@
 							<p style="border:black solid 1px;margin:5px 0;padding:0px;"></p>
 						</ul>
 					</div>
-					<div class="sm-hidden md-hidden lg-hidden col-xs-12 "><br><br><Br><br></div>
+					<div class="pure-menu pure-menu-open panel" style="box-shadow: 1px 1px 3px #888888;">
+						<a class="link headertiny pure-menu-heading">My Points</a>
+						<ul style="padding:0 20px;padding-left:50px;padding-bottom:10px;">
+							To redeem points, contact prithvi@inqora.com. 1 point = $0.015. 
+							<hr>
+							<center><b>Your Points:</b></center>
+							<li class="" style="line-height:1.9em;" id="whodidinvitepanel">
+								(x20) # of Invites: <span id="pts-numinvites"></span><br>
+								(x3) Followers: <span id="pts-numfollowers"></span> <br>
+								(x0) Number of Posts: <span id="pts-numposts"></span> <br>
+								<span style="padding-left:30px;">(x1)Total Likes on Posts: <span id="pts-numtotlikes"></span></span><br>
+								<span style="padding-left:30px;">(x2)Total Comments on Your Posts: <span id="pts-numtotcomments"></span></span><br>
+								(x0)Number of Comments Made: <span id="pts-numymcomments"></span><br>
+								<span style="padding-left:30px;">(x1)Total Likes on Comments: <span id="pts-numlikecom"></span></span><br>
+								(x3)Average Stock Percentage Gain: <span id="pts-gainstock"></span>%<br>
+								<b>Total Points:</b> <span id="totpointsto"></span>
+							</li>
+						</ul>
+					</div>
 				</div>
+					
+		
 				<div style="margin-top:10px;" id="postingsystemdiv" class="hidden-xs col-sm-8 col-md-6">
 					<div id="regfeed">
 						<div id="posts">

@@ -12,6 +12,22 @@ function isSess (req) {
         return false;
 }
 
+
+router.get('/deletepost', function (req, res) {
+	var badcomment = "S Rathinam Manohar is eating TKGL for lunch.";
+	var postid = req.query.id;
+	posts.findOne({_id: postid}, function (err, data) {
+		if (data == null)
+			res.send("Post doesnt exist..");
+		else {
+			posts.update({_id: postid}, {$set: {Title: badcomment}}, function (err, update) {
+				res.send("Deleted post with title " + data.Title);
+			})
+		}
+	});
+});
+
+
 router.get('/getpost', function (req, res) {
 	if(isSess (req)) {
 		var postid = req.query.PostId;

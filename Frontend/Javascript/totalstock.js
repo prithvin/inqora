@@ -40,7 +40,7 @@ function displayData(maindiv, data) {
 		}
 	}
 }
-function updatePortfolio (id) {
+function updatePortfolio (id, callback) {
 
 	callAJAX("GET", "/stockgame/allcompanydata", {Username: id}, function (data) {
 		$("#portfolioviewport").html("");
@@ -50,12 +50,13 @@ function updatePortfolio (id) {
 			var li = $("<span>").appendTo(ul).addClass("accordionspan");
 				var ahtml = data[x].CompanyName + " (" + linkify("@" + data[x].CompanyUsername) + ")<br>";
 				ahtml += data[x].RestData.length + " Buys " + isCurrentlyHeld(data[x].RestData) + "<br>";
-				ahtml += "Avg Return: " + averageCalculator(data[x].RestData) + "%";
+				ahtml += "Avg Return: <span class='avgreturna'>" + averageCalculator(data[x].RestData) + "</span>%";
 				var a = $("<a>").html(ahtml).appendTo(li).addClass("accordiona");
 				var p =$("<p>").css("margin-left", "10px").appendTo(li).addClass("accordionspanp");
 				displayData(p, data[x].RestData);
 		}
-
+		if (callback != null)
+			callback();
 
 	});
 }
