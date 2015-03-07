@@ -151,7 +151,7 @@ $('#loginform-modal-window').on('submit', function (ev) {
 	console.log("Signing in");
 	callAJAX ("POST", "/users/authenticate", {User: $("#username-modal-window").val(), Password:$("#password-modal-window").val()}, function (data) {
 		if (data == "Successfully authenticated") {
-			if (window.location.href.indexOf("login.html") != -1)
+			if (window.location.href.indexOf("login.html") != -1 || window.location.href.indexOf("index.html") != -1)
 				window.location = "newsfeed.html";
 			else 
 				window.location.replace(window.location.href);
