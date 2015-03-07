@@ -13,7 +13,7 @@
   var regex =/((\S*@\[[^\]]+\])|(\S*@\S+))/ig;
   if(nolink)
      return str.replace(regex, "<span onmouseover='inlineTool(this);'  href=''>$1</span>");
-    return str.replace(regex, "<span><a onmouseover='inlineTool(this);' style='display:inline;padding:0;' href='directtotype.html?id=$1'>$1</a></span>");
+    return str.replace(regex, "<span><a onmouseover='inlineTool(this);' href='' style='display:inline;padding:0;' class='directtotype'>$1</a></span>");
 }
 
 function inlineTool (obj) {
@@ -23,7 +23,7 @@ function inlineTool (obj) {
 function makeToolTipRemove(maindiv, classAdd, innerHTML, link, username, maindivclear) {
       $(maindiv).html("");
   var whoposted = $("<p>").addClass("tooltips " + classAdd).attr({"name" : username, 'tooltip-position': "top", 'tooltip-type': "primary" , "tooltip" : "<div class='mainspantool'>Loading...</div>"}).appendTo(maindiv);
-  var spanlink = $("<a>").attr("href" , link).css("display", "inline").css("padding", "0").html(innerHTML).appendTo(whoposted);
+  var spanlink = $("<a>").attr("href" , link).css("display", "inline").css("padding", "0").html(innerHTML).appendTo(whoposted).addClass("directtotype");;
   callAJAX("GET", "/getusertooltip", {Username: username}, function (data2){
 
      $(whoposted).attr("tooltip", data2);

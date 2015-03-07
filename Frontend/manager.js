@@ -61,6 +61,39 @@ function callAJAX (mytype, url, datastruct, callback) {
 		}
 	});
 }
+
+$(document).on("click" , ".directtotype", function (ev) {
+	ev.preventDefault();
+	alert("One moment please...");
+	runFile($(this).html());
+});
+
+function runFile (user) {
+		var user = user.substring(1);
+		$.ajax({
+			type: "GET",
+			url: getLocalhost() + "/companygroup/getType",
+			data: {
+				Username: user
+			},
+			success:function(data) {
+				if (data.toString().toLowerCase() == "user") 
+					window.location.assign("userpage.html?id=" + user);
+				else if (data.toString().toLowerCase() == "company")
+					window.location.assign("companypage.html?id=" + user);
+				else if (data.toString().toLowerCase() == "group")
+					window.location.assign("grouppage.html?id=" + user);
+				else 
+					window.history.back();
+			},
+			xhrFields: {withCredentials: true},
+			error:function(){
+				console.log("ERROR");
+			}
+		});
+	}
+
+
 $(".fixedtop").css("top", $("#navsearchmainsearch").height() + "px");
 if ($("#messages").length != 0 && $("#messages").offset() != null)
 	$("#messages").css("height",  Math.min(document.documentElement.clientHeight, window.innerHeight || 0) - $("#messages").offset().top - $("#messager").height() - 50);
