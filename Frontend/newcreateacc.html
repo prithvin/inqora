@@ -21,7 +21,7 @@
 	<form id="createaccount"class="loginform" style="max-width:600px;">
 		<center >
 			<h1>Create Account</h1><br>
-			<fb:login-button id="fblogin"  scope="public_profile,email" onlogin="loggedIn()">Connect with Facebook</fb:login-button>
+			<fb:login-button id="fblogin"  scope="public_profile,email" onlogin="autoFill()">Connect with Facebook</fb:login-button>
 		</center>
 		<input id="referraltoken" hidden></input>
 		<input id="facebookauthtoken" value="-1" hidden></input>
