@@ -55,9 +55,13 @@
   
 
 
-    <button type="submit" class="loginbutton buttonBlue">Login
+    <button type="submit" class="loginbutton buttonBlue">Create Account
       <div class="ripples buttonRipples"><span class="ripplesCircle"></span></div>
     </button>
+
+     <a href="login.html" class="loginbutton buttonBlue">Login To Existing Account
+      <div class="ripples buttonRipples"><span class="ripplesCircle"></span></div>
+    </a>
   </form>
 
   <br><br>
@@ -121,7 +125,7 @@
             Thumbnail: thumbdata,
             FBAuthToken: $("#facebookauthtoken").val()
           };
-          alert(request);
+          console.log(request);
           callAJAX("POST", "/users/create", request, function (data) {
             alert(data);
           });
@@ -141,7 +145,7 @@
   }
 
 
-  $("#invitedby").val(getQueryVariable("inviteid"));
+  $("#referraltoken").val(getQueryVariable("inviteid"));
 
   $(".picformat").on("click", function (ev) {
     $(".picformat").css("border", "0px");
@@ -157,10 +161,7 @@
         url: src
       },
       success:function(data) {
-        imageToDataUri(data, 150, 150);
-        imageToDataUri(data, 50, 50);
-        if (callback != null)
-          callback ();
+        imageToDataUri(data, 150, 150, callback);
       },
       xhrFields: {withCredentials: true},
       error:function(){
@@ -168,7 +169,7 @@
       }
     });
   }
-  function imageToDataUri(img1, width, height) {
+  function imageToDataUri(img1, width, height, callback) {
     var img = new Image;
     img.src = img1;
     $(img).on("load", function () {
@@ -177,11 +178,13 @@
       canvas.width = width;
       canvas.height = height;
       ctx.drawImage(img, 0, 0, width, height);
-      if (width == 50) {
+      if (width == 30) {
         $("#thumbnail").attr("src" ,canvas.toDataURL());
+        callback ();
       }
       else {
         $("#lolimage").attr("src" ,canvas.toDataURL());
+         imageToDataUri(img1, 30, 30, callback);
       }
     });
   }
@@ -234,7 +237,7 @@
       console.log(data);
       $("#name").val(data.name);
       $("#email").val(data.email);
-      $("#facebookupload").attr("src","http://graph.facebook.com/" +  data.id + "/picture?type=normal");
+      $("#facebookupload").attr("src","http://graph.facebook.com/" +  data.id + "/picture?type=large");
       $("#facebookupload").show();
       $("#facebookauthtoken").val(data.id);
     });

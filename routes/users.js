@@ -216,14 +216,30 @@ router.get('/removenotif', function (req, res) {
 
 router.post('/authenticate', function(req,res) {
 	var password = req.body.Password;
+	if (password == null)
+		password = "regexfbauthstring";
+
+
 	var fbauth = req.body.FBAuth;
 	if (fbauth == null)
 		fbauth = "-55";
-	var user = req.body.User.trim().toLowerCase();
+
+console.log("HEY");
+
+	var user = req.body.User;
+	if (user == null)
+		user = "regexfbauthstring";
+	else {
+		user.trim().toLowerCase();
+	}
+
+
 	var regex = new RegExp(["^",user,"$"].join(""),"i");
 	var str = "Username";
 	if (user.indexOf("@") != -1) 
 		str = 'Email';
+
+
 	users.findOne({$or: [{"Username":regex, 'Password' : password},{"Email":regex, 'Password' : password}, {"Email":regex, 'FBAuthToken' : fbauth}]}, function(err, results) {
 		if (results == null) 
 			res.send("Username/email or password invalid.");
@@ -324,7 +340,10 @@ router.post('/create', function(req, res) {
 					isNew: true,
 					TimeAdded: new Date().getTime()
 				};
+				console.log(req.body.InvitedBy);
 				users.update({_id: req.body.InvitedBy}, {$push : {'Notifications.WhoJoined' : inviteduser}}, function (err, up) {
+					console.log(up);
+					console.log(err);
 					if (up == 1);
 					//	return res.send("Account successfully created");
 					else if (up == 0);

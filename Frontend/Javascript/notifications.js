@@ -25,7 +25,7 @@ function getNotifsLOOOOOOL(calledfirs) {
 
   function autoFill () {
     FB.api('/me', function(data) {
-     	callAJAX ("POST", "/users/authenticate", {Email: data.email, FBAuth:data.id}, function (data) {
+     	callAJAX ("POST", "/users/authenticate", {User: data.email, FBAuth:data.id}, function (data) {
 			if (data == "Successfully authenticated")
 				window.location.replace(window.location.href);
 			else
@@ -42,7 +42,12 @@ function getNotifsLOOOOOOL(calledfirs) {
     });
     FB.getLoginStatus(function(response) {
       if (response.status == "connected") {
-        autoFill();
+        callAJAX ("POST", "/users/authenticate", {User: data.email, FBAuth:data.id}, function (data) {
+			if (data == "Successfully authenticated")
+				window.location.replace(window.location.href);
+			else
+				console.log(data);
+		});
       }
     });
   };
