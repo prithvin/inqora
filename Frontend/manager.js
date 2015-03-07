@@ -3,6 +3,7 @@ $.ajax ({
 	url: getLocalhost() + "/accounts/issess",
 	data: {},
 	success: function (data) {
+		$.getScript("cordova.js");
 		if (data == "true")  {
 			semiProp();
 		}
@@ -62,7 +63,7 @@ function callAJAX (mytype, url, datastruct, callback) {
 }
 $(".fixedtop").css("top", $("#navsearchmainsearch").height() + "px");
 if ($("#messages").length != 0 && $("#messages").offset() != null)
-	$("#messages").css("height",  Math.max(document.documentElement.clientHeight, window.innerHeight || 0) - $("#messages").offset().top - $("#messager").height() - 50);
+	$("#messages").css("height",  Math.min(document.documentElement.clientHeight, window.innerHeight || 0) - $("#messages").offset().top - $("#messager").height() - 50);
 $(window).resize(function(){
 	$(".fixedtop").css("top", $("#navsearchmainsearch").height() + "px");
 	if( isBreakpoint('xs') ) {
@@ -72,7 +73,7 @@ $(window).resize(function(){
 		$(".fixedtop").css("position", "absolute");
 	}
 	if ($("#messages").length != 0)
-		$("#messages").css("height",  Math.max(document.documentElement.clientHeight, window.innerHeight || 0) - $("#messages").offset().top - $("#messager").height() - 50);
+		$("#messages").css("height",  Math.min(document.documentElement.clientHeight, window.innerHeight || 0) - $("#messages").offset().top - $("#messager").height() - 50);
 });
 
 function isBreakpoint( alias ) {

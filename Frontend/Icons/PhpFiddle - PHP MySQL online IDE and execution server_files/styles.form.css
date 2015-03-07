@@ -1,0 +1,268 @@
+.layout_struct {
+	min-height: 100%;
+	margin: 0;
+	padding: 0;
+}
+
+.layout_container {
+	min-height: 100%; 
+	position: relative;	
+}
+
+.layout_header {
+	width: 94.6%;
+	margin-left: 3%;
+	height: 50px;
+	background-image: url(/images/bg_sand_light.jpg);
+}
+
+.header_upper {
+	position: absolute;
+	left: 0;
+	width: 100%;
+	margin-top: 10px;
+}
+
+.header_left, .footer_left {
+	position: absolute;
+	left: 5%;
+	width: 30%;
+	text-align: left;
+	margin: 8px;
+	line-height: 120px;
+}
+
+.header_right {
+	position: absolute;
+	left: 35%;
+	width: 60%;
+	text-align: right;
+	margin: 5px;
+	line-height: 120px;
+}
+
+.footer_down {
+	position: absolute;
+	left: 0;
+	width: 100%;
+	line-height: 180px;	
+}
+
+.footer_center {
+	width: 100%;
+	text-align: center;
+	background-image: url(/images/bg_sand_light.jpg);
+	box-shadow: 0px 0px 0px 1px #ccc inset;
+}
+
+.top_menu {
+	width: 92.6%;
+	margin-left: 4%;
+	text-align: left;
+	background-image: url(/images/bg_sand_light.jpg);
+}
+
+.footer_center {
+	margin-bottom: 40px;
+}
+
+.footer_right {
+	position: absolute;
+	left: 65%;
+	width: 30%;
+	text-align: center;
+	margin: 5px;
+	line-height: 118px;
+}
+
+.header_left>img, .header_center>img, .header_right>img, .footer_left>img, .footer_right>img {
+	vertical-align:middle;	
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+}
+
+.top_menu {
+	margin-top: 0px;
+	line-height: 40px;
+}
+
+.layout_body {
+	margin-top: 0px;
+	/*padding-bottom: 10px;*/
+}
+
+.layout_footer {
+	position: absolute;
+	height: 120px;
+	width: 92.6%;
+	margin-left: 4%;
+	background-image: url(/images/bg_sand_light.jpg);
+}
+
+.layout_footer_copyright {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	height: 60px;
+}
+
+.footer_copyright_center {
+	position: absolute;
+	left: 5%;
+	width: 90%;
+	text-align: center;
+	margin: 5px;
+	line-height: 40px;
+}
+
+.editor_menu {
+	position: relative;
+	left: 0.5%;
+	width: 99%;
+	text-align: center;
+	margin: 0 0 8px;
+	line-height: 40px;
+}
+
+.configuration_menu, .document_menu {
+	position: relative;
+	left: 5%;
+	width: 90%;
+	text-align: center;
+	margin: 10px;
+	line-height: 60px; 
+}
+
+.form_content {
+	padding: 10px;
+	width: 760px;
+	-moz-border-radius: 10px;
+}
+
+.row {
+	display: block;
+	padding: 5px;
+	min-height: 22px;
+}
+
+.over {
+	border: 1px solid;
+	-moz-border-radius: 16px;
+	-webkit-border-radius: 16px;
+    border-radius: 16px;
+	background-color: #e6e2af;
+}
+
+iframe {
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+}
+
+.div_shadow_rounded {	
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	-moz-box-shadow: 0px 5px 20px #9a9a9a;
+	-webkit-box-shadow: 0px 5px 20px #9a9a9a;
+	box-shadow: 0px 5px 20px #9a9a9a;
+	zoom: 1;
+	-ms-filter: progid:DXImageTransform.Microsoft.Shadow(color='#969696', Direction=135, Strength=3);
+	filter: progid:DXImageTransform.Microsoft.Shadow(color='#969696', Direction=135, Strength=3);
+}
+
+input.rounded, textarea.rounded {
+	border: 1px solid #ccc;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	-moz-box-shadow: 2px 2px 3px #666;
+	-webkit-box-shadow: 2px 2px 3px #666;
+	box-shadow: 2px 2px 3px #666;
+	font-size: 14px;
+	padding: 4px 7px;
+	outline: 0;
+	-webkit-appearance: none;
+}
+
+select.rounded {
+	-webkit-appearance: none;
+	-webkit-border-radius: 6px;
+	-webkit-scrollbar: 8px;
+	-moz-appearance: none;
+    appearance: none;
+	border: 1px solid #ccc;
+	-moz-border-radius: 6px;
+	-khtml-border-radius: 6px;
+	border-radius: 6px;
+	padding: 4px 0;
+	outline: 0;
+	background-color:#E9F4FD;
+	color:#2e6e9e;
+	font-weight: bold;
+	cursor:pointer;
+	text-indent: 0.01px;
+    text-overflow: '';
+}
+
+input.rounded:focus, textarea.rounded:focus , select.rounded:focus {
+	border-color: #339933;
+}
+
+input.rounded_lite {
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+	-khtml-border-radius: 6px;
+	border-radius: 6px;
+	border: 1px solid #ccc;
+	padding: 3px 3px;
+	outline: 0;
+}
+
+input.shadow {
+	border: 1px solid #ccc;
+	-moz-box-shadow: 2px 2px 3px #666;
+	-webkit-box-shadow: 2px 2px 3px #666;
+	box-shadow: 2px 2px 3px #666;
+	font-size: 14px;
+	padding: 4px 7px;
+	outline: 0;
+	-webkit-appearance: none;
+}
+
+input.shadow:focus {
+	border-color: #339933;
+}
+
+div.document {
+	margin-left: 30px; 
+	margin-right: 30px;
+}
+
+#doctab{font-size:1.0em;color:#2E6E9E;left:0;top:140px;margin:0;padding:0;position:fixed;z-index:5000;}
+#doctab a:hover {font-size:1.4em;}
+#apistab{font-size:1.0em;color:#2E6E9E;left:0;top:180px;margin:0;padding:0;position:fixed;z-index:5000;}
+#apistab a:hover {font-size:1.4em;}
+#widgetstab{font-size:1.0em;color:#2E6E9E;left:0;top:220px;margin:0;padding:0;position:fixed;z-index:5000;}
+#widgetstab a:hover {font-size:1.4em;}
+#litetab{font-size:1.0em;color:#2E6E9E;left:0;top:280px;margin:0;padding:0;position:fixed;z-index:5000;}
+#litetab a:hover {font-size:1.4em;}
+#cliruntab{font-size:1.1em;color:#2E6E9E;left:0;top:320px;margin:0;padding:0;position:fixed;z-index:5000;}
+#cliruntab a:hover {font-size:1.4em;}
+#mobiletab{font-size:1.4em;color:#2E6E9E;left:0;top:360px;margin:0 0 0 3px;padding:0;position:fixed;z-index:5000;}
+#mobiletab a:hover {font-size:1.4em;}
+#gistab{font-size:1.0em;color:#2E6E9E;left:0;top:420px;margin:0;padding:0;position:fixed;z-index:5000;}
+#gistab a:hover {font-size:1.4em;}
+#twtab{font-size:1.0em;color:#2E6E9E;left:0;top:460px;margin:0;padding:0;position:fixed;z-index:5000;}
+#twtab a:hover {font-size:1.4em;}
+#fbtab{font-size:1.0em;color:#2E6E9E;left:0;top:500px;margin:0;padding:0;position:fixed;z-index:5000;}
+#fbtab a:hover {font-size:1.4em;}
+#termstab{font-size:1.0em;color:#2E6E9E;left:0;top:560px;margin:0;padding:0;position:fixed;z-index:5000;}
+#termstab a:hover {font-size:1.4em;}
+#cntab{font-size:1.0em;color:#2E6E9E;left:0;top:600px;margin:0;padding:0;position:fixed;z-index:5000;}
+#cntab a:hover {font-size:1.4em;}
+
+::-webkit-scrollbar { width:8px; height:8px;}
+::-webkit-scrollbar-track { background:rgba(0, 0, 0, 0.1);}
+::-webkit-scrollbar-thumb { background:rgba(0, 0, 0, 0.2); border-radius:5px;}

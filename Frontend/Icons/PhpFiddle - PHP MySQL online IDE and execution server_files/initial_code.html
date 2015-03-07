@@ -1,0 +1,257 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!-- saved from url=(0045)http://phpfiddle.org/deposit/initial_code.php -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+
+<title>Initial Code Setting</title>
+
+<script type="text/javascript">
+if (self == top) location.href="errors/reject.html";
+
+var jslibs = null;	
+var phplibs = null;
+var with_head = null;
+var without_head = null;
+var initial_check = null;
+
+function load() {
+	jslibs = document.getElementById("js_libs");	
+	phplibs = document.getElementById("php_libs");
+	with_head = document.getElementById("with_head");	
+	without_head = document.getElementById("without_head");
+	initial_check = document.getElementById("initial_check");
+}
+
+function show_js_libs() {
+	if (jslibs.style.display == 'none') {
+		jslibs.style.display = "inline";
+		phplibs.style.display = "none";
+	}
+}
+
+function show_php_libs() {
+	if (phplibs.style.display == 'none') {
+		phplibs.style.display = "inline";
+		jslibs.style.display = "none";
+	} 
+}
+
+function trans_checked() {
+	if (with_head.checked){
+		var items = "initial_check=" + initial_check.value + "&head_body=withhead";
+		var jslibs = document.getElementsByName("jslibs");
+		var htmllibs = document.getElementsByName("htmllibs");
+		var phplibs = document.getElementsByName("phplibs");
+		
+		for (var i = 0, len=jslibs.length; i < len; i++){
+			if (jslibs[i].checked) {
+				items += "&jslibs[]=" + jslibs[i].value;
+			}
+		}
+		
+		for (var i = 0, len=htmllibs.length; i < len; i++){
+			if (htmllibs[i].checked) {
+				items += "&htmllibs[]=" + htmllibs[i].value;
+			}
+		}
+		
+		for (var i = 0, len=phplibs.length; i < len; i++){
+			if (phplibs[i].checked) {
+				items += "&phplibs[]=" + phplibs[i].value;
+			}
+		}
+	}
+	
+	if (without_head.checked){
+		var items = "initial_check=" + initial_check.value + "&head_body=withouthead";
+		var mphplibs = document.getElementsByName("mphplibs");
+		
+		for (var i = 0, len=mphplibs.length; i < len; i++){
+			if (mphplibs[i].checked) {
+				items += "&mphplibs[]=" + mphplibs[i].value;
+			}
+		}
+	}
+	
+	parent.set_initial(items);
+}
+
+</script>
+
+<style type="text/css">
+<!--
+body {font: 100%/1.4 Verdana, Arial, Helvetica, sans-serif; margin: 0;padding: 0; color: #000;}
+ul, ol, dl { padding: 0;	margin: 0;}
+h1, h2, h3, h4, h5, h6, p {	margin-top: 0; padding-right: 15px; padding-left: 15px; }
+a img {	border: none;}
+a:link {color:#414958;	text-decoration: underline;}
+a:visited {	color: #4E5869;	text-decoration: underline;}
+a:hover, a:active, a:focus { text-decoration: none;}
+.crsmb {width: 100%; height: 100%; overflow: auto; -webkit-overflow-scrolling: touch;}
+.container {width: 90%;	max-width: 1560px; min-width: 780px; background: #FFF; margin: 0 auto;}
+.content { padding: 10px 0; }
+.content ul, .content ol { padding: 0 15px 15px 40px; }
+.rounded { border: 1px solid #ccc; -moz-border-radius: 8px; -webkit-border-radius: 8px; border-radius: 8px; -moz-box-shadow: 2px 2px 3px #666; -webkit-box-shadow: 2px 2px 3px #666; box-shadow: 2px 2px 3px #666; font-size: 14px; padding: 4px 7px; outline: 0; -webkit-appearance: none;}
+.rounded:hover { border: 1px solid #4297d7; }
+.rdbig {width: 1.3em; height: 1.3em; vertical-align: middle; -moz-appearance: none;}
+-->
+</style>
+
+</head>
+
+<body onload="load()" background="bg_sand_light.jpg">
+<div class="crsmb">
+<div class="container">
+ <div class="content">
+	<h4 style="margin-top:30px; text-align:center;">Setting initial code to the editor</h4>
+	
+	<div style="margin:60px auto 300px 60px;">
+			
+			<input id="with_head" class="rdbig" type="radio" name="head_body" value="withhead" onclick="show_js_libs()"> Initial code with HTML head and body tags<br><br>
+			<div id="js_libs" style="margin-left: 30px; display: none;">
+				<p><i>Check JavaScript libraries, leave it empty if you don't need</i></p>
+				<table width="96%" border="0" style="margin-left:30px; margin-bottom: 30px;">
+					<tbody><tr>
+						<td width="45%" height="30"><input type="checkbox" name="jslibs" value="jquery"><label style="margin-left: 30px;">jQuery</label></td>
+						<td width="45%" height="30"><input type="checkbox" name="jslibs" value="jquery_ui"><label style="margin-left: 30px;">jQuery UI</label></td>
+					</tr><tr>
+						<td width="45%" height="30"><input type="checkbox" name="jslibs" value="jquery_validation"><label style="margin-left: 30px;">jQuery Validation</label></td>
+						<td width="45%" height="30"><input type="checkbox" name="jslibs" value="jquery_datatables"><label style="margin-left: 30px;">jQuery DataTables</label></td>
+					</tr><tr>
+						<td width="45%" height="30"><input type="checkbox" name="jslibs" value="jquery_mobile"><label style="margin-left: 30px;">jQuery Mobile</label></td>
+						<td width="45%" height="30"><input type="checkbox" name="jslibs" value="jquery_humanmsg"><label style="margin-left: 30px;">jQuery Humanmsg</label></td>
+					</tr><tr>
+						<td width="45%" height="30"><input type="checkbox" name="jslibs" value="jquery_colortip"><label style="margin-left: 30px;">jQuery Colortip</label></td>
+						<td width="45%" height="30"><input type="checkbox" name="jslibs" value="mootools"><label style="margin-left: 30px;">Mootools</label></td>
+					</tr><tr>
+						<td width="45%" height="30"><input type="checkbox" name="jslibs" value="prototype"><label style="margin-left: 30px;">Prototype</label></td>
+						<td width="45%" height="30"><input type="checkbox" name="jslibs" value="aculo_us" title="Loading Prototype before loading this library"><label style="margin-left: 30px;">script.aculo.us</label></td>
+					</tr><tr>
+						<td width="45%" height="30"><input type="checkbox" name="jslibs" value="swfobject"><label style="margin-left: 30px;">SWFObject</label></td>
+						<td width="45%" height="30"><input type="checkbox" name="jslibs" value="ext_core"><label style="margin-left: 30px;">Ext Core</label></td>
+					</tr><tr>
+						<td width="45%" height="30"><input type="checkbox" name="jslibs" value="modernizr"><label style="margin-left: 30px;">Modernizr</label></td>
+						<td width="45%" height="30"><input type="checkbox" name="jslibs" value="underscorejs"><label style="margin-left: 30px;">Underscore.js</label></td>
+					</tr><tr>
+						<td width="45%" height="30"><input type="checkbox" name="jslibs" value="tinybox2"><label style="margin-left: 30px;">Tinybox2</label></td>
+						<td width="45%" height="30"><input type="checkbox" name="jslibs" value="enhancejs"><label style="margin-left: 30px;">Enhance-JS test framework</label></td>
+					</tr><tr>
+						<td width="45%" height="30"><input type="checkbox" name="jslibs" value="phpjs"><label style="margin-left: 30px;">Php.js partial</label></td>
+						<td width="45%" height="30"><input type="checkbox" name="jslibs" value="jsoop"><label style="margin-left: 30px;">Object-Oriented JS initial code</label></td>
+					</tr>
+				</tbody></table>
+				
+				<p><i>Check form, table or Ajax request, leave it empty if you don't need</i></p>
+				<table width="96%" border="0" style="margin-left:30px; margin-bottom: 30px;">
+					<tbody><tr>
+						<td width="45%" height="30"><input type="checkbox" name="htmllibs" value="form"><label style="margin-left: 30px;">HTML Form</label></td>
+						<td width="45%" height="30"><input type="checkbox" name="htmllibs" value="cssform"><label style="margin-left: 30px;">CSS Form</label></td>
+					</tr><tr>
+						<td width="45%" height="30"><input type="checkbox" name="htmllibs" value="table"><label style="margin-left: 30px;">HTML Table</label></td>
+						<td width="45%" height="30"><input type="checkbox" name="htmllibs" value="csstable"><label style="margin-left: 30px;">CSS Table</label></td>
+					</tr>
+					<tr>
+						<td width="45%" height="30"><input type="checkbox" name="htmllibs" value="ajaxclient"><label style="margin-left: 30px;">Ajax request</label></td>
+						<td width="45%" height="30"><input type="checkbox" name="jslibs" value="bootstrap"><label style="margin-left: 30px;">Twitter Bootstrap</label></td>
+					</tr>
+				</tbody></table>
+				
+				<p><i>Check libraries, databases or samples, leave it empty if you don't need</i></p>
+				<table width="96%" border="0" style="margin-left:30px; margin-bottom:60px;">
+					<tbody><tr>
+						<td width="45%" height="30"><input type="checkbox" name="phplibs" value="pfinc"><label style="margin-left: 30px;">Include other linked code</label></td>
+						<td width="45%" height="30"><input type="checkbox" name="phplibs" value="forward"><label style="margin-left: 30px;">Redirect to other linked code</label></td>
+					</tr><tr>
+						<td width="45%" height="30"><input type="checkbox" name="phplibs" value="mysqli"><label style="margin-left: 30px;">Mysqli</label></td>
+						<td width="45%" height="30"><input type="checkbox" name="phplibs" value="pdomysql"><label style="margin-left: 30px;">PDO_MySQL</label></td>
+					</tr><tr>
+						<td width="45%" height="30"><input type="checkbox" name="phplibs" value="pdosqlite"><label style="margin-left: 30px;">PDO_SQLite</label></td>
+						<td width="45%" height="30"><input type="checkbox" name="phplibs" value="idiorm"><label style="margin-left: 30px;">Idiorm ORM Library</label></td>
+					</tr><tr>
+						<td width="45%" height="30"><input type="checkbox" name="phplibs" value="soapclient"><label style="margin-left: 30px;">SOAP client-side</label></td>
+						<td width="45%" height="30"><input type="checkbox" name="phplibs" value="soapserver"><label style="margin-left: 30px;">SOAP server-side</label></td>
+					</tr><tr>
+						<td width="45%" height="30"><input type="checkbox" name="phplibs" value="xmlrpcclient"><label style="margin-left: 30px;">XML-RPC client-side</label></td>
+						<td width="45%" height="30"><input type="checkbox" name="phplibs" value="xmlrpcserver"><label style="margin-left: 30px;">XML-RPC server-side</label></td>
+					</tr><tr>
+						<td width="45%" height="30"><input type="checkbox" name="phplibs" value="sendemail"><label style="margin-left: 30px;">Send email with PHPMailer</label></td>
+						<td width="45%" height="30"><input type="checkbox" name="phplibs" value="dbug"><label style="margin-left: 30px;">dBug!</label></td>						
+					</tr><tr>
+						<td width="45%" height="30"><input type="checkbox" name="phplibs" value="underscorephp"><label style="margin-left: 30px;">Underscore.php</label></td>
+						<td width="45%" height="30"><input type="checkbox" name="phplibs" value="respect"><label style="margin-left: 30px;">Respect validation engine</label></td>
+					</tr><tr>
+						<td width="45%" height="30"><input type="checkbox" name="phplibs" value="googchart"><label style="margin-left: 30px;">GoogChart</label></td>	
+						<td width="45%" height="30"><input type="checkbox" name="phplibs" value="phprofile"><label style="margin-left: 30px;">PHP Profile</label></td>			
+					</tr><tr>
+						<td width="45%" height="30"><input type="checkbox" name="phplibs" value="httpful"><label style="margin-left: 30px;">HTTP client with Httpful</label></td>
+						<td width="45%" height="30"><input type="checkbox" name="phplibs" value="domparser"><label style="margin-left: 30px;">Simple HTML DOM Parser</label></td>
+					</tr><tr>
+						<td width="45%" height="30"><input type="checkbox" name="phplibs" value="savant"><label style="margin-left: 30px;">Savant template system</label></td>
+						<td width="45%" height="30"><input type="checkbox" name="phplibs" value="twig"><label style="margin-left: 30px;">Twig template engine</label></td>
+					</tr><tr>
+						<td width="45%" height="30"><input type="checkbox" name="phplibs" value="simpletest"><label style="margin-left: 30px;">SimpleTest PHP unit tester</label></td>
+						<td width="45%" height="30"><input type="checkbox" name="phplibs" value="zf2lib"><label style="margin-left: 30px;">Zend Framework 2 library</label></td>
+					</tr>
+				</tbody></table>
+			</div>
+			<br>
+			<input id="without_head" class="rdbig" type="radio" name="head_body" value="withouthead" checked="checked" onclick="show_php_libs()"> Initial code without HTML head and body tags<br><br>
+			<div id="php_libs" style="margin-left:30px;">
+				<p><i>Check libraries, databases or samples, leave it empty if you don't need</i></p>
+				<table width="96%" border="0" style="margin-left:30px;">
+					<tbody><tr>
+						<td width="45%" height="30"><input type="checkbox" name="mphplibs" value="pfinc"><label style="margin-left: 30px;">Include other linked code</label></td>
+						<td width="45%" height="30"><input type="checkbox" name="mphplibs" value="forward"><label style="margin-left: 30px;">Redirect to other linked code</label></td>
+					</tr><tr>
+						<td width="45%" height="30"><input type="checkbox" name="mphplibs" value="mysqli"><label style="margin-left: 30px;">Mysqli</label></td>
+						<td width="45%" height="30"><input type="checkbox" name="mphplibs" value="pdomysql"><label style="margin-left: 30px;">PDO_MySQL</label></td>
+					</tr><tr>
+						<td width="45%" height="30"><input type="checkbox" name="mphplibs" value="pdosqlite"><label style="margin-left: 30px;">PDO_SQLite</label></td>
+						<td width="45%" height="30"><input type="checkbox" name="mphplibs" value="idiorm"><label style="margin-left: 30px;">Idiorm ORM Library</label></td>
+					</tr><tr>
+						<td width="45%" height="30"><input type="checkbox" name="mphplibs" value="soapclient"><label style="margin-left: 30px;">SOAP client-side</label></td>
+						<td width="45%" height="30"><input type="checkbox" name="mphplibs" value="soapserver"><label style="margin-left: 30px;">SOAP server-side</label></td>
+					</tr><tr>
+						<td width="45%" height="30"><input type="checkbox" name="mphplibs" value="xmlrpcclient"><label style="margin-left: 30px;">XML-RPC client-side</label></td>
+						<td width="45%" height="30"><input type="checkbox" name="mphplibs" value="xmlrpcserver"><label style="margin-left: 30px;">XML-RPC server-side</label></td>
+					</tr><tr>
+						<td width="45%" height="30"><input type="checkbox" name="mphplibs" value="sendemail"><label style="margin-left: 30px;">Send email with PHPMailer</label></td>
+						<td width="45%" height="30"><input type="checkbox" name="mphplibs" value="dbug"><label style="margin-left: 30px;">dBug!</label></td>
+					</tr><tr>
+						<td width="45%" height="30"><input type="checkbox" name="mphplibs" value="underscorephp"><label style="margin-left: 30px;">Underscore.php</label></td>
+						<td width="45%" height="30"><input type="checkbox" name="mphplibs" value="respect"><label style="margin-left: 30px;">Respect validation engine</label></td>
+					</tr><tr>
+						<td width="45%" height="30"><input type="checkbox" name="mphplibs" value="googchart"><label style="margin-left: 30px;">GoogChart</label></td>
+						<td width="45%" height="30"><input type="checkbox" name="mphplibs" value="phprofile"><label style="margin-left: 30px;">PHP Profile</label></td>			
+					</tr><tr>
+						<td width="45%" height="30"><input type="checkbox" name="mphplibs" value="httpful"><label style="margin-left: 30px;">HTTP client with Httpful</label></td>
+						<td width="45%" height="30"><input type="checkbox" name="mphplibs" value="domparser"><label style="margin-left: 30px;">Simple HTML DOM Parser</label></td>
+					</tr><tr>
+						<td width="45%" height="30"><input type="checkbox" name="mphplibs" value="savant"><label style="margin-left: 30px;">Savant template system</label></td>
+						<td width="45%" height="30"><input type="checkbox" name="mphplibs" value="twig"><label style="margin-left: 30px;">Twig template engine</label></td>
+					</tr><tr>
+						<td width="45%" height="30"><input type="checkbox" name="mphplibs" value="simpletest"><label style="margin-left: 30px;">SimpleTest PHP unit tester</label></td>
+						<td width="45%" height="30"><input type="checkbox" name="mphplibs" value="zf2lib"><label style="margin-left: 30px;">Zend Framework 2 library</label></td>
+					</tr><tr>
+						<td width="45%" height="30"><input type="checkbox" name="mphplibs" value="zf2sample"><label style="margin-left: 30px;">Zend Framework 2 sample</label></td>
+						<td width="45%" height="30"><input type="checkbox" name="mphplibs" value="singleton"><label style="margin-left: 30px;">Singleton Design Pattern</label></td>
+					</tr><tr>
+						<td width="45%" height="30"><input type="checkbox" name="mphplibs" value="dao"><label style="margin-left: 30px;">Dao Design Pattern</label></td>
+						<td width="45%" height="30"><input type="checkbox" name="mphplibs" value="algorithm"><label style="margin-left: 30px;">Sorting Algorithm in PHP</label></td>
+					</tr>
+				</tbody></table>
+			</div>
+			
+			<input id="initial_check" type="hidden" name="initial_check" value="f4f892881ff19d3afcdb5acc6b0fc0df"><br>
+			
+			<button type="button" onclick="trans_checked()" onmouseover="this.style.cursor=&#39;pointer&#39;;" class="rounded" style="float: right; margin-top: 60px; margin-right: 45%; padding: 4px; font-size: 0.9em; cursor: pointer; background-color: rgb(233, 244, 253);" title=" Generate initial code "> &nbsp; Get the code &nbsp; </button> 
+		
+	</div>
+	
+ <!-- end .content --></div>
+<!-- end .container --></div>
+</div>
+
+
+
+</body></html>

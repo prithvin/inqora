@@ -444,4 +444,24 @@ router.get('/getuser', function (req, res) {
 		}
 	});
 });
+
+var gcm = require('node-gcm');
+router.get('/hey', function (req, res) {
+	var message = new gcm.Message();
+	var sender = new gcm.Sender('AIzaSyB8McDGlYPmp2UGUkb1faTkgScGKDhnze8');
+	var registrationIds = ["APA91bH0YhtQ7cy5QcbWF21EZ__1LKLA0k-gpL1cr26mJmPD8wceK5AINDqdaXuAXIyIfrEoBFFvKyyTGoqUg_zF1eSuiHQurtGYTEABNWATDAi8WcSYOwyDeb0DFqSvx6MgMaSOLFcLflG7Jf2asfXo3e7EjtnH8w"];
+	message.addData('message',"\u270C Peace, Love \u2764 and PhoneGap \u2706!");
+	message.addData('title','Push Notification Sample' );
+	message.addData('msgcnt','3'); // Shows up in the notification in the status bar
+	//message.addData('soundname','beep.wav'); //Sound to play upon notification receipt - put in the www folder in app
+	//message.collapseKey = 'demo';
+	//message.delayWhileIdle = true; //Default is false
+	console.log(message);;
+	message.timeToLive = 3000;// Duration in seconds to hold in GCM and retry before timing out. Default 4 weeks (2,419,200 seconds) if not specified.
+	sender.send(message, registrationIds, 4, function (err, result) {
+		console.log("SENT SHIT");
+    	console.log(result);
+    	console.log(err);
+	});
+});
 module.exports = router;

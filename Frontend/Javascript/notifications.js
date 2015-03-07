@@ -50,7 +50,7 @@ function getNotifsLOOOOOOL(calledfirs) {
                             window.location.replace(window.location.href);
                     }
                     else
-                        console.log(data);
+                        alert("No account connected to Facebook profile");
                 });
             },
             error: errorHandler

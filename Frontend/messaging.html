@@ -123,7 +123,7 @@
 		          </div>
 		          <div class="modal-body" >
 		          	 	<form id="loginform-modal-window"class="loginform">
-<center>		          	 <button id="fblogin" class="pure-button pure-button-primary" onclick="login()">Login with Facebook</button>
+<center>		          	 <button id="fblogin" class="pure-button pure-button-primary" onclick="login()">Login with Facebook</button><br><br>
 					  <div class="group">
 					    <input class="myinput" placeholder="Username/ Email" id="username-modal-window" type="text"><span class="highlight"></span><span class="bar"></span>
 		
@@ -252,7 +252,7 @@
 		}
 		
 		function getInbox() {
-			$("#messages").css("height",  Math.max(document.documentElement.clientHeight, window.innerHeight || 0) - $("#messages").offset().top - $("#messager").height() - 50);
+			$("#messages").css("height",  Math.min(document.documentElement.clientHeight, window.innerHeight || 0) - $("#messages").offset().top - $("#messager").height() - 50);
 			callAJAX ("GET", "/messaging/inboxlist", {}, function (data) {
 				$( ".messagingtoolname" ).remove();
 				for (var x =0; x < data.length; x++) {
@@ -274,7 +274,7 @@
 
 
 		function messageUser (username) {
-			$("#messages").css("height",  Math.max(document.documentElement.clientHeight, window.innerHeight || 0) - $("#messages").offset().top - $("#messager").height() - 50);
+			$("#messages").css("height",  Math.min(document.documentElement.clientHeight, window.innerHeight || 0) - $("#messages").offset().top - $("#messager").height() - 50);
 			if (username != $("#usernameformessage").html()) {
 				$("#usernameformessage").html(username);
 				$("#messages").html("");
@@ -284,6 +284,7 @@
 			}
 		}
 		function keepCalling (usernamepassed) {
+			$("#messages").css("height",  Math.min(document.documentElement.clientHeight, window.innerHeight || 0) - $("#messages").offset().top - $("#messager").height() - 50);
 			var username = $("#usernameformessage").html();
 			if (username != usernamepassed) {
 				
@@ -313,8 +314,10 @@
 					if (data.length != 0) {
 						$('#messages').animate({scrollTop: $('#messages').get(0).scrollHeight}, 0);
 					}
+					if (str == "/messaging/getmessagesforuser/" + username + "/") {
+						$("#messages").css("height",  Math.min(document.documentElement.clientHeight, window.innerHeight || 0) - $("#messages").offset().top - $("#messager").height() - 50);
+					}
 
-		$('#messages').css('height',  Math.max(document.documentElement.clientHeight, window.innerHeight || 0) - $('#messages').offset().top - $('#messager').height() - 50);
 					keepCalling(usernamepassed);
 				}, 1000);
 			}
@@ -339,6 +342,7 @@
 			}
 		});
 		if(getQueryVariable("id")) {
+			$("#messages").css("height",  Math.min(document.documentElement.clientHeight, window.innerHeight || 0) - $("#messages").offset().top - $("#messager").height() - 50);
 			messageUser (getQueryVariable("id"));
 			$('#messagingpanel').removeClass('hidden-xs');	
 			$('#otherpanel').addClass('hidden-xs');

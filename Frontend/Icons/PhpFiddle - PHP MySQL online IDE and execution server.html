@@ -1,0 +1,1245 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!-- saved from url=(0021)http://phpfiddle.org/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="description" content="PhpFiddle provides Web IDE and execution environment for PHP/MySQL, HTML/CSS/JavaScript coding online">
+<meta name="keywords" content="PhpFiddle, PhpFiddle Lite, PhpFiddle CliRun, PhpFiddle Mobile, PhpFiddle Widgets, PhpFiddle APIs, PHP online IDE, Coding online">
+<meta name="language" content="en">
+<meta name="subject" content="PhpFiddle Main">
+<meta name="generator" content="PhpFiddle.org">
+<meta name="copyright" content="2012-2015">
+<meta name="rating" content="GENERAL">
+<meta name="document-rating" content="Safe for all">
+<meta name="audience" content="Everyone">
+<meta name="DC.Language" content="en">
+<meta name="DC.Publisher" content="PhpFiddle">
+<meta name="robots" content="all">
+<meta name="googlebot" content="all">
+<meta name="google-site-verification" content="-w1sP1X5W6vStgKttB8fTpxncaShDuYvfMFfvPFsqS4">
+<meta name="msvalidate.01" content="EF86C3F2376F5AE24C7A4D9F98EB8C6D">
+
+<title>PhpFiddle - PHP/MySQL online IDE and execution server</title>
+
+<script type="text/javascript" async="" src="./PhpFiddle - PHP MySQL online IDE and execution server_files/ga.js"></script><script type="text/javascript" src="./PhpFiddle - PHP MySQL online IDE and execution server_files/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="/js/jquery/1.7.2/jquery.min.js"><\/script>')</script>
+
+<link type="text/css" href="./PhpFiddle - PHP MySQL online IDE and execution server_files/jquery-ui.custom.css" rel="stylesheet">
+<link type="text/css" href="./PhpFiddle - PHP MySQL online IDE and execution server_files/codemirror.css" rel="stylesheet">
+<link type="text/css" href="./PhpFiddle - PHP MySQL online IDE and execution server_files/css_set.css" rel="stylesheet">
+<link type="text/css" href="./PhpFiddle - PHP MySQL online IDE and execution server_files/font-awesome.min.css" rel="stylesheet">
+<link type="text/css" href="./PhpFiddle - PHP MySQL online IDE and execution server_files/styles.form.css" rel="stylesheet">
+<link type="text/css" href="./PhpFiddle - PHP MySQL online IDE and execution server_files/humanmsg.css" rel="stylesheet">
+<link type="text/css" href="./PhpFiddle - PHP MySQL online IDE and execution server_files/filetree.css" rel="stylesheet">
+<link type="text/css" href="./PhpFiddle - PHP MySQL online IDE and execution server_files/jquery.alerts.css" rel="stylesheet">
+<link rel="apple-touch-icon" href="http://phpfiddle.org/apple-touch-icon.png">
+
+<script type="text/javascript" src="./PhpFiddle - PHP MySQL online IDE and execution server_files/jquery-ui.custom.min.js"></script>
+<script type="text/javascript" src="./PhpFiddle - PHP MySQL online IDE and execution server_files/codemirror.min.js"></script>
+<script type="text/javascript" src="./PhpFiddle - PHP MySQL online IDE and execution server_files/allmixed.min.js"></script>
+<script type="text/javascript" src="./PhpFiddle - PHP MySQL online IDE and execution server_files/js_set.min.js"></script>
+<script type="text/javascript" src="./PhpFiddle - PHP MySQL online IDE and execution server_files/humanmsg.js"></script>
+<script type="text/javascript" src="./PhpFiddle - PHP MySQL online IDE and execution server_files/jquery.hotkeys-0.7.9.min.js"></script>
+<script type="text/javascript" src="./PhpFiddle - PHP MySQL online IDE and execution server_files/jquery.mousewheel.min.js"></script>
+<script type="text/javascript" src="./PhpFiddle - PHP MySQL online IDE and execution server_files/filetree.js"></script>
+<script type="text/javascript" src="./PhpFiddle - PHP MySQL online IDE and execution server_files/time_bkgrnd.js"></script>
+
+<script type="text/javascript">
+	var main_server = "http://phpfiddle.org";
+	var sub_server = "http://xfiddle.com";
+	var ee_server = "http://main.xfiddle.com";
+	var brsghd = { dft : "f41e3e96c89bafd2829320cdce0fa642", 
+			phpfiddle : "27a12693f00627af7ad4a1f5d51f7b95",
+			setoken : "5b172fb414541a3c200d736555008510",
+			deletoken : "ba87d47daf1a09b9e41e1845f76693a4" };
+	var my_dir = '';
+	var editor ='';
+	var updt_id = '';
+	var ee_id = '';
+	var fid = '';
+	var fd_ad = '';
+	
+	$(document).ready(function() {
+		if (self != top) top.location = self.location;
+		$('#main_tabs').tabs({selected: 0});
+		
+		editor = CodeMirror.fromTextArea(document.getElementById("textarea_1"), {
+					lineNumbers: true,
+					mode: "application/x-httpd-php",
+					collapseRange: true,
+					autoCloseBrackets: true,
+					matchBrackets: true,
+					autoCloseTags: true,
+					indentWithTabs: true,
+					lineWrapping: true,
+					indentUnit: 4,
+					enterMode: "keep",
+					tabMode: "shift",
+					theme: "eclipse",
+					extraKeys: {"Alt-Z": "autocomplete", "Alt-X": "autocompletejs", "Alt-Q": "blockcomment"}});
+		
+		var cm_scr = $('.CodeMirror-scroll');
+		
+		cm_scr.bind('mousewheel', function(e, d) {
+			if (((cm_scr.get(0).scrollHeight - cm_scr.height() - this.scrollTop) < 32) && d < 0) {
+				e.preventDefault();
+			}
+		});
+		
+		cm_scr.hover(function(){
+			cm_scr.get(0).style.cursor = "text";
+		});
+		
+		CodeMirror.commands.autocomplete = function(cm) {
+			CodeMirror.simpleHint(cm, CodeMirror.javascriptHint);
+		}
+		
+		CodeMirror.commands.autocompletejs = function(cm) {
+			CodeMirror.simpleHint(cm, CodeMirror.coffeescriptHint);
+		}
+		
+		CodeMirror.commands.blockcomment = function(cm) {
+			cm.replaceSelection("\n/* \n * \n*/\n", "end");
+		}
+		
+		$('button').button();
+
+		if (navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('Chrome') == -1) {
+			$("select").css( "font-family", "");
+		}
+		$("#link_container").html("Link id : <strong><a href=\"#\" class=\"link_key\" name=\"store\" title=\" The code in public \">p9bm-p1g8<\/a><\/strong><br \/><div style=\"margin-left:5%; margin-right:5%;\" title=\" Code description \"><img src=\"\/images\/description.png\" width=\"10\" height=\"10\" border=\"0\" style=\"vertical-align: middle;\"> sintaxe array php54<\/div><br \/><br \/>Link id : <strong><a href=\"#\" class=\"link_key\" name=\"store\" title=\" The code in public \">wxyp-fjd9<\/a><\/strong><br \/><div style=\"margin-left:5%; margin-right:5%;\" title=\" Code description \"><img src=\"\/images\/description.png\" width=\"10\" height=\"10\" border=\"0\" style=\"vertical-align: middle;\"> Fun\u00e7\u00e3o para gerar string.<\/div><br \/><br \/>Link id : <strong><a href=\"#\" class=\"link_key\" name=\"store\" title=\" The code in public \">h08h-yqs9<\/a><\/strong><br \/><div style=\"margin-left:5%; margin-right:5%;\" title=\" Code description \"><img src=\"\/images\/description.png\" width=\"10\" height=\"10\" border=\"0\" style=\"vertical-align: middle;\"> Format all non-array numbers<\/div><br \/><br \/>Link id : <strong><a href=\"#\" class=\"link_key\" name=\"store\" title=\" The code in public \">t8cy-vxej<\/a><\/strong><br \/><div style=\"margin-left:5%; margin-right:5%;\" title=\" Code description \"><img src=\"\/images\/description.png\" width=\"10\" height=\"10\" border=\"0\" style=\"vertical-align: middle;\"> Text extraction<\/div><br \/><br \/>Link id : <strong><a href=\"#\" class=\"link_key\" name=\"store\" title=\" The code in public \">erju-40bt<\/a><\/strong><br \/><div style=\"margin-left:5%; margin-right:5%;\" title=\" Code description \"><img src=\"\/images\/description.png\" width=\"10\" height=\"10\" border=\"0\" style=\"vertical-align: middle;\"> Pagination basics<\/div><br \/><br \/>Link id : <strong><a href=\"#\" class=\"link_key\" name=\"store\" title=\" The code in public \">xmf7-r0bu<\/a><\/strong><br \/><div style=\"margin-left:5%; margin-right:5%;\" title=\" Code description \"><img src=\"\/images\/description.png\" width=\"10\" height=\"10\" border=\"0\" style=\"vertical-align: middle;\"> Pagination basics.<\/div><br \/><br \/>Link id : <strong><a href=\"#\" class=\"link_key\" name=\"store\" title=\" The code in public \">hcyh-9s3w<\/a><\/strong><br \/><div style=\"margin-left:5%; margin-right:5%;\" title=\" Code description \"><img src=\"\/images\/description.png\" width=\"10\" height=\"10\" border=\"0\" style=\"vertical-align: middle;\"> Lorem Lorem Lorem Lorem Lorem Lorem<\/div><br \/><br \/>Link id : <strong><a href=\"#\" class=\"link_key\" name=\"store\" title=\" The code in public \">ituy-f91t<\/a><\/strong><br \/><div style=\"margin-left:5%; margin-right:5%;\" title=\" Code description \"><img src=\"\/images\/description.png\" width=\"10\" height=\"10\" border=\"0\" style=\"vertical-align: middle;\"> PHP Exception Demonstration<\/div><br \/><br \/>Link id : <strong><a href=\"#\" class=\"link_key\" name=\"store\" title=\" The code in public \">tkae-cwgz<\/a><\/strong><br \/><div style=\"margin-left:5%; margin-right:5%;\" title=\" Code description \"><img src=\"\/images\/description.png\" width=\"10\" height=\"10\" border=\"0\" style=\"vertical-align: middle;\"> Maggiorenne LPW 2015<\/div><br \/><br \/>Link id : <strong><a href=\"#\" class=\"link_key\" name=\"store\" title=\" The code in public \">g2a6-nyu2<\/a><\/strong><br \/><div style=\"margin-left:5%; margin-right:5%;\" title=\" Code description \"><img src=\"\/images\/description.png\" width=\"10\" height=\"10\" border=\"0\" style=\"vertical-align: middle;\"> Postino LPW 2015 ver 2<\/div><br \/><br \/>Link id : <strong><a href=\"#\" class=\"link_key\" name=\"store\" title=\" The code in public \">zs30-0gtd<\/a><\/strong><br \/><div style=\"margin-left:5%; margin-right:5%;\" title=\" Code description \"><img src=\"\/images\/description.png\" width=\"10\" height=\"10\" border=\"0\" style=\"vertical-align: middle;\"> Postino LPW 2015<\/div><br \/><br \/>Link id : <strong><a href=\"#\" class=\"link_key\" name=\"store\" title=\" The code in public \">hr2j-7y9w<\/a><\/strong><br \/><div style=\"margin-left:5%; margin-right:5%;\" title=\" Code description \"><img src=\"\/images\/description.png\" width=\"10\" height=\"10\" border=\"0\" style=\"vertical-align: middle;\"> test stroptime<\/div><br \/><br \/>Link id : <strong><a href=\"#\" class=\"link_key\" name=\"store\" title=\" The code in public \">7ru3-9wu4<\/a><\/strong><br \/><div style=\"margin-left:5%; margin-right:5%;\" title=\" Code description \"><img src=\"\/images\/description.png\" width=\"10\" height=\"10\" border=\"0\" style=\"vertical-align: middle;\"> MMG php code quiz 2<\/div><br \/><br \/>Link id : <strong><a href=\"#\" class=\"link_key\" name=\"store\" title=\" The code in public \">xfyv-nu93<\/a><\/strong><br \/><div style=\"margin-left:5%; margin-right:5%;\" title=\" Code description \"><img src=\"\/images\/description.png\" width=\"10\" height=\"10\" border=\"0\" style=\"vertical-align: middle;\"> login_form<\/div><br \/><br \/>Gist id : <strong><a href=\"#\" class=\"link_key\" name=\"gist\" title=\" The code in github:gist \">ac8c33257142c62b5219<\/a><\/strong><br \/><div style=\"margin-left:5%; margin-right:5%;\" title=\" Code description \"><img src=\"\/images\/description_gist.png\" width=\"10\" height=\"10\" border=\"0\" style=\"vertical-align: middle;\"> For test pushnotification-v2<\/div><br \/><br \/>Gist id : <strong><a href=\"#\" class=\"link_key\" name=\"gist\" title=\" The code in github:gist \">6efaded258a619c66e5b<\/a><\/strong><br \/><div style=\"margin-left:5%; margin-right:5%;\" title=\" Code description \"><img src=\"\/images\/description_gist.png\" width=\"10\" height=\"10\" border=\"0\" style=\"vertical-align: middle;\"> For test pushnotification<\/div><br \/><br \/>Link id : <strong><a href=\"#\" class=\"link_key\" name=\"store\" title=\" The code in public \">82h0-zji7<\/a><\/strong><br \/><div style=\"margin-left:5%; margin-right:5%;\" title=\" Code description \"><img src=\"\/images\/description.png\" width=\"10\" height=\"10\" border=\"0\" style=\"vertical-align: middle;\"> http:\/\/otvet.mail.ru\/question\/175830241<\/div><br \/><br \/>Link id : <strong><a href=\"#\" class=\"link_key\" name=\"store\" title=\" The code in public \">yjk9-7d63<\/a><\/strong><br \/><div style=\"margin-left:5%; margin-right:5%;\" title=\" Code description \"><img src=\"\/images\/description.png\" width=\"10\" height=\"10\" border=\"0\" style=\"vertical-align: middle;\"> Using AJAX.<\/div><br \/><br \/>");$("#main_tabs").tabs({selected: 1});document.getElementById("iframe_1").contentWindow.location.href = "http://phpfiddle.org/deposit/initial_code.php";		
+		if ((typeof( window.innerHeight ) == 'number') && (window.innerHeight > 600)){
+			var scrnheight = window.innerHeight;
+			$("#main_tabs div.ui-tabs-panel").css("overflow", "auto").css("height", scrnheight - 140);
+			$(".CodeMirror").css("height", scrnheight - 240);
+			$("#eetree").css("height", scrnheight - 260);
+			$("#iframe_1").css("height", scrnheight - 230);
+			$("#iframe_2").css("height", scrnheight - 240);
+			$("#link_container").css("height", scrnheight - 250);
+			 
+		} else {
+			$("#main_tabs div.ui-tabs-panel").css({"height" : "600px", "overflow:" : "auto"});
+		}
+		
+		$('#dialog_link, ul#icons li').hover (
+			function() { $(this).addClass('ui-state-hover'); },
+			function() { $(this).removeClass('ui-state-hover'); }
+		);
+		
+		$('#link_container').bind('mousewheel', function(e, d) {
+			if ((($('#link_container').get(0).scrollHeight - $('#link_container').height() - this.scrollTop) < 32) && d < 0) {
+				e.preventDefault();
+			}
+		});
+		
+				
+		$('#iframe_1').bind('mousewheel', function(e, d) {
+			if ((($('#iframe_1').get(0).scrollHeight - $('#iframe_1').height() - this.scrollTop) < 32) && d < 0) {
+				e.preventDefault();
+			}
+		});
+		
+		$('#iframe_2').bind('mousewheel', function(e, d) {
+			if ((($('#iframe_2').get(0).scrollHeight - $('#iframe_2').height() - this.scrollTop) < 32) && d < 0) {
+				e.preventDefault();
+			}
+		});
+		
+		$('body').on('click', 'a.link_key', function() {
+			if ($(this).parents('#mylink_container').length === 0) {
+				link_code($(this).text(), $(this).attr('name'), 'links');
+			} else {
+				link_code($(this).text(), $(this).attr('name'), 'mylinks');
+			}
+		});
+		
+		$('#url_content').keypress(function(event){
+			var keycode = (event.keyCode ? event.keyCode : event.which);
+			if(keycode == '13'){ return false; }
+		});
+			
+		$("#datetime1").datepicker({dateFormat: 'yy-mm-dd'});
+		$("#datetime2").datepicker({dateFormat: 'yy-mm-dd'});
+		
+	});
+	
+	$(window).load(function() {
+		$('<img>')[0].src = '/js/themeroller1.8.20/images/ui-bg_gloss-wave_55_5c9ccc_500x100.png';
+		$('<img>')[0].src = '/images/description.png';
+		$('<img>')[0].src = '/images/description_gist.png';
+		
+		$('#webtools').change(function() {
+			if ($(this).val() == "clirun_tl") {
+				window.open(main_server + "/clirun", "_blank");
+			} else if ($(this).val() == "lite_tl") {
+				window.open(main_server + "/lite", "_blank");
+			} else if ($(this).val() == "mobile_tl") {
+				window.open(main_server + "/mobile", "_blank");
+			}
+			document.getElementById("webtools").selectedIndex = 0;
+		});
+		
+		$('#run_button').click(function() {
+			if ((ee_id != '') && (fid == ee_id.substr(5, 8))) {
+				document.getElementById("iframe_1").contentWindow.location.href = ee_server + '/' + ee_id.substring(5);
+				$("#main_tabs").tabs({selected: 1});
+				return false;
+			} else {
+				$('#operation').val('run_button');
+				if ($.browser.msie) { $('#textarea_1').val(get_edited_code()); }
+				$("#main_tabs").tabs({selected: 1});
+				return true;
+			}
+		});
+		
+		$('#ini_code').click(function() {
+			document.getElementById("iframe_1").contentWindow.location.href = main_server + "/deposit/initial_code.php";
+		});
+		
+		$('#intru_button').click(function() {
+			document.getElementById("iframe_1").contentWindow.location.href = main_server + "/deposit/intru_detect.php";
+		});
+		
+		$('#kvals_button').click(function() {
+			document.getElementById("iframe_1").contentWindow.location.href = main_server + "/api/kvadmin";
+		});
+				
+		$('#phphelp_button').click(function() {
+			$("#info_dialog").dialog({width:500, height:400, show: 'slide', hide: {effect: 'slide', duration: 1000}, title: '<i class="fa fa-book" style="color:#2E6E9E;"></i> PHP Reference', buttons: {"Cancel": function(){$(this).dialog("close");}, "Get reference": info_digest}}).html('<div style="margin:30px auto; text-align:center;"><input id="phpref" value="" size="40" maxlength="80" autofocus="autofocus" placeholder="Input a function or class::method here... " /><br/>For example, isset, substr or PDO::exec</div><div style="margin:50px 5px;">PhpFiddle will extract function or class method description/examples from http://www.php.net and set contents editable</div>');
+		});
+
+		$('#debug_form').click(function() {
+			$("#main_tabs").tabs({selected: 2});
+			document.getElementById("iframe_2").contentWindow.location.href = main_server + "/deposit/debug_form.php";
+		});
+		
+		$('#search_qry').on('keyup', function(e) {
+			if (e.which == 13) {
+				$("#code_search").trigger('click');
+				e.preventDefault();
+			}
+		});
+		
+		$('#code_search').click(function() {
+			var engine = $('#code_engine').val();
+			var lang = $('input:radio[name=lang]:checked').val();
+			var sch_qry = $('#search_qry').val();
+
+			if (sch_qry.length < 3) {
+				humanMsg.displayMsg("Keywords have to be 3 and more charactyoers");
+			} else if (engine == 'ohloh') {
+				(lang == 'JavaScript') ? (lang1 = 'js') : (lang1 = 'php');
+				document.getElementById("iframe_2").contentWindow.location.href = "http://code.ohloh.net/search?s=" + sch_qry + "&browser=Default&pp=0&fl=" + lang + "&fe=" + lang1 + "&mp=1&ml=0&me=1&md=1&ff=1&filterChecked=true";
+			} else if (engine == 'searchco') {
+				document.getElementById("iframe_2").contentWindow.location.href = "http://searchco.de/?q=" + sch_qry + "%20lang%3A" + lang;
+			} else if (engine == 'krugle') {
+				document.getElementById("iframe_2").contentWindow.location.href = "http://opensearch.krugle.org/document/search/#query=" + sch_qry + "&language=" + lang;
+			}
+		});
+		
+		$('#keywords').on('keyup', function(e) {
+			if (e.which == 13) {
+				$("#search_submit").trigger('click');
+				e.preventDefault();
+			}
+		});
+		
+		$('#search_submit').click(function() {
+			var searchtxt = $.trim($('#keywords').val());
+			var link_operate = $('#link_oper').val();
+			
+			if ((link_operate == 'link_id') && ((searchtxt.length == 7) || (searchtxt.length == 9) || (searchtxt.length == 20))) {
+				code_from_id(searchtxt);
+			} else if (link_operate == 'link_id') {
+				humanMsg.displayMsg("Link id or gist id is not correct");
+			}
+			
+			if ((link_operate == 'comment') && (searchtxt.length == 0)) {
+				refresh_links();
+			} else if ((link_operate == 'comment') && (searchtxt.length < 3)) {
+				humanMsg.displayMsg("Keywords have to be 3 and more charactyoers");
+			}
+			
+			if ((link_operate != 'link_id') && (searchtxt.length > 2)) {
+				$.ajax({
+					type: "POST",
+					url: main_server + "/main/do_search/",
+					data: "submit_search=" + brsghd.dft + "&keywords=" + searchtxt + "&operation=" + link_operate + "&refresh=",
+					cache: false,
+					dataType: "json",
+					success: function(data){
+								if (data.linklist.length !== 0) {
+									$("#link_container").html(data.linklist);
+								}else {
+									humanMsg.displayMsg("Nothing to find");
+								}
+							}
+				});
+			}
+		});
+		
+		$('#mylinks_search').click(function() {
+			$.ajax({
+				type: "POST",
+				url: main_server + "/main/do_mysearch/",
+				data: "mysearch=" + brsghd.dft + "&date1=" + $('#datetime1').val() + "&date2=" + $('#datetime2').val(), 
+				cache: false,
+				dataType: "json",
+				success: function(data){
+							if ((data != null) && (data.linklist.length !== 0)) {
+								$("#mylink_container").html(data.linklist);
+							}else {
+								$("#mylink_container").html("<br /><strong>Nothing to find</strong>");
+							}
+						}
+				});
+		});
+		
+		$('#getcontent_submit').click(function() {
+			var input_url = $('#url_content').val();	
+			var filter = /^(http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?$/;
+			
+			if ((input_url.length > 1) && (filter.test(input_url))){
+				$.ajax({
+					type: "POST",
+					url: main_server + "/main/do_get_content/",
+					data: "submit_check=" + brsghd.phpfiddle + "&inputurl=" + input_url, 
+					cache: false,
+					dataType: "json",
+					success: function(data) {
+								if (data.content) {
+									if ($('#open_oper').val() == "append") {
+										var new_content = editor.getValue() + data.content;
+										editor.setValue(new_content);
+									} else {
+										editor.setValue(data.content);
+									}
+								} else {
+									humanMsg.displayMsg("Failed to get code, check input URL, charset and file size");
+								}
+							}
+				});
+			} else {
+				humanMsg.displayMsg("Please input a valid code URL");
+			}
+		});
+		
+		$('#forgot_button').click(function() {
+			$("#unlogged_sign").css('display', 'none');
+			$("#unlogged_resend").css('display', 'inline');
+		});
+		
+		$('#back_signin').click(function() {
+			$("#unlogged_resend").css('display', 'none');
+			$("#unlogged_sign").css('display', 'inline');
+		});
+		
+		$('#signup_button').click(function() {
+			$("#main_tabs").tabs({selected: 1});
+			document.getElementById("iframe_1").contentWindow.location.href = main_server + "/deposit/signup.php";
+		});
+		
+		$('#account_button').click(function() {
+			$("#main_tabs").tabs({selected: 1});
+			document.getElementById("iframe_1").contentWindow.location.href = main_server + "/main/do_edit_account";
+		});
+		
+		$('#signout_button').click(function() {
+			window.location.href = main_server + "/main/signout";
+		});
+		
+		$('#export').change(function() {
+			if ($(this).val() == "codeurl") {
+				var usercode = editor.getValue();
+				if ((usercode.length > 10) && (usercode.length < 1500)) {
+					usercode = usercode.replace(/&/g, "%26").replace(/#/g, "%23").replace(/%/g, "%25").replace(/(( )*\r\n|( )*\n|( )*\r)/gm, "\\n").replace(/\t/gm, "\\t").replace(/(  )/g, " ");
+					$("#info_dialog").dialog({width:500, height:400, show: 'slide', hide: 'slide', title: '<i class="fa fa-external-link-square"></i> Select and copy your code URL', buttons: {"Close": function(){$(this).dialog("close");}}}).text(main_server + "/lite?code=" + usercode);
+				} else {
+					humanMsg.displayMsg("Code size is invalid");
+				}
+			} else if ($(this).val() == "download_button") {
+				if ((my_dir != '') && (my_dir == ee_id.substr(5, 8))) {
+					var dnldfl = ee_id.substring(14);
+				} else {
+					var dnldfl = 'mycode.php';
+				}
+				jPrompt('Input a file name you want', dnldfl, ' &nbsp; OK &nbsp; ', 'Cancel', function(q) { if((q!=null)&&(q!='')){
+					$('#code_param').val(q);
+					$('#operation').val('download_button');
+					if ($.browser.msie) { $('#textarea_1').val(get_edited_code());}
+					$('#editor_form').submit();
+				}});
+			} else if ($(this).val() == "pdf_button") {
+				jPrompt('Input a file name you want', 'mycode.pdf', ' &nbsp; OK &nbsp; ', 'Cancel', function(q) { if((q!=null)&&(q!='')){
+					$('#code_param').val(q);
+					$('#operation').val('pdf_button');
+					if ($.browser.msie) { $('#textarea_1').val(get_edited_code()); }
+					$('#editor_form').submit();
+				}});
+			} else if ($(this).val() == "email_button") {
+									$("#main_tabs").tabs({selected: 1});
+					document.getElementById("iframe_1").contentWindow.location.href = main_server + "/deposit/email_code.php";
+				 
+			}
+			document.getElementById("export").selectedIndex = 0;
+		});
+		
+		$('#aid_tool').change(function() {
+		    var tool_url = $(this).val();
+			if (tool_url != 0) {
+				if (tool_url == "php_python") {
+					jPrompt('Input a PHP function, then click OK button', '', ' &nbsp; OK &nbsp; ', 'Cancel', function(q) {if((q!=null)&&(q!='')){q=$.trim(q);q=q.replace("_","-");document.getElementById("iframe_2").contentWindow.location.href='http://www.php2python.com/wiki/search/?search_term='+escape(q)+'&search_button=Search';}});
+				} else if (tool_url == "sqlite_tool") {
+					document.getElementById("iframe_2").contentWindow.location.href = ee_server + "/util/phpliteadmin.php";
+				} else {
+					document.getElementById("iframe_2").contentWindow.location.href = tool_url;
+				}
+			}
+			$("#main_tabs").tabs({selected: 2});
+			document.getElementById("aid_tool").selectedIndex = 0;
+		});
+		
+		$('#reference_menu').change(function() {
+		    var ref_item = $(this).val();
+			if (ref_item != 0) {
+				if (ref_item == "reference_jquery") {
+					jPrompt('Input an jQuery API, then click OK button', '', ' &nbsp; OK &nbsp; ', 'Cancel', function(q) {if((q!=null)&&(q!='')){q=$.trim(q);document.getElementById("iframe_2").contentWindow.location.href='http://api.jquery.com/'+escape(q)+'/';$("#main_tabs").tabs("select", 2);}});
+				} else if (ref_item == "reference_css") {
+					jPrompt('Input a CSS property, then click OK button', '', ' &nbsp; OK &nbsp; ', 'Cancel', function(q) {if((q!=null)&&(q!='')){q=$.trim(q);document.getElementById("iframe_2").contentWindow.location.href='http://www.w3schools.com/cssref/pr_'+escape(q)+'.asp';$("#main_tabs").tabs("select", 2);}});
+				} else if (ref_item == "reference_html") {
+					jPrompt('Input a HTML tag, then click OK button', '', ' &nbsp; OK &nbsp; ', 'Cancel', function(q) {if((q!=null)&&(q!='')){q=$.trim(q);document.getElementById("iframe_2").contentWindow.location.href='http://www.w3schools.com/tags/tag_'+escape(q)+'.asp';$("#main_tabs").tabs("select", 2);}});
+				} else if ((ref_item == "reserved.keywords") || (ref_item == "language.operators.precedence") || (ref_item == "types.comparisons") || (ref_item == "errorfunc.constants") || (ref_item == "tokens") || (ref_item == "ini.list") || (ref_item == "internals2.opcodes")){
+					info_digest(true, ref_item);
+				} else {
+					document.getElementById("iframe_2").contentWindow.location.href = ref_item;
+					$("#main_tabs").tabs({selected: 2});
+				}
+			}
+			document.getElementById("reference_menu").selectedIndex = 0;
+		});
+		
+		$('#open_type').change(function() {
+			if ($(this).val() == "type_file") {
+				document.getElementById("file_put").style.display = "inline";
+				document.getElementById("url_put").style.display = "none";
+			} else if ($(this).val() == "type_url") {
+				document.getElementById("file_put").style.display = "none";
+				document.getElementById("url_put").style.display = "inline";
+			}
+		});
+		
+		$('#local_file').change(function(evt) {
+			if (! (window.FileReader)) {
+				humanMsg.displayMsg("Your browser doesn't support this process, try again with Firefox or Chrome");
+			} else {
+				var files = evt.target.files;
+				if ((files[0].size < 10) || (files[0].size > 256000)) {
+					humanMsg.displayMsg("File size have to be less than 250KB and non-empty");
+				} else if (files[0].name.split('.').pop() in {'php':1, 'php5':1, 'inc':1, 'js':1, 'css':1, 'txt':1, 'csv':1, 'json':1, 'html':1, 'htm':1, 'xml':1, 'xhtml':1, 'xhtm':1}) {
+					var reader = new FileReader();
+					reader.onload = function() {
+						editor.setValue(this.result);
+					}
+					reader.readAsText(files[0]);
+				} else {
+					humanMsg.displayMsg("File type has to be one of 'php, php5, inc, js, css, txt, csv, json, html, htm, xml, xhtml and xhtm'");				
+				}
+			}
+		});
+		
+		$('#code_edit').change(function() {
+			if ($(this).val() == "edit_undo") {
+				editor.undo();
+			} else if ($(this).val() == "edit_redo") {
+				editor.redo();
+			} else if ($(this).val() == "edit_selall") {
+				CodeMirror.commands["selectAll"](editor);
+			} else if ($(this).val() == "edit_inc") {
+				var start_line = editor.getCursor(true).line;
+				var end_line = editor.getCursor(false).line;
+				for (var i = start_line; i <= end_line; i++) {
+					editor.indentLine(i, "add");
+				}
+			} else if ($(this).val() == "edit_dec") {
+				var start_line = editor.getCursor(true).line;
+				var end_line = editor.getCursor(false).line;
+				for (var i = start_line; i <= end_line; i++) {
+					editor.indentLine(i, "subtract");
+				}
+			} else if ($(this).val() == "edit_phpcomplt") {
+				CodeMirror.simpleHint(editor, CodeMirror.javascriptHint);
+			} else if ($(this).val() == "edit_jscomplt") {
+				CodeMirror.simpleHint(editor, CodeMirror.coffeescriptHint);
+			} else if ($(this).val() == "edit_format") {
+				editor.autoFormatRange(editor.getCursor(true), editor.getCursor(false));
+			} else if ($(this).val() == "edit_comment") {
+				editor.commentRange(true, editor.getCursor(true), editor.getCursor(false));
+			} else if ($(this).val() == "edit_uncomment") {
+				editor.commentRange(false, editor.getCursor(true), editor.getCursor(false));
+			} else if ($(this).val() == "edit_blockcomment") {
+				editor.replaceSelection("\n/* \n * \n*/\n", "end");
+			} else if ($(this).val() == "cptores") {
+				$('#ana_id').val('cpto_button');
+				$('#textarea_2').val(get_edited_code());
+				$('#resource_form').submit();
+				$("#main_tabs").tabs({selected: 2});
+			}
+			document.getElementById("code_edit").selectedIndex = 0;
+		});
+		
+		$('#code_test').change(function() {
+			if ($(this).val() == "unit_test") {
+				$("#main_tabs").tabs({selected: 1});
+				document.getElementById("iframe_1").contentWindow.location.href = main_server + "/deposit/test_form.php";
+			} else if ($(this).val() == "web_test") {
+				$("#main_tabs").tabs({selected: 1});
+				document.getElementById("iframe_1").contentWindow.location.href = main_server + "/deposit/webtest_form.php";
+			} else if ($(this).val() == "test_sample") {
+				$("#main_tabs").tabs({selected: 2});
+				document.getElementById("iframe_2").contentWindow.location.href = main_server + "/deposit/test_sample.php";
+			}
+			document.getElementById("code_test").selectedIndex = 0;
+		});
+		
+		$('#code_analysis').change(function() {
+			if ($(this).val() == "syntax_button") {
+				$('#ana_id').val('syntax_button');
+				$('#textarea_2').val(get_edited_code());
+				$('#resource_form').submit();
+				$("#main_tabs").tabs({selected: 2});
+			} else if ($(this).val() == "code_token") {
+				$('#ana_id').val('code_token');
+				$('#textarea_2').val(get_edited_code());
+				$('#resource_form').submit();
+				$("#main_tabs").tabs({selected: 2});
+			} else if ($(this).val() == "sniffer_pear") {
+				$('#ana_id').val('sniffer_pear');
+				$('#ana_param').val('PEAR');
+				$('#textarea_2').val(get_edited_code());
+				$('#resource_form').submit();
+				$("#main_tabs").tabs({selected: 2});
+			} else if ($(this).val() == "sniffer_squiz") {
+				$('#ana_id').val('sniffer_squiz');
+				$('#ana_param').val('Squiz');
+				$('#textarea_2').val(get_edited_code());
+				$('#resource_form').submit();
+				$("#main_tabs").tabs({selected: 2});
+			} else if ($(this).val() == "sniffer_zend") {
+				$('#ana_id').val('sniffer_zend');
+				$('#ana_param').val('Zend');
+				$('#textarea_2').val(get_edited_code());
+				$('#resource_form').submit();
+				$("#main_tabs").tabs({selected: 2});
+			} else if ($(this).val() == "sniffer_mysource") {
+				$('#ana_id').val('sniffer_mysource');
+				$('#ana_param').val('MySource');
+				$('#textarea_2').val(get_edited_code());
+				$('#resource_form').submit();
+				$("#main_tabs").tabs({selected: 2});
+			} else if ($(this).val() == "sniffer_generic") {
+				$('#ana_id').val('sniffer_generic');
+				$('#ana_param').val('Generic');
+				$('#textarea_2').val(get_edited_code());
+				$('#resource_form').submit();
+				$("#main_tabs").tabs({selected: 2});
+			} else if ($(this).val() == "sniffer_psr2") {
+				$('#ana_id').val('sniffer_psr2');
+				$('#ana_param').val('PSR2');
+				$('#textarea_2').val(get_edited_code());
+				$('#resource_form').submit();
+				$("#main_tabs").tabs({selected: 2});
+			}
+			document.getElementById("code_analysis").selectedIndex = 0;
+		});
+		
+		humanMsg.logging = false;
+		humanMsg.timeout = 7000;
+		
+		$(document).bind('keydown', 'F8', function(evt){$("#phphelp_button").trigger('click'); this.trigger('keydown', false);});
+		$(document).bind('keydown', 'F9', function(evt){if($('#main_tabs').tabs().tabs("option", "selected")==0){$("#run_button").trigger('click');} this.trigger('keydown', false);});
+		$(document).bind('keydown', 'F10', function(evt){editor.autoFormatRange(editor.getCursor(true), editor.getCursor(false));this.trigger('keydown', false);});
+		$(document).bind('keydown', 'Alt+F1', function(evt){window.open(main_server + "/deposit/documents.php", "_blank"); this.trigger('keydown', false);});
+		$(document).bind('keydown', 'Alt+F2', function(evt){$("#main_tabs").tabs({selected: 2}); document.getElementById("iframe_2").contentWindow.location.href = main_server + "/deposit/initial_info.php"; this.trigger('keydown', false);});
+		$(document).bind('keydown', 'Alt+F3', function(evt){jPrompt('Input a PHP function, then click OK button', '', ' &nbsp; OK &nbsp; ', 'Cancel', function(q) {if((q!=null)&&(q!='')){q=$.trim(q);document.getElementById("iframe_2").contentWindow.location.href='http://www.php2python.com/wiki/search/?search_term='+escape(q)+'&search_button=Search';$("#main_tabs").tabs("select", 2);}this.trigger('keydown', false);});});
+		$(document).bind('keydown', 'Alt+F7', function(evt){window.open(main_server + "/lite", "_self"); this.trigger('keydown', false);});
+		$(document).bind('keydown', 'Alt+F8', function(evt){window.open(main_server + "/mobile", "_self"); this.trigger('keydown', false);});
+		$(document).bind('keydown', 'Alt+F9', function(evt){$("#main_tabs").tabs({selected: 2}); document.getElementById("iframe_2").contentWindow.location.href = main_server + "/deposit/widget003.php"; this.trigger('keydown', false);});
+		$(document).bind('keydown', 'Ctrl+right', function(evt){{var index=$("#main_tabs").tabs("option", "selected") + 1; if(index > 3) index=0; $("#main_tabs").tabs("select", index); this.trigger('keydown', false);}});
+		$(document).bind('keydown', 'Ctrl+left', function(evt){{var index=$("#main_tabs").tabs("option", "selected") - 1; if(index < 0) index=3; $("#main_tabs").tabs("select", index); this.trigger('keydown', false);}});
+		
+		show_digest(fd_ad);
+			});
+	
+	function pfeature(uri, server_type) {
+		if (server_type == "SUB") {
+			document.getElementById("iframe_1").contentWindow.location.href = sub_server + uri;
+		} else if (server_type == "RES") {
+			document.getElementById("iframe_2").contentWindow.location.href = ee_server + uri;
+		} else {
+			document.getElementById("iframe_1").contentWindow.location.href = ee_server + uri;
+		}
+	}
+	
+	function info_digest(fire, refkey) {
+		if (typeof refkey == 'undefined') {
+			var phpref = $.trim($('#phpref').val());
+		} else {
+			var phpref = refkey;
+		}
+		if (phpref.length > 1) {
+			if (typeof refkey !== 'undefined') {
+				var phpfunc = phpref.replace("_", "-").toLowerCase();
+				var helpurl = main_server + '/api/acm/json?url=http://php.net/manual/en/' + phpfunc + '.php&selector[1]=div[id=' + phpfunc + ']&type[1]=html';
+			} else if (phpref.indexOf('::') !== -1) {
+				var phpfunc = phpref.replace("_", "-").replace("::", ".").toLowerCase();
+				var helpurl = main_server + '/api/acm/json?url=http://php.net/manual/en/' + phpfunc + '.php&selector[1]=div[id=' + phpfunc + ']&type[1]=html';
+			} else {
+				var phpfunc = phpref.replace("_", "-").toLowerCase();
+				var helpurl = main_server + '/api/acm/json?url=http://php.net/manual/en/function.' + phpfunc + '.php&selector[1]=div[id=function.' + phpfunc + ']&type[1]=html';
+			}
+			backsite();
+			$.ajax({
+				url: helpurl,
+				type: "post",
+				data: '',
+				cache: false,
+				dataType: "json",
+				success: function(data) {
+						if (data.result) {
+							$('#main_tabs').tabs('select', 2);
+							show_digest('<link type="text/css" href="http://www.php.net/cached.php?t=1399689615&amp;f=styles/theme-base.css" rel="stylesheet"><style type="text/css">pre{white-space:pre-wrap;white-space:-moz-pre-wrap;white-space:-pre-wrap;white-space:-o-pre-wrap;word-wrap:break-word;} body{margin:auto 3%;}</style>' + data.result);
+							$('#iframe_2').contents().find('body').attr({ contenteditable: "true", spellcheck: "false" });
+						}
+						if (data.error) {
+							humanMsg.displayMsg('There is no help for ' + phpref);
+						}
+					},
+				error: function(data){
+							humanMsg.displayMsg(JSON.parse(data.responseText));
+						}
+			});
+			$(this).dialog("close");
+		}
+	}
+	
+	function link_code(link_id, code_type, tab_win) {
+		$.ajax({
+			type: "POST",
+			url: main_server + "/main/get_linked_code/",
+			data: "link_check=" + brsghd.phpfiddle + "&link_key="+ link_id,
+			cache: false,
+			dataType: "json",
+			success: function(data){
+					if (data.code == '') {
+						humanMsg.displayMsg("The code doesn't exist");
+					} else {
+						editor.setValue(data.code);
+					}
+				}
+		});
+		
+		$('#main_tabs').tabs('select', 0);
+		if (code_type == 'save') {
+			$("#update_button").button("enable");
+			$("#new_button").button("disable");
+			updt_id = link_id;
+		}  else {
+			$("#update_button").button("disable");
+			$("#new_button").button("disable");
+			updt_id = '';
+		}
+	}
+	
+	function edit_code(file, pdir) {
+		$.ajax({
+			type: "POST",
+			url: sub_server + "/list_files.php",
+			data: "dir=" + encodeURIComponent(file) + "&user_dir=" + encodeURIComponent(pdir),
+			cache: false,
+			dataType: "json",
+			success: function(data) {
+					if (data.code.length > 1) {
+						editor.setValue(data.code);							
+						if (fid == file.substr(5, 8)) {
+							ee_id = file;
+							$("#update_button").button("enable");
+							$("#new_button").button("enable");
+						} else {
+							ee_id = '';
+							$("#update_button").button("disable");
+							$("#new_button").button("disable");
+						}
+					} else if ((typeof data.refresh != 'undefined') && data.refresh) {
+							$("#tree_user_dir").trigger("dblclick"); }
+				}
+		});
+	}
+	
+	function refresh_links() {
+				$.ajax({
+					type: "POST",
+					url: main_server + "/main/do_search/",
+					data: "submit_search=" + brsghd.dft + "&keywords=&refresh=^^refresh_links^^", 
+					cache: false,
+					dataType: "json",
+					success: function(data) {
+								$("#link_container").html(data.linklist);
+							}
+				});
+	}
+	
+	function refresh_mylinks() {
+			}
+	
+	function code_from_id(code_id) {
+		$.ajax({
+				type: "POST",
+				url: main_server + "/main/get_code_type/",
+				data: "submit_check=" + brsghd.dft + "&codeid=" + code_id,
+				cache: false,
+				dataType: "json",
+				success: function (data) {
+						if (data.type == 'save') {
+							humanMsg.displayMsg("Private code can't be opened from here");	
+						} else if (data.code) {
+							editor.setValue(data.code);									
+							$("#update_button").button("disable");
+							updt_id = '';
+						} else {	
+							humanMsg.displayMsg("The code doesn't exist");
+						}
+					}
+			});
+		$("#main_tabs").tabs('select', 0);
+	}
+	
+	function set_initial(code) {
+		$("#main_tabs").tabs({selected: 0});
+		$.ajax({
+				type: "POST",
+				url: main_server + "/main/do_initial/",
+				data: code,
+				cache: false,
+				dataType: "json",
+				success: function(data){
+							editor.setValue(data.code);
+						}
+		});
+	}
+	
+	function do_debug(dvstr) {
+		if (dvstr.length > 4) {
+			$('#operation').val('debug_button');
+			if ($.browser.msie) { $('#textarea_1').val(get_edited_code()); };
+			$('#code_param').val(dvstr);
+			var dbno = Math.floor(Math.random() * 90000000) + 10000000;
+			$('#storage').val(dbno);
+			$('#editor_form').submit();
+			document.getElementById("iframe_1").onload = function() {
+				document.getElementById("iframe_2").contentWindow.location.href =  ee_server + "/code_" + dbno + "_debug.php";
+			}
+		}
+	}
+	
+	function do_test(test_type, code) {
+		$('#operation').val('test_button');
+		if ($.browser.msie) { $('#textarea_1').val(get_edited_code()); };
+		$('#storage').val(test_type);
+		$('#code_param').val(code);
+		$('#editor_form').submit();
+	}
+	
+	function print_code(file) {
+		document.getElementById("iframe_2").contentWindow.location.href = sub_server + '/print_code.php?dir=' + file;
+		$("#main_tabs").tabs("select", 2);
+	}
+
+	function show_eefile_opers(file) {
+		ee_id = file;
+		$("#update_button").button("enable");
+		$("#new_button").button("enable");
+	}
+	
+	function show_files_editor() {
+		$('#main_tabs').tabs('select', 0);
+		if ($("#tree_user_dir").parent().attr('class') == 'directory collapsed') {
+			$("#tree_user_dir").trigger("dblclick");
+		} else {
+			$("#tree_user_dir").trigger("dblclick");
+			$("#tree_user_dir").trigger("dblclick");
+		}
+	}
+	
+	function show_editor(msg) {
+		$('#main_tabs').tabs('select', 0);
+		humanMsg.displayMsg(msg);
+	}
+	
+	function get_edited_code() {
+		return editor.getValue();
+	}
+	
+	function set_edited_code(code) {
+		$("#main_tabs").tabs({selected: 0});
+		editor.setValue(code);
+	}
+	
+	function email_code(addr, captcha) {
+		$('#operation').val('email_button');
+		$('#storage').val(addr);
+		$('#code_param').val(captcha);
+		if ($.browser.msie) { $('#textarea_1').val(get_edited_code()); }
+		$('#editor_form').submit();
+	}
+	
+	function show_digest(digest) {
+		var ifrm = document.getElementById('iframe_2');
+		ifrm = (ifrm.contentWindow.document) ? ifrm.contentWindow.document : ifrm.contentDocument;
+		if (ifrm) {
+			ifrm.open();
+			ifrm.write(digest);
+			ifrm.close();
+		}
+	}
+	
+	function show_message(message) {
+		humanMsg.displayMsg(message);
+	}
+	
+	function popup_warn(win) {
+		if (win == null || typeof(win) == 'undefined' || win.location.href == 'about:blank') {
+			humanMsg.displayMsg('Please enabled popups for this operation');
+		}
+	}
+	
+	function keyshelp() {
+		$("#main_tabs").tabs({selected: 2});
+		document.getElementById("iframe_2").contentWindow.location.href = main_server + "/deposit/keys_help.php";
+	}
+	
+	function pfad() {
+		$("#main_tabs").tabs({selected: 2});
+		document.getElementById("iframe_2").contentWindow.location.href = main_server + "/deposit/plannerfw";
+	}
+	
+	function trig_apis() {
+		$("#main_tabs").tabs({selected: 2});
+		document.getElementById("iframe_2").contentWindow.location.href = main_server + "/deposit/phpfiddle_apis.php";
+	}
+	
+	function trig_widgets() {
+		$("#main_tabs").tabs({selected: 2});
+		document.getElementById("iframe_2").contentWindow.location.href = main_server + "/deposit/phpfiddle_widgets.php";
+	}
+	
+	function trig_terms() {
+		$("#main_tabs").tabs({selected: 2});
+		document.getElementById("iframe_2").contentWindow.location.href = main_server + "/deposit/terms.php";
+	}
+
+	function trig_contact() {
+		$("#main_tabs").tabs({selected: 2});
+		var fb_tact="feedback_contact.php"; 
+		document.getElementById("iframe_2").contentWindow.location.href = main_server + "/deposit/" + fb_tact;
+	}
+	
+	function backsite()	{
+		document.getElementById('iframe_2').contentWindow.location.href = main_server + "/deposit/backfiddlesite.php";
+	}
+
+	function show_result_window() {
+		$('#main_tabs').tabs('select', 1);
+	}
+	
+	function refresh_resources() {
+		window.document.getElementById('iframe_2').contentWindow.location.reload(true);
+	}
+	 
+</script>
+
+<style type="text/css">
+<!-- 
+#dialog_link {padding: .4em 1em .4em 20px; text-decoration: none; position: relative;}
+#dialog_link span.ui-icon {margin: 0 5px 0 0; position: absolute; left: .2em; top: 50%; margin-top: -8px;}
+ul#icons {margin: 0; padding: 0;}
+ul#icons li {margin: 2px; position: relative; padding: 4px 0; cursor: pointer; float: left;  list-style: none;}
+ul#icons span.ui-icon {float: left; margin: 0 4px;}
+.ui-dialog-titlebar, .ui-dialog-buttonpane {background: #c1cdcd !important}
+.ui-datepicker-header {background-image:none; background-color: #AEB8B8;}
+.ui-widget-content { overflow: auto; border-color: #ECEBE6; border-width: 2px;}
+.nestui {margin-left:2%;margin-right:4%;width:94%;overflow:auto;border:1px solid #ccc;-moz-border-radius:10px;-webkit-border-radius:10px;border-radius:10px;}
+.basic {font-size: 0.8em; }
+button { margin:0;}
+-->
+</style>
+</head>
+
+<body class="layout_struct" style="background-color: rgb(245, 245, 245);" cz-shortcut-listen="true">
+<div class="layout_container">
+<div class="layout_header">
+	<div class="header_upper">
+		<div style="float:left;margin-left:5%;">
+			<img id="header_img" src="./PhpFiddle - PHP MySQL online IDE and execution server_files/phpfiddle_logo.png" alt="Header image" width="90" height="26" style="padding:1px;border:1px solid #C0C0C0;cursor:crosshair;" title=" PhpFiddle Logo ">
+		</div>
+		<div id="pf_unlogged" style="text-align:left;font-size:0.60em;">
+			<span id="unlogged_sign">
+				<form id="sign_form" method="post" action="http://phpfiddle.org/main/do_signin/" style="display:inline;">
+					<i class="fa fa-user" style="margin-left:3%;font-size:1.5em;color:#2E6E9E;"></i> <input id="sign_email" placeholder=" Email..." name="sign_email" value="" size="30" maxlength="60" title=" Your account email address " class="rounded_lite" style="padding:4px;">
+					<i class="fa fa-lock" style="margin-left:1%;font-size:1.5em;color:#2E6E9E;"></i> <input id="sign_pword" placeholder=" Password..." type="password" name="sign_pword" value="" size="18" maxlength="32" title=" Your account password " class="rounded_lite" style="padding:4px;">
+					<button type="submit" id="signin_button" style="margin-left:1%;" title=" Sign in for more features " class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false"><span class="ui-button-text"><i class="fa fa-sign-in"></i> Sign in</span></button>
+					<input type="hidden" name="submit_signin" value="f41e3e96c89bafd2829320cdce0fa642">
+				</form>
+					<button type="button" id="forgot_button" style="margin-left:1%; letter-spacing:-.8px;" title=" Forgot your password " class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false"><span class="ui-button-text"><i class="fa fa-key"></i> Forgot password</span></button>
+					<button type="button" id="signup_button" style="margin-left:1%;" title=" It is free to sign up " class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false"><span class="ui-button-text"><i class="fa fa-pencil"></i> Sign up</span></button>
+			</span>
+			<span id="unlogged_resend" style="display:none;">
+				<form id="resend_form" method="post" action="http://phpfiddle.org/main/do_resend/" style="display:inline;">
+					<i class="fa fa-user" style="margin-left:10%;margin-right:10px;font-size:1.5em;"></i><input id="resend_email" placeholder="Enter your account email to obtain a new password" name="resend_email" value="" size="60" maxlength="60" class="rounded_lite" style="padding:4px;">
+					<button type="submit" id="resend_button" style="margin-left:2%;" title=" 
+Send a new password 
+to your account email 
+" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false"><span class="ui-button-text"><i class="fa fa-play-circle"></i> Send </span></button>
+					<button type="button" id="back_signin" style="margin-left:2%;" title=" 
+Back to sign in/up 
+" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false"><span class="ui-button-text"><i class="fa fa-undo"></i> Back </span></button>
+					<input type="hidden" name="submit_resend" value="f41e3e96c89bafd2829320cdce0fa642">
+				</form>
+			</span>			
+		</div>
+		
+		<div id="pf_logged" style="text-align:left;font-size:0.60em;display:none;">	
+			<button type="button" id="account_button" style="margin-left:10%;" title=" Edit your account " class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false"><span class="ui-button-text"><i class="fa fa-pencil-square-o"></i> Edit account</span></button>
+			<button type="button" id="signout_button" style="margin-left:10%;" title=" Sign out your account " class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false"><span class="ui-button-text"><i class="fa fa-sign-out"></i> Sign out </span></button>
+		</div>
+	</div>
+</div>
+
+<div class="layout_body">
+<div id="main_tabs" style="left:3%; width:94%;" class="basic div_shadow_rounded ui-tabs ui-widget ui-widget-content ui-corner-all">
+	<ul style="font-size:0.9em;" class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
+		<li class="ui-state-default ui-corner-top ui-tabs-selected ui-state-active"><a href="http://phpfiddle.org/#tabs-a" title=" Code space "> &nbsp; <i class="fa fa-clipboard"></i> CodeSpace</a></li>
+		<li class="ui-state-default ui-corner-top"><a href="http://phpfiddle.org/#tabs-b" title=" Execution window "> &nbsp; <i class="fa fa-file-text"></i> Window</a></li>
+		<li class="ui-state-default ui-corner-top"><a href="http://phpfiddle.org/#tabs-c" title=" Resources Tab "> &nbsp; <i class="fa fa-file-text-o"></i> Resources</a></li>
+		<li class="ui-state-default ui-corner-top"><a href="http://phpfiddle.org/#tabs-d" title=" Linked codes "> &nbsp; <i class="fa fa-link"></i> Links &nbsp;</a></li>
+			<span style="float: right;">
+		<select id="aid_tool" style="font-family:&#39;FontAwesome&#39;;width:12em;line-height:1.3em;padding:5px;border-radius:50px 0 35px;" class="rounded">
+			<option value=""> Tools</option>
+			<optgroup label=" "></optgroup>
+			<optgroup label="HTML/CSS/JS">
+				<option value="http://mudcu.be/sphere">Color quick picker</option>
+				<option value="http://css3.mikeplate.com">CSS3 code generator</option>
+				<option value="http://dabblet.com">HTML/CSS interactive playground &nbsp;</option>
+				<option value="http://codiqa.com/embed/editor">jQuery Mobile UI Editor</option>
+			</optgroup>
+			<optgroup label=" "></optgroup>
+			<optgroup label="PHP">
+				<option value="http://www.phpobjectgenerator.com">PHP object generator</option>				
+			</optgroup>
+			<optgroup label=" "></optgroup>
+			<optgroup label="Database">
+				<option value="http://dbdsgnr.appspot.com/app">Schema designer</option>
+				 
+			</optgroup>
+			<optgroup label=" "></optgroup>
+			<optgroup label="Miscellaneous">
+				<option value="http://phpfiddle.org/deposit/encode_decode_tool.php">Multiple code encoding-decoding</option>
+				<option value="http://phpfiddle.org/deposit/hash_tool.php">Apply 42 algorithms hash</option>
+				<option value="http://regex101.com">Regular expressions</option>
+			</optgroup>
+			<optgroup label=" ">
+				<option value="http://jsbeautifier.org">JavaScript code beautifier</option>
+				<option value="http://closure-compiler.appspot.com">JavaScript optimizing compiler</option>
+			</optgroup>
+			<optgroup label=" ">
+				<option value="http://www.pipsomania.com/best_php_obfuscator.do">PHP code obfuscator</option>
+				<option value="php_python">PHP vs Python [Alt-F3]</option>
+			</optgroup>
+			<optgroup label=" "></optgroup>
+			<optgroup label=" "></optgroup>
+		</select>
+		<select id="reference_menu" style="font-family:&#39;FontAwesome&#39;;line-height:1.3em;width:12em;padding:5px;border-radius:50px 0 35px;" class="rounded">
+			<option value=""> References</option>
+			<optgroup label=" "></optgroup>
+			<optgroup label="Quick lookup">
+				<option value="reserved.keywords">PHP keywords</option>
+				<option value="language.operators.precedence">PHP operator precedence</option>
+				<option value="types.comparisons">PHP type comparisons</option>
+				<option value="errorfunc.constants">PHP error constants</option>
+			</optgroup>
+			<optgroup label=" ">
+				<option value="http://phpfiddle.org/deposit/php_funcs.php">PHP relational functions</option>
+				<option value="ini.list">php.ini directives</option>
+				<option value="tokens">PHP parser tokens</option>
+				<option value="internals2.opcodes">Zend engine opcodes</option>
+			</optgroup>
+			<optgroup label=" ">
+				<option value="http://phpfiddle.org/deposit/ascii.php">ASCII codes</option>
+				<option value="http://phpfiddle.org/deposit/entities.php">HTML entities</option>
+				<option value="http://phpfiddle.org/deposit/url_encoded.php">URL encoded</option>
+				<option value="reference_css">CSS lookup</option>
+				<option value="reference_html">HTML tag lookup</option>
+				<option value="http://phpfiddle.org/deposit/html_attributes.php">HTML attributes list</option>
+			</optgroup>
+			<optgroup label=" ">
+				<option value="http://phpfiddle.org/deposit/safe_colors.php">216 web-safe colors</option>
+				<option value="http://www.w3.org/TR/CSS21/sample.html">Default HTML4 style sheet &nbsp; &nbsp;</option>
+				<option value="http://phpfiddle.org/deposit/js_ref.php">JavaScript</option>				
+				<option value="reference_jquery">jQuery API</option>
+				<option value="http://phpfiddle.org/deposit/mysql_ref.php">MySQL</option>
+				<option value="http://phpfiddle.org/deposit/re_ref.php">Regular expression</option>
+			</optgroup>
+			<optgroup label=" "></optgroup>
+			<optgroup label="Protocols">
+				<option value="http://phpfiddle.org/deposit/status_codes.php">HTTP status codes</option>
+				<option value="http://en.wikipedia.org/wiki/List_of_HTTP_headers">HTTP header fields</option>
+				<option value="http://phpfiddle.org/deposit/xmlhttp_request.php">XMLHttpRequest</option>
+			</optgroup>
+			<optgroup label=" "></optgroup>
+			<optgroup label="Algorithms/patterns">
+				<option value="http://www.scriptol.com/programming/list-algorithms.php">List of algorithms</option>
+				<option value="http://www.fluffycat.com/PHP-Design-Patterns/">PHP design patterns</option>
+			</optgroup>
+			<optgroup label=" "></optgroup>
+			<optgroup label="Code styles">
+				<option value="http://google-styleguide.googlecode.com/svn/trunk/htmlcssguide.xml">HTML/CSS</option>
+				<option value="http://google-styleguide.googlecode.com/svn/trunk/javascriptguide.xml">JavaScript</option>
+				<option value="http://docs.jquery.com/JQuery_Core_Style_Guidelines">jQuery</option>
+			</optgroup>
+			<optgroup label=" "></optgroup>
+			<optgroup label="Best practice">
+				<option value="http://www.phptherightway.com/">PHP - The right way</option>	
+			</optgroup>
+			<optgroup label=" "></optgroup>
+			<optgroup label=" "></optgroup>
+		</select>
+		<button type="button" id="phphelp_button" title=" Official PHP reference " style="border-radius:50px 0 35px;" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false"><span class="ui-button-text"><i class="fa fa-book"></i> PHP Help-F8</span></button>
+	</span>
+	</ul>
+	
+	<div id="tabs-a" style="text-align: left; margin: 0px 20px; height: 600px;" class="ui-tabs-panel ui-widget-content ui-corner-bottom">
+		<form id="editor_form" method="post" action="http://phpfiddle.org/main/do_run/" target="iframe_1">
+			<div class="editor_menu" style="font-size: 0.95em;">				
+				<button type="button" id="new_button" title=" Create new code file " disabled="" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-disabled ui-state-disabled ui-button-text-only" role="button" aria-disabled="true"><span class="ui-button-text"><i class="fa fa-file-o"></i> New</span></button>
+				<button type="button" id="newfolder_button" title=" 
+ Create a new folder, and 
+ double-click folder name 
+ to open the folder 
+ " disabled="" style="letter-spacing:-.8px;" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-disabled ui-state-disabled ui-button-text-only" role="button" aria-disabled="true"><span class="ui-button-text"><i class="fa fa-folder-o"></i> New Folder</span></button>
+				<button type="submit" id="link_button" title=" Save the code " disabled="" style="letter-spacing:-.8px;" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-disabled ui-state-disabled ui-button-text-only" role="button" aria-disabled="true"><span class="ui-button-text"><i class="fa fa-floppy-o"></i> Save As</span></button>
+				<button type="submit" id="update_button" title=" Update saved code " disabled="" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-disabled ui-state-disabled ui-button-text-only" role="button" aria-disabled="true"><span class="ui-button-text"><i class="fa fa-refresh"></i> Update</span></button>
+				<button type="submit" id="run_button" style="margin-left:10px;" title=" Run the code " class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false"><span class="ui-button-text"><i class="fa fa-play-circle-o"></i> Run - F9</span></button>
+				<button type="button" id="debug_form" title=" 
+ Dumping out PHP variables
+ to resources panel 
+ " class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false"><span class="ui-button-text"><i class="fa fa-bug"></i> Debug</span></button>
+ 				 
+				<select id="code_edit" class="rounded" style="font-family:&#39;FontAwesome&#39;;margin-left:10px;width:7em;padding:5px;">
+					<option value=""> Edit</option>
+					<optgroup label=" ">
+					<option value="edit_undo"> &nbsp; Undo &nbsp; Ctrl-Z</option>
+					<option value="edit_redo"> &nbsp; Redo &nbsp; Ctrl-Y</option>
+					</optgroup>
+					<optgroup label=" ">
+					<option value="edit_selall"> &nbsp; Select all &nbsp; Ctrl-A</option>
+					</optgroup>
+					<optgroup label=" ">
+					<option value="edit_comment">Comment HTML code</option>
+					<option value="edit_uncomment">Uncomment HTML code</option>	
+					</optgroup><optgroup label=" ">
+					<option value="edit_blockcomment">Add block comment &nbsp; Alt-Q</option></optgroup>
+					
+					<optgroup label=" ">
+					<option value="edit_inc">Increase indent &nbsp; Ctrl-]</option>
+					<option value="edit_dec">Decrease indent &nbsp; Ctrl-[</option>
+					</optgroup>					
+					<optgroup label=" ">
+					<option value="edit_format">Format selected code &nbsp;F10</option>
+					</optgroup>
+					<optgroup label=" ">
+					<option value="edit_phpcomplt">PHP autocomplete &nbsp; Alt-Z</option>
+					<option value="edit_jscomplt">JavaScript autocomplete &nbsp; Alt-X  &nbsp; &nbsp;</option>
+					</optgroup>
+					<optgroup label=" "></optgroup>
+					<optgroup label=" ">
+					<option value="cptores" title="Copy the code to resource panel"> Copy code to Resources</option>
+					</optgroup>
+					<optgroup label=" "></optgroup>
+					<optgroup label=" "></optgroup>
+				</select>
+				<select id="code_analysis" class="rounded" style="font-family:&#39;FontAwesome&#39;;width:7em;padding:5px;">
+					<option value=""> Analyze</option>
+					<optgroup label=" ">
+					<option value="sniffer_pear">Sniffer - PEAR</option>
+					<option value="sniffer_squiz">Sniffer - Squiz</option>
+					<option value="sniffer_zend">Sniffer - Zend</option>
+					<option value="sniffer_psr2">Sniffer - PSR2</option>
+					<option value="sniffer_generic">Sniffer - Generic</option>
+					<option value="sniffer_generic">Sniffer - MySource</option>
+					</optgroup>
+					<optgroup label=" ">
+					<option value="code_token">The code to PHP tokens &nbsp; &nbsp;</option>
+					<option value="syntax_button">The code to syntax tree</option>
+					</optgroup>
+					<optgroup label=" "></optgroup>
+					<optgroup label=" "></optgroup>
+				</select>
+				<select id="export" class="rounded" style="font-family:&#39;FontAwesome&#39;;width:7em;padding:5px;">
+					<option value=""> Export</option>
+					<optgroup label=" ">
+					 
+					<option value="download_button">Download the code</option>
+					<option value="pdf_button">Download as PDF file &nbsp; </option>
+					</optgroup>
+					<optgroup label=" ">
+					<option value="email_button">Email me the code</option>
+					</optgroup>
+					<optgroup label=" "></optgroup>
+					<optgroup label=" "></optgroup>
+				</select>
+			</div>
+			
+			<input type="hidden" name="submit_run" value="f41e3e96c89bafd2829320cdce0fa642">
+			<input type="hidden" id="storage" name="storage" value="">
+			<input type="hidden" id="operation" name="operation" value="">
+			<input type="hidden" id="code_param" name="code_param" value="">
+			 
+			<textarea id="textarea_1" name="area_a" style="width: 94%; height: 530px; display: none;">&lt;?php
+
+
+?&gt;
+</textarea><div class="CodeMirror cm-s-eclipse CodeMirror-wrap CodeMirror-focused"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 427px; left: 176.8203125px;"><textarea autocorrect="off" autocapitalize="off" tabindex="0" style="position: absolute; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-hscrollbar" style="left: 42px;"><div style="height: 1px;"></div></div><div class="CodeMirror-vscrollbar" style="display: block; bottom: 0px;"><div style="width: 1px; height: 720px;"></div></div><div class="CodeMirror-scrollbar-filler"></div><div class="CodeMirror-scroll" tabindex="-1" draggable="false" style="cursor: text;"><div style="position: relative; min-height: 100%;"><div class="CodeMirror-sizer" style="margin-left: 42px; min-height: 720px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span class="cm-variable-2">$</span><span class="cm-variable-2">h</span><span class="cm-variable-2">e</span><span class="cm-variable-2">a</span><span class="cm-variable-2">d</span><span class="cm-variable-2">e</span><span class="cm-variable-2">r</span><span class="cm-variable-2">s</span><span> </span><span class="cm-operator">=</span><span> </span><span class="cm-keyword">a</span><span class="cm-keyword">r</span><span class="cm-keyword">r</span><span class="cm-keyword">a</span><span class="cm-keyword">y</span></pre></div><div style="position: relative; z-index: 1; display: none;"><div class="CodeMirror-selected" style="position: absolute; left: 210.8330078125px; top: 65px; width: 234.0380859375px; height: 13px;"></div></div><div><div style="position: relative;"><div style="position: absolute; left: -42px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">1</div></div><pre><span class="cm-meta">&lt;?php</span></pre></div><div style="position: relative;"><div style="position: absolute; left: -42px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">2</div></div><pre>&nbsp;</pre></div><div style="position: relative;"><div style="position: absolute; left: -42px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">3</div></div><pre>&nbsp;</pre></div><div style="position: relative;"><div style="position: absolute; left: -42px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">4</div></div><pre><span class="cm-comment">// API access key from Google API's Console</span></pre></div><div style="position: relative;"><div style="position: absolute; left: -42px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">5</div></div><pre><span class="cm-builtin">define</span>( <span class="cm-string">'API_ACCESS_KEY'</span>, <span class="cm-string">'AIzaSyB8McDGlYPmp2UGUkb1faTkgScGKDhnze8'</span> );</pre></div><div style="position: relative;"><div style="position: absolute; left: -42px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">6</div></div><pre>&nbsp;</pre></div><div style="position: relative;"><div style="position: absolute; left: -42px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">7</div></div><pre>&nbsp;</pre></div><div style="position: relative;"><div style="position: absolute; left: -42px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">8</div></div><pre><span class="cm-variable-2">$registrationIds</span> <span class="cm-operator">=</span> <span class="cm-keyword">array</span>(<span class="cm-string">"YOUR DEVICE IDS WILL GO HERE"</span> );</pre></div><div style="position: relative;"><div style="position: absolute; left: -42px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">9</div></div><pre>&nbsp;</pre></div><div style="position: relative;"><div style="position: absolute; left: -42px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">10</div></div><pre><span class="cm-comment">// prep the bundle</span></pre></div><div style="position: relative;"><div style="position: absolute; left: -42px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">11</div></div><pre><span class="cm-variable-2">$msg</span> <span class="cm-operator">=</span> <span class="cm-keyword">array</span></pre></div><div style="position: relative;"><div style="position: absolute; left: -42px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">12</div></div><pre>(</pre></div><div style="position: relative;"><div style="position: absolute; left: -42px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">13</div></div><pre>    <span class="cm-string">'message'</span>       <span class="cm-operator">=&gt;</span> <span class="cm-string">'here is a message. message'</span>,</pre></div><div style="position: relative;"><div style="position: absolute; left: -42px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">14</div></div><pre>    <span class="cm-string">'title'</span>         <span class="cm-operator">=&gt;</span> <span class="cm-string">'This is a title. title'</span>,</pre></div><div style="position: relative;"><div style="position: absolute; left: -42px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">15</div></div><pre>    <span class="cm-string">'subtitle'</span>      <span class="cm-operator">=&gt;</span> <span class="cm-string">'This is a subtitle. subtitle'</span>,</pre></div><div style="position: relative;"><div style="position: absolute; left: -42px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">16</div></div><pre>    <span class="cm-string">'tickerText'</span>    <span class="cm-operator">=&gt;</span> <span class="cm-string">'Ticker text here...Ticker text here...Ticker text here'</span>,</pre></div><div style="position: relative;"><div style="position: absolute; left: -42px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">17</div></div><pre>    <span class="cm-string">'vibrate'</span>   <span class="cm-operator">=&gt;</span> <span class="cm-number">1</span>,</pre></div><div style="position: relative;"><div style="position: absolute; left: -42px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">18</div></div><pre>    <span class="cm-string">'sound'</span>     <span class="cm-operator">=&gt;</span> <span class="cm-number">1</span></pre></div><div style="position: relative;"><div style="position: absolute; left: -42px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">19</div></div><pre>);</pre></div><div style="position: relative;"><div style="position: absolute; left: -42px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">20</div></div><pre>&nbsp;</pre></div><div style="position: relative;"><div style="position: absolute; left: -42px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">21</div></div><pre><span class="cm-variable-2">$fields</span> <span class="cm-operator">=</span> <span class="cm-keyword">array</span></pre></div><div style="position: relative;"><div style="position: absolute; left: -42px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">22</div></div><pre>(</pre></div><div style="position: relative;"><div style="position: absolute; left: -42px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">23</div></div><pre>    <span class="cm-string">'registration_ids'</span>  <span class="cm-operator">=&gt;</span> <span class="cm-variable-2">$registrationIds</span>,</pre></div><div style="position: relative;"><div style="position: absolute; left: -42px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">24</div></div><pre>    <span class="cm-string">'data'</span>              <span class="cm-operator">=&gt;</span> <span class="cm-variable-2">$msg</span></pre></div><div style="position: relative;"><div style="position: absolute; left: -42px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">25</div></div><pre>);</pre></div><div style="position: relative;"><div style="position: absolute; left: -42px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">26</div></div><pre>&nbsp;</pre></div><div style="position: relative;"><div style="position: absolute; left: -42px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">27</div></div><pre><span class="cm-variable-2">$headers</span> <span class="cm-operator">=</span> <span class="cm-keyword">array</span></pre></div><div style="position: relative;"><div style="position: absolute; left: -42px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">28</div></div><pre>(</pre></div><div style="position: relative;"><div style="position: absolute; left: -42px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">29</div></div><pre>    <span class="cm-string">'Authorization: key='</span> . <span class="cm-variable">API_ACCESS_KEY</span>,</pre></div><div style="position: relative;"><div style="position: absolute; left: -42px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">30</div></div><pre>    <span class="cm-string">'Content-Type: application/json'</span></pre></div><div style="position: relative;"><div style="position: absolute; left: -42px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">31</div></div><pre>);</pre></div><div style="position: relative;"><div style="position: absolute; left: -42px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">32</div></div><pre>&nbsp;</pre></div><div style="position: relative;"><div style="position: absolute; left: -42px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">33</div></div><pre><span class="cm-variable-2">$ch</span> <span class="cm-operator">=</span> <span class="cm-variable">curl_init</span>();</pre></div><div style="position: relative;"><div style="position: absolute; left: -42px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">34</div></div><pre><span class="cm-variable">curl_setopt</span>( <span class="cm-variable-2">$ch</span>,<span class="cm-variable">CURLOPT_URL</span>, <span class="cm-string">'https://android.googleapis.com/gcm/send'</span> );</pre></div><div style="position: relative;"><div style="position: absolute; left: -42px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">35</div></div><pre><span class="cm-variable">curl_setopt</span>( <span class="cm-variable-2">$ch</span>,<span class="cm-variable">CURLOPT_POST</span>, <span class="cm-atom">true</span> );</pre></div><div style="position: relative;"><div style="position: absolute; left: -42px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">36</div></div><pre><span class="cm-variable">curl_setopt</span>( <span class="cm-variable-2">$ch</span>,<span class="cm-variable">CURLOPT_HTTPHEADER</span>, <span class="cm-variable-2">$headers</span> );</pre></div><div style="position: relative;"><div style="position: absolute; left: -42px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">37</div></div><pre><span class="cm-variable">curl_setopt</span>( <span class="cm-variable-2">$ch</span>,<span class="cm-variable">CURLOPT_RETURNTRANSFER</span>, <span class="cm-atom">true</span> );</pre></div><div style="position: relative;"><div style="position: absolute; left: -42px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">38</div></div><pre><span class="cm-variable">curl_setopt</span>( <span class="cm-variable-2">$ch</span>,<span class="cm-variable">CURLOPT_SSL_VERIFYPEER</span>, <span class="cm-atom">false</span> );</pre></div><div style="position: relative;"><div style="position: absolute; left: -42px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">39</div></div><pre><span class="cm-variable">curl_setopt</span>( <span class="cm-variable-2">$ch</span>,<span class="cm-variable">CURLOPT_POSTFIELDS</span>, <span class="cm-builtin">json_encode</span>( <span class="cm-variable-2">$fields</span> ) );</pre></div><div style="position: relative;"><div style="position: absolute; left: -42px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">40</div></div><pre><span class="cm-variable-2">$result</span> <span class="cm-operator">=</span> <span class="cm-variable">curl_exec</span>(<span class="cm-variable-2">$ch</span> );</pre></div><div style="position: relative;"><div style="position: absolute; left: -42px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">41</div></div><pre><span class="cm-variable">curl_close</span>( <span class="cm-variable-2">$ch</span> );</pre></div><div style="position: relative;"><div style="position: absolute; left: -42px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">42</div></div><pre>&nbsp;</pre></div><div style="position: relative;"><div style="position: absolute; left: -42px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">43</div></div><pre><span class="cm-keyword">echo</span> <span class="cm-variable-2">$result</span>;</pre></div><div style="position: relative;"><div style="position: absolute; left: -42px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">44</div></div><pre><span class="cm-meta">?&gt;</span></pre></div></div><div class="CodeMirror-cursor" style="left: 132.8203125px; top: 417px; height: 13px; visibility: hidden;">&nbsp;</div><div class="CodeMirror-cursor CodeMirror-secondarycursor" style="display: none; visibility: hidden;">&nbsp;</div></div></div></div></div><div style="position: absolute; height: 30px; top: 720px;">&nbsp;</div><div class="CodeMirror-gutters"><div class="CodeMirror-gutter CodeMirror-linenumbers" style="width: 28px;"></div><div class="CodeMirror-gutter CodeMirror-collapserange"></div></div></div></div></div>
+				
+			<div style="margin-top:10px; margin-left:0.5%; margin-right:0.5%; text-align:center;">
+				<label>Open file from </label>
+				<select id="open_type" class="rounded" style="font-size:0.8em;" title=" 
+ Open file from local 
+ computer or an URL
+ ">
+					<option value="type_file"> &nbsp; Local &nbsp; </option>
+					<optgroup label="   ———"></optgroup>
+					<option value="type_url"> &nbsp; URL &nbsp; </option>
+					<optgroup label=" "></optgroup>
+				</select>
+				<span id="file_put" style="margin-left: 30px;">
+					<input type="file" id="local_file" enctype="multipart/form-data">
+				</span>
+				<span id="url_put" style="display: none;">
+					<select id="open_oper" class="rounded" style="font-size:0.8em;" title=" 
+ Replace or append-to 
+ current code with 
+ opened contents 
+ ">
+						<option value="replace"> Replace </option>
+						<optgroup label="————"></optgroup>
+						<option value="append"> Append </option>
+						<optgroup label=" "></optgroup>
+					</select>
+					<input id="url_content" value="http://" size="60" maxlength="150" class="rounded_lite"> 
+					<button id="getcontent_submit" type="button" class="rounded ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" style="font-size:0.8em; margin-left:10px;" title=" Open file from an URL " role="button" aria-disabled="false"><span class="ui-button-text"><i class="fa fa-play"></i> &nbsp; Go </span></button>
+				</span>
+				<button type="button" style="float:right;font-size:0.8em;" onclick="keyshelp()" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false"><span class="ui-button-text"><i class="fa fa-keyboard-o"></i> Keyboard shortcuts</span></button>				
+			</div>
+		</form>
+	</div>
+	
+	<div id="tabs-b" class="ui-tabs-panel ui-widget-content ui-corner-bottom ui-tabs-hide" style="height: 600px;">
+		<div style="margin:5px 2.5% 0 2.5%;text-align:center;">
+			<button type="button" id="ini_code" style="font-size:0.9em;" title=" Setting initial code " class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false"><span class="ui-button-text"><i class="fa fa-file-code-o"></i> Initial code</span></button>
+					<button type="button" style="margin-left:5px;font-size:0.9em;" onclick="pfeature(&#39;/images/index.html&#39;, &#39;SUB&#39;)" title=" Local icons " class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false"><span class="ui-button-text"><i class="fa fa-picture-o"></i> Local icons</span></button>
+			<button type="button" id="intru_button" style="margin-left:5px;font-size:0.9em;" title=" Intrusion detection testing " class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false"><span class="ui-button-text"><i class="fa fa-shield"></i> Security test</span></button>
+				</div>
+		<iframe id="iframe_1" name="iframe_1" src="" width="96%" height="510" frameborder="0" style="margin-top:15px;margin-left:2%;position:relative;">You need an iFrame capable browser to view this content</iframe>
+		<div style="margin:10px 8% auto;font-weight:bold;"><img src="./PhpFiddle - PHP MySQL online IDE and execution server_files/plannerfw.jpg" style="vertical-align:middle;margin-right:10px;" alt="" height="20" width="100"> <span style="font-size:110%;">PlannerFw</span> is another product developed by PhpFiddle team, <a href="javascript:void(0);" onclick="pfad();">to see PlannerFw descriptions...</a></div>
+	</div>
+	
+	<div id="tabs-c" class="ui-tabs-panel ui-widget-content ui-corner-bottom ui-tabs-hide" style="height: 600px;">
+		<div style="margin:3px 1% 3px 1%; text-align:center;">
+			<select id="code_engine" name="code_engine" class="rounded" style="font-size:0.9em;padding:5px;" title=" Code search engines ">
+				<option value="ohloh">Ohloh code</option>
+				<optgroup label="——————"></optgroup>
+				<option value="searchco">Searchco</option>
+				<optgroup label="——————"></optgroup>
+				<option value="krugle">Krugle</option>
+				<optgroup label=" "></optgroup>
+			</select>
+			<input type="radio" name="lang" value="PHP" checked="checked" style="margin-left:20px;"><label style="">PHP</label>
+			<input type="radio" name="lang" value="JavaScript" style="margin-left:20px;"><label style="">JavaScript</label>
+			<input id="search_qry" name="search_qry" value="" size="52" maxlength="80" style="margin-left: 20px;" class="rounded_lite"> 
+			<button id="code_search" type="button" class="rounded ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" style="font-size:0.85em; margin-left:20px;" title=" Searching " role="button" aria-disabled="false"><span class="ui-button-text"><i class="fa fa-play"></i> Search code</span></button>
+		</div>
+		<iframe id="iframe_2" name="iframe_2" src="" width="94%" height="520" frameborder="0" style="margin-top:10px;margin-left:3%;position:relative;">You need an iFrame capable browser to view this content</iframe>
+			</div>
+	
+	<div id="tabs-d" class="ui-tabs-panel ui-widget-content ui-corner-bottom ui-tabs-hide" style="height: 600px;">
+		<div style="margin:5px 2% 12px 2%; text-align:center;">
+			<select name="link_operation" id="link_oper" class="rounded" style="font-size:0.9em;padding:5px;" title=" 
+ Search code description  
+ with keywords (allow &#39;and&#39;
+ operator), and  open the 
+ code by link id or gist id
+ ">
+				<option value="comment">Code description keywords</option>
+				<optgroup label="————————————"></optgroup>
+				<option value="link_id">Link id or Gist id</option>
+				<optgroup label=" "></optgroup>
+			</select>
+			<input type="text" id="keywords" name="keywords" value="" size="60" maxlength="80" style="margin-left: 20px;" class="rounded_lite" placeholder="Empty to list initial links"> 
+			<button id="search_submit" type="button" class="rounded ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" style="font-size:0.8em; margin-left:20px;" title=" 
+ Input empty to 
+ get initial list 
+ " role="button" aria-disabled="false"><span class="ui-button-text"><i class="fa fa-play"></i> &nbsp; Go</span></button><i class="fa fa-info-circle" style="float:left;color:#2E6E9E;font-size:1.5em;cursor:help;" title=" 
+ Good code description and 
+ comments are required to 
+ share your code with 
+ others easily 
+ "></i>
+		</div>
+		<div id="link_container" style="height:508px; padding:10px 10px 10px 20px; background-image:url(&#39;/images/bg_sand_light.jpg&#39;);" class="nestui">Link id : <strong><a href="http://phpfiddle.org/#" class="link_key" name="store" title=" The code in public ">p9bm-p1g8</a></strong><br><div style="margin-left:5%; margin-right:5%;" title=" Code description "><img src="./PhpFiddle - PHP MySQL online IDE and execution server_files/description.png" width="10" height="10" border="0" style="vertical-align: middle;"> sintaxe array php54</div><br><br>Link id : <strong><a href="http://phpfiddle.org/#" class="link_key" name="store" title=" The code in public ">wxyp-fjd9</a></strong><br><div style="margin-left:5%; margin-right:5%;" title=" Code description "><img src="./PhpFiddle - PHP MySQL online IDE and execution server_files/description.png" width="10" height="10" border="0" style="vertical-align: middle;"> Função para gerar string.</div><br><br>Link id : <strong><a href="http://phpfiddle.org/#" class="link_key" name="store" title=" The code in public ">h08h-yqs9</a></strong><br><div style="margin-left:5%; margin-right:5%;" title=" Code description "><img src="./PhpFiddle - PHP MySQL online IDE and execution server_files/description.png" width="10" height="10" border="0" style="vertical-align: middle;"> Format all non-array numbers</div><br><br>Link id : <strong><a href="http://phpfiddle.org/#" class="link_key" name="store" title=" The code in public ">t8cy-vxej</a></strong><br><div style="margin-left:5%; margin-right:5%;" title=" Code description "><img src="./PhpFiddle - PHP MySQL online IDE and execution server_files/description.png" width="10" height="10" border="0" style="vertical-align: middle;"> Text extraction</div><br><br>Link id : <strong><a href="http://phpfiddle.org/#" class="link_key" name="store" title=" The code in public ">erju-40bt</a></strong><br><div style="margin-left:5%; margin-right:5%;" title=" Code description "><img src="./PhpFiddle - PHP MySQL online IDE and execution server_files/description.png" width="10" height="10" border="0" style="vertical-align: middle;"> Pagination basics</div><br><br>Link id : <strong><a href="http://phpfiddle.org/#" class="link_key" name="store" title=" The code in public ">xmf7-r0bu</a></strong><br><div style="margin-left:5%; margin-right:5%;" title=" Code description "><img src="./PhpFiddle - PHP MySQL online IDE and execution server_files/description.png" width="10" height="10" border="0" style="vertical-align: middle;"> Pagination basics.</div><br><br>Link id : <strong><a href="http://phpfiddle.org/#" class="link_key" name="store" title=" The code in public ">hcyh-9s3w</a></strong><br><div style="margin-left:5%; margin-right:5%;" title=" Code description "><img src="./PhpFiddle - PHP MySQL online IDE and execution server_files/description.png" width="10" height="10" border="0" style="vertical-align: middle;"> Lorem Lorem Lorem Lorem Lorem Lorem</div><br><br>Link id : <strong><a href="http://phpfiddle.org/#" class="link_key" name="store" title=" The code in public ">ituy-f91t</a></strong><br><div style="margin-left:5%; margin-right:5%;" title=" Code description "><img src="./PhpFiddle - PHP MySQL online IDE and execution server_files/description.png" width="10" height="10" border="0" style="vertical-align: middle;"> PHP Exception Demonstration</div><br><br>Link id : <strong><a href="http://phpfiddle.org/#" class="link_key" name="store" title=" The code in public ">tkae-cwgz</a></strong><br><div style="margin-left:5%; margin-right:5%;" title=" Code description "><img src="./PhpFiddle - PHP MySQL online IDE and execution server_files/description.png" width="10" height="10" border="0" style="vertical-align: middle;"> Maggiorenne LPW 2015</div><br><br>Link id : <strong><a href="http://phpfiddle.org/#" class="link_key" name="store" title=" The code in public ">g2a6-nyu2</a></strong><br><div style="margin-left:5%; margin-right:5%;" title=" Code description "><img src="./PhpFiddle - PHP MySQL online IDE and execution server_files/description.png" width="10" height="10" border="0" style="vertical-align: middle;"> Postino LPW 2015 ver 2</div><br><br>Link id : <strong><a href="http://phpfiddle.org/#" class="link_key" name="store" title=" The code in public ">zs30-0gtd</a></strong><br><div style="margin-left:5%; margin-right:5%;" title=" Code description "><img src="./PhpFiddle - PHP MySQL online IDE and execution server_files/description.png" width="10" height="10" border="0" style="vertical-align: middle;"> Postino LPW 2015</div><br><br>Link id : <strong><a href="http://phpfiddle.org/#" class="link_key" name="store" title=" The code in public ">hr2j-7y9w</a></strong><br><div style="margin-left:5%; margin-right:5%;" title=" Code description "><img src="./PhpFiddle - PHP MySQL online IDE and execution server_files/description.png" width="10" height="10" border="0" style="vertical-align: middle;"> test stroptime</div><br><br>Link id : <strong><a href="http://phpfiddle.org/#" class="link_key" name="store" title=" The code in public ">7ru3-9wu4</a></strong><br><div style="margin-left:5%; margin-right:5%;" title=" Code description "><img src="./PhpFiddle - PHP MySQL online IDE and execution server_files/description.png" width="10" height="10" border="0" style="vertical-align: middle;"> MMG php code quiz 2</div><br><br>Link id : <strong><a href="http://phpfiddle.org/#" class="link_key" name="store" title=" The code in public ">xfyv-nu93</a></strong><br><div style="margin-left:5%; margin-right:5%;" title=" Code description "><img src="./PhpFiddle - PHP MySQL online IDE and execution server_files/description.png" width="10" height="10" border="0" style="vertical-align: middle;"> login_form</div><br><br>Gist id : <strong><a href="http://phpfiddle.org/#" class="link_key" name="gist" title=" The code in github:gist ">ac8c33257142c62b5219</a></strong><br><div style="margin-left:5%; margin-right:5%;" title=" Code description "><img src="./PhpFiddle - PHP MySQL online IDE and execution server_files/description_gist.png" width="10" height="10" border="0" style="vertical-align: middle;"> For test pushnotification-v2</div><br><br>Gist id : <strong><a href="http://phpfiddle.org/#" class="link_key" name="gist" title=" The code in github:gist ">6efaded258a619c66e5b</a></strong><br><div style="margin-left:5%; margin-right:5%;" title=" Code description "><img src="./PhpFiddle - PHP MySQL online IDE and execution server_files/description_gist.png" width="10" height="10" border="0" style="vertical-align: middle;"> For test pushnotification</div><br><br>Link id : <strong><a href="http://phpfiddle.org/#" class="link_key" name="store" title=" The code in public ">82h0-zji7</a></strong><br><div style="margin-left:5%; margin-right:5%;" title=" Code description "><img src="./PhpFiddle - PHP MySQL online IDE and execution server_files/description.png" width="10" height="10" border="0" style="vertical-align: middle;"> http://otvet.mail.ru/question/175830241</div><br><br>Link id : <strong><a href="http://phpfiddle.org/#" class="link_key" name="store" title=" The code in public ">yjk9-7d63</a></strong><br><div style="margin-left:5%; margin-right:5%;" title=" Code description "><img src="./PhpFiddle - PHP MySQL online IDE and execution server_files/description.png" width="10" height="10" border="0" style="vertical-align: middle;"> Using AJAX.</div><br><br></div>
+	</div>
+	
+	 
+</div>
+</div>
+<!-- <h1>PhpFiddle allows people to test PHP code snippets, create and execute web applications, for example, Zend Framework 2 projects</h1> -->
+<p id="doctab"><a href="http://phpfiddle.org/main/documents" style="color:inherit;" target="_blank" title=" PhpFiddle documenta- 
+ tion Alt-F1 "><i class="fa fa-book"></i></a></p>
+<p id="apistab"><a href="http://phpfiddle.org/#" onclick="trig_apis()" style="color:inherit;" title=" PhpFiddle APIs "><i class="fa fa-cogs"></i></a></p>
+<p id="widgetstab"><a href="http://phpfiddle.org/#" onclick="trig_widgets()" style="color:inherit;" title=" PhpFiddle Widgets "><i class="fa fa-cog"></i></a></p>
+<p id="litetab"><a href="http://phpfiddle.org/lite" style="color:inherit;" target="_blank" title=" PhpFiddle Lite "><i class="fa fa-tag"></i></a></p>
+<p id="cliruntab"><a href="http://phpfiddle.org/clirun" style="color:inherit;" target="_blank" title=" PhpFiddle CliRun "><i class="fa fa-terminal"></i></a></p>
+<p id="mobiletab"><a href="http://phpfiddle.org/mobile" style="color:inherit;" target="_blank" title=" PhpFiddle Mobile "><i class="fa fa-mobile"></i></a></p>
+<p id="gistab"><a href="https://gist.github.com/phpfiddle" style="color:inherit;" target="_blank" title=" https://gist.github.com/phpfiddle "><i class="fa fa-github-alt"></i></a></p>
+<p id="twtab"><a href="https://twitter.com/phpfiddle" style="color:inherit;" target="_blank" title=" https://twitter.com/phpfiddle "><i class="fa fa-twitter-square"></i></a></p> 
+<p id="fbtab"><a href="http://www.facebook.com/xfiddle" style="color:inherit;" target="_blank" title=" To see updated information at 
+  https://facebook.com/xfiddle"><i class="fa fa-facebook-square"></i></a></p> 
+<p id="termstab"><a href="http://phpfiddle.org/#" onclick="trig_terms()" style="color:inherit;" title=" Terms of service "><i class="fa fa-gavel"></i></a></p>
+<p id="cntab"><a href="http://phpfiddle.org/#" onclick="trig_contact()" style="color:inherit;" title=" Send us contact &amp; 
+ feedback message"><i class="fa fa-envelope"></i></a></p>
+
+<form id="resource_form" method="post" action="http://phpfiddle.org/main/do_analysis/" target="iframe_2">
+	<textarea id="textarea_2" name="area_b" style="display:none;"></textarea>
+	<input type="hidden" name="submit_analysis" value="f41e3e96c89bafd2829320cdce0fa642">
+	<input type="hidden" id="ana_id" name="ana_id" value="">
+	<input type="hidden" id="ana_param" name="ana_param" value="">
+</form>
+
+<div style="margin-left:3%; margin-right:2.4%; height:20px; background-image: url(/images/bg_sand_light.jpg);">
+	<span style="margin-top:5px; font-size:0.7em; float:right;"><i class="fa fa-home"></i> PhpFiddle © 2012 - 2015 • English (US) &nbsp; </span>
+	<div id="info_dialog"></div>
+</div>
+</div>
+
+<script type="text/javascript" src="./PhpFiddle - PHP MySQL online IDE and execution server_files/jquery.alerts.js"></script>
+<script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-31683329-1']);
+_gaq.push(['_trackPageview']);
+(function() {
+	var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+
+
+
+<div id="humanMsg" class="humanMsg"><div class="round"></div><p></p><div class="round"></div></div> <div id="humanMsgLog"><p>Message Log</p><ul></ul></div><div id="window-resizer-tooltip"><a href="http://phpfiddle.org/#" title="Edit settings"></a><span class="tooltipTitle">Window size: </span><span class="tooltipWidth" id="winWidth"></span> x <span class="tooltipHeight" id="winHeight"></span><br><span class="tooltipTitle">Viewport size: </span><span class="tooltipWidth" id="vpWidth"></span> x <span class="tooltipHeight" id="vpHeight"></span></div></body></html>
