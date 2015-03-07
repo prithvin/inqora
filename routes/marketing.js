@@ -71,10 +71,15 @@ router.get('/viewemail', function (req, res) {
 	var request = require('request');
 
 router.get('/image', function (req, res) {
-	loadBase64Image(req.query.url, function (image, prefix) {
-		res.send(prefix + image);
-		console.log(image + prefix);
-});
+	if (req.query.url.indexOf("data:image/") == 0)
+		res.send(req.query.url);
+	else {
+		loadBase64Image(req.query.url, function (image, prefix) {
+			res.send(prefix + image);
+			console.log(image + prefix);
+
+		});
+	}
 });
 
 

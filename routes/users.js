@@ -216,12 +216,15 @@ router.get('/removenotif', function (req, res) {
 
 router.post('/authenticate', function(req,res) {
 	var password = req.body.Password;
+	var fbauth = req.body.FBAuth;
+	if (fbauth == null)
+		fbauth = "-55";
 	var user = req.body.User.trim().toLowerCase();
 	var regex = new RegExp(["^",user,"$"].join(""),"i");
 	var str = "Username";
 	if (user.indexOf("@") != -1) 
 		str = 'Email';
-	users.findOne({$or: [{"Username":regex, 'Password' : password},{"Email":regex, 'Password' : password}]}, function(err, results) {
+	users.findOne({$or: [{"Username":regex, 'Password' : password},{"Email":regex, 'Password' : password}, {"Email":regex, 'FBAuthToken' : fbauth}]}, function(err, results) {
 		if (results == null) 
 			res.send("Username/email or password invalid.");
 		else {
@@ -264,6 +267,7 @@ router.post('/create', function(req, res) {
 		Username: req.body.Username.trim().toLowerCase(),
 		Email: req.body.Email.trim().toLowerCase(),
 		Password: req.body.Password,
+		FBAuthToken: req.body.FBAuthToken,
 		Verified: false,
 		FollowingAccs: {
 			Users: arrfollow,

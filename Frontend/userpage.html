@@ -193,7 +193,8 @@
 		            <center><h1 class="modal-title" id="myModalLabel"><font color="black" id="thistitleformodal">Please Log In</h1></center>
 		          </div>
 		          <div class="modal-body" >
-		          	<form id="loginform-modal-window"class="loginform">
+		          	 	<form id="loginform-modal-window"class="loginform">
+		          	 <fb:login-button id="fblogin"  scope="public_profile,email" onlogin="loggedIn()">Login with Facebook</fb:login-button>
 					  <div class="group">
 					    <input class="myinput" placeholder="Username/ Email" id="username-modal-window" type="text"><span class="highlight"></span><span class="bar"></span>
 		

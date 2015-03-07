@@ -15,6 +15,37 @@ function getNotifsLOOOOOOL(calledfirs) {
 	});
 }
 
+ (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js";
+  fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+
+  function autoFill () {
+    FB.api('/me', function(data) {
+     	callAJAX ("POST", "/users/authenticate", {Email: data.email, FBAuth:data.id}, function (data) {
+			if (data == "Successfully authenticated")
+				window.location.replace(window.location.href);
+			else
+				alert(data);
+		});
+    });
+  }
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '649452745161437',
+      cookie     : true,  // enable cookies to allow the server to access the session
+      xfbml      : true,  // parse social plugins on this page
+      version    : 'v2.2' // use version 2.2
+    });
+    FB.getLoginStatus(function(response) {
+      if (response.status == "connected") {
+        autoFill();
+      }
+    });
+  };
 /*
  Notification.requestPermission(function (perm) {
     if (perm == "granted") {
