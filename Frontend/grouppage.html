@@ -130,8 +130,8 @@
 		  </div>
 		</div>
 
-		<input id="loginmodalbutton" value="" style="display:none;" type="button" data-toggle="modal" data-target="#loginmodal">
-		<div class="modal fade" id="loginmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<input id="loginmodalbutton" value="" style="display:none;" type="button" data-toggle="modal" data-target="#loginmodal">
+				<div class="modal fade" id="loginmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		  <div  class="modal-dialog">
 		    <div class="modal-content">
 		      <div class="modal-header">
@@ -139,8 +139,10 @@
 		            <center><h1 class="modal-title" id="myModalLabel"><font color="black" id="thistitleformodal">Please Log In</h1></center>
 		          </div>
 		          <div class="modal-body" >
-		          	 	<form id="loginform-modal-window"class="loginform">
-<center>		          	 <button id="fblogin" class="pure-button pure-button-primary" onclick="login()">Login with Facebook</button><br><br>
+		          <div class="loginform">
+		           <button id="fblogin" class="pure-button pure-button-primary" onclick="login()">Login with Facebook</button><br><br>
+		          	<form id="loginform-modal-window">
+<center>		          	
 					  <div class="group">
 					    <input class="myinput" placeholder="Username/ Email" id="username-modal-window" type="text"><span class="highlight"></span><span class="bar"></span>
 		
@@ -152,7 +154,7 @@
 					  <button type="submit" class="loginbutton buttonBlue">Login
 					    <div class="ripples buttonRipples"><span class="ripplesCircle"></span></div>
 					  </button>
-					</form>
+					</form></div>
 		          </div>
 		      </div>
 		  </div>
