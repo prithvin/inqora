@@ -1,0 +1,12 @@
+.bluetoblue {
+	background: -webkit-linear-gradient(#FF9500, #FF5E3A);
+background: -o-linear-gradient(#FF9500, #FF5E3A); 
+background: -moz-linear-gradient(#FF9500, #FF5E3A); 
+background: linear-gradient(#FF9500, #FF5E3A);
+}
+
+.inner-image {
+  position: absolute;
+  top: 15px;
+  right: 30px;
+}

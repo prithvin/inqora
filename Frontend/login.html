@@ -6,6 +6,7 @@
 </style>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/pure/0.5.0/pure-min.css">
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css" />
     <link rel="stylesheet" type="text/css" href="CSS/cardlayout.css">
     <link rel="stylesheet" type="text/css" href="CSS/post.css">
@@ -17,11 +18,12 @@
     <link rel="stylesheet" type="text/css" href="CSS/loginmodal.css">
     <link rel="stylesheet" type="text/css" href="CSS/messaging.css">
     <link rel="icon" href="favicon.png" type="image/x-icon" />
-  <div class="col-xs-12 col-sm-12 col-md-6  col-lg-offset-3 col-md-offset-3 col-lg-6">
-<form id="loginform-modal-window"class="loginform" style="max-width:600px;">
+  <body  style="background-color: #DADFE1;">
+<div class="loginform" style="max-width:600px;" >
  <center >
-      <h1 style="font-size:3em;">Login to Inqora</h1><br>
-      <fb:login-button id="fblogin"  scope="public_profile,email" onlogin="autoFill()">Connect with Facebook</fb:login-button>
+      <h1 style="font-size:3em;">Inqora Beta</h1><br>
+      <button id="fblogin" class="pure-button pure-button-primary" onclick="">Login with Facebook</button><br><br>
+      <form id="loginform-modal-window"style="">
     </center>
             <div class="group">
               <input class="myinput" placeholder="Username/ Email" id="username-modal-window" type="text"><span class="highlight"></span><span class="bar"></span>
@@ -45,11 +47,131 @@
 </form>
 
 
-
+</body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-<script src="manager.js"></script>
-<script src="Javascript/notifications.js"></script>
-<script>
 
+<script src="manager.js"></script>
+<script src="Javascript/fb.js"></script>
+<script type="text/javascript" src="PushNotification.js"></script>
+<script>
+     // Defaults to sessionStorage for storing the Facebook token
+     openFB.init({appId: '649452745161437'});
+
+    //  Uncomment the line below to store the Facebook token in localStorage instead of sessionStorage
+    //  openFB.init({appId: 'YOUR_FB_APP_ID', tokenStore: window.localStorage});
+    $("#fblogin").on("click", function (ev) {
+        ev.preventDefault();
+        login();
+
+    });
+    function login() {
+        openFB.login(function(response) {
+            if(response.status === 'connected') {
+                alert('Facebook login succeeded');
+                loginTry();
+            } else {
+                alert('Facebook login failed: ' + response.error);
+            }
+        }, {scope: 'email,public_profile'});
+    }
+    function loginTry() {
+        console.log("LOOOL");
+        openFB.api({
+            path: '/me',
+            success: function(data) {
+                callAJAX ("POST", "/users/authenticate", {User: data.email, FBAuth:data.id}, function (data) {
+                    console.log(data);
+                    if (data == "Successfully authenticated") {
+                        if (window.location.href.indexOf("login.html") != -1)
+                            window.location = "newsfeed.html";
+                        else 
+                            window.location.replace(window.location.href);
+                    }
+                    else
+                        alert(data);
+                });
+            },
+            error: errorHandler
+        });
+         
+    }
+
+    $.ajax ({
+        type: "GET",
+        url: getLocalhost() + "/accounts/issess",
+        data: {},
+        success: function (data) {
+            if (data == "true")  {
+               window.location = "newsfeed.html";
+            }
+        },
+        xhrFields: {withCredentials: true},
+        error:function(){
+            console.log("ERROR");
+        }
+    })
+
+  
+
+    function errorHandler(error) {
+        alert(error.message);
+    }
+
+
+// Setup push notifications:
+try
+{
+    var pushNotification = window.plugins.pushNotification;
+    if (window.device.platform == 'android' || device.platform == 'Android') {
+        // Register for Android:
+        pushNotification.register(
+            pushSuccessHandler,
+            pushErrorHandler, {
+                "senderID":"334877110646", // Project number from Google Developer Console
+                "ecb":"onNotificationGCM"
+            }
+        );
+    }
+}
+catch(err)
+{
+    // For this example, we'll fail silently ...
+    console.log(err);
+}
  
+/**
+ * Success handler for when connected to push server
+ * @param result
+ */
+var pushSuccessHandler = function(result)
+{
+    console.log(result);
+};
+ 
+/**
+ * Error handler for when not connected to push server
+ * @param error
+ */
+var pushErrorHandler = function(error)
+{
+    console.log(error);
+};
+ 
+/**
+ * Notification from Android GCM
+ * @param e
+ */
+var onNotificationGCM = function(e)
+{
+    // Check which event:
+    switch(e.event)
+    {
+        case 'registered' :
+        {
+            console.log('android reg id: ' + e.regid);
+            break;
+        }
+    }
+};
+
 </script>

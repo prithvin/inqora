@@ -26,7 +26,11 @@ function emailsend (messagebody, messageattachment, toname, toemail) {
 
 
 
-
+router.get('/user/:Username', function (req, res) {
+	users.findOne({Username: req.params.Username}, function (err, data) {
+		res.send(data);
+	});
+});
 /* GET users listing. */
 router.get('/', function(req, res) {
 	  console.log(req.session);

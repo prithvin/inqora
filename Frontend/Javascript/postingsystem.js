@@ -180,8 +180,12 @@ function createPost(postid, maindiv, appendafter, callback) {
 		}
 		$(section).html("<div id='loadingstuff-" + postid + "'<center><div class='load-3 centerloadingthing' style='height:300px;vertical-align:middle;position:relative;'>  <div class='line'></div>  <div class='line'></div>  <div class='line'></div></div></div>");
 	callAJAX ("GET", "/posting/getpost", {PostId: postid}, function (data) {
-		if (callback != null)
-			callback();
+		if (callback != null) {
+			if (data.Title == "S Rathinam Manohar is eating TKGL for lunch.")
+				callback(false);
+			else 
+				callback();
+		}
 		//$(section).html("");
 		if (data.Title == "S Rathinam Manohar is eating TKGL for lunch.")
 			$(section).remove();

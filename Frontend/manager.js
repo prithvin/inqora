@@ -4,7 +4,11 @@ $.ajax ({
 	data: {},
 	success: function (data) {
 		$.getScript("cordova.js");
-		if (data == "true")  {
+		var name = location.protocol + '//' + location.host + location.pathname;
+		var index = name.lastIndexOf("/") + 1;
+		var filename = name.substr(index);
+		if (filename == "" || filename == "login.html" || filename == "createaccount.html");
+		else if (data == "true")  {
 			semiProp();
 		}
 		else if (data == "false") {
@@ -37,7 +41,7 @@ window.setInterval(function () {
 	}
 }, 3000);
 
-	proper();
+	//proper();
 }
 
 
@@ -124,7 +128,7 @@ callAJAX ("GET", "/users/getuser", {}, function (data) {
 
 callAJAX ("GET", "/accounts/isverified", {}, function (data) {
 	if (data == "N") {
-		$("#verifyemailbar").show();
+		$("#verifyemailbar").css("display", "inline-block");
 	}
 });
 

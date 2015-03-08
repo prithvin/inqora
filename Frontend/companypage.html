@@ -51,7 +51,7 @@
 
 				<br>
 				<a id="notloggedin" href="loginpage.html" class="col-xs-12 col-md-12 col-sm-12  pure-button" style="display:none;color:white;background-color:rgba(242, 38, 19, 0.6);">Not Logged In. Limited Functionality.</a>
-				<a id="verifyemailbar" href="loginpage.html" class="col-xs-12 col-md-12 col-sm-12  pure-button" style="display:none;color:white;background-color:rgba(113, 255, 0, 0.5);">Please verify your email to access full functionality. Click here to resend email</a>
+				<a id="verifyemailbar" href="loginpage.html" class="col-xs-12 col-md-12 col-sm-12 link pure-button" style="display:none;color:white;background-color:rgba(113, 255, 0, 0.5);">Please verify your email to access full functionality. Click here to resend email</a>
 		</div>
 
 		<div class="fixedtop" style="margin-top:10px;">
@@ -308,7 +308,7 @@
 		<script src="Javascript/loginmodal.js"></script>
 		<script>
 		
-
+		proper();
 		function proper () {
 			if (getQueryVariable("userpostid") != false) {
 				showPost(getQueryVariable("userpostid"));

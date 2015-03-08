@@ -1,0 +1,5 @@
+/*!CK:2668703847!*//*1425542082,*/
+
+if (self.CavalryLogger) { CavalryLogger.start_js(["IJry4"]); }
+
+__d("BoostedComponentSpec",["BoostedActionSpecFields"],function(a,b,c,d,e,f,g){'use strict';function h(i,j,k,l,m){this.$BoostedComponentSpec0=i;this.$BoostedComponentSpec1=j;this.$BoostedComponentSpec2=k;this.$BoostedComponentSpec3=l;this.$BoostedComponentSpec4=m;}h.prototype.getSpecsJSON=function(){var i={};i[g.AD_ACCOUNT_ID]=this.$BoostedComponentSpec0.getSelectedAccountID();i[g.TARGET_SPEC]=this.$BoostedComponentSpec1.getTargetingSpec();i[g.CREATIVE_SPEC]=this.$BoostedComponentSpec2.getCreativeSpec();i[g.END_TIME]=this.$BoostedComponentSpec3.getRunContinuously()?0:this.$BoostedComponentSpec3.getCampaignEndTime();i[g.DAILY_BUDGET]=this.$BoostedComponentSpec4.getSelectedBudgetValue();return JSON.stringify(i);};e.exports=h;},null);

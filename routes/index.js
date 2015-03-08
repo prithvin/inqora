@@ -14,8 +14,9 @@ function isSess (req) {
 }
 
 router.get('/logout', function(req,res ) {
-	req.session.destroy();
-	res.send("Session destroyed");
+	req.session.destroy(function () {
+			res.send("Session destroyed");
+		});
 });
 
 router.get('/test', function (req, res) {

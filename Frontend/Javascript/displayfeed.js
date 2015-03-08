@@ -2,22 +2,22 @@
 
 function displayAll(data, maindiv, adddiv) {
 	var checkspan = startIt(adddiv);
-	recursiveDisplay(data, maindiv, checkspan, 0);
+	recursiveDisplay(data, maindiv, checkspan, 0, true);
 }
 
-function recursiveDisplay(data, maindiv, checkspan, x){ 
+function recursiveDisplay(data, maindiv, checkspan, x, booltr){ 
 	if (x == data.length)
 		setFinished(checkspan);
-	else if (isElementInViewport($("#checkspan"))) {
-		createPost(data[x], maindiv, null, function () {
-			recursiveDisplay(data, maindiv, checkspan, x+1);
+	else if (isElementInViewport($("#checkspan")) || booltr == false) {
+		createPost(data[x], maindiv, null, function (booltr) {
+			recursiveDisplay(data, maindiv, checkspan, x+1, booltr);
 			
 			
 		});
 	}
 	else {
 		$(window).one("scroll", function(ev) {
-			recursiveDisplay(data, maindiv, checkspan, x);
+			recursiveDisplay(data, maindiv, checkspan, x, true);
 		});
 	}
 }

@@ -8,10 +8,10 @@
           },
           success:function(data) {
             if (data.trim() == "Session destroyed") {
-              window.location.reload();
+              window.location = "login.html";
             }
             else
-               window.location.assign("newsfeed.html");
+              logout();
           },
           xhrFields: {withCredentials: true},
           error:function(){

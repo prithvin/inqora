@@ -166,8 +166,12 @@ router.get('/newcomment', function (req, res) {
 			        		users.update({Username: arr[x]}, {$push: {'Notifications.TaggedInComment' : objnotif}}, function (err, up) {});
 			        	}
 			        }
-					res.send(objsend);
-					posts.update({_id: req.query.PostId}, {$push: {Comments: obj}}, function (err, up) {});
+					
+					posts.update({_id: req.query.PostId}, {$push: {Comments: obj}}, function (err, up) {
+
+						res.send(objsend);
+
+					});
 				});
 			}
 		});

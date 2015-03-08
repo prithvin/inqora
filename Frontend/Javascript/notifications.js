@@ -6,12 +6,9 @@ function getNotifsLOOOOOOL(calledfirs) {
 	callAJAX ("GET", "/users/notifications", {}, function (data) {
 		var len = 0;
 		$("#menu").html("");
-
 		len += neworOld(true, 0, data, calledfirs);
 		neworOld(false, 0, data);
 		$("#numnotifs").html(" " + len);
-	
-
 	});
 }
 
