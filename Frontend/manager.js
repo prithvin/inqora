@@ -51,10 +51,10 @@ console.log("\n\n\nHey there! We could really use your help in developing the In
 		function getLocalhost() {
 			//return "http://localhost:3000";
 		//return "https://inqora2.herokuapp.com"
-	/*	if (window.location.href.indexOf("https") != -1)
+		if (window.location.href.indexOf("https") != -1)
 			return "https://inqora.com/api";
 		else
-			return "http://inqora.com/api";*/
+			return "http://inqora.com/api";
 		}
 function callAJAX (mytype, url, datastruct, callback) {
 	$.ajax({
