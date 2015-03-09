@@ -7,11 +7,23 @@
           data: {
           },
           success:function(data) {
-            if (data.trim() == "Session destroyed") {
-              window.location = "login.html";
-            }
-            else
-              logout();
+            $.ajax({
+              type: "GET",
+              url: getLocalhost() + "/logout",
+              data: {
+              },
+              success:function(data) {
+                if (data.trim() == "Session destroyed") {
+                  window.location = "login.html";
+                }
+                else
+                  logout();
+              },
+              xhrFields: {withCredentials: true},
+              error:function(){
+                console.log("ERROR");
+              }
+            });
           },
           xhrFields: {withCredentials: true},
           error:function(){
