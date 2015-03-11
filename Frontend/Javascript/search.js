@@ -33,6 +33,8 @@
        
     }
 
+    
+    showName();
 function showName () {
   var project = document.getElementById("project");
   project.disabled = true;

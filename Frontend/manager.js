@@ -32,7 +32,6 @@ $.ajax ({
 })
 
 function semiProp () {
-	  showName();
 	getUserData();
 	getNotifsLOOOOOOL(true)
 window.setInterval(function () {
