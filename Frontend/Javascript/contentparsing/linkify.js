@@ -9,10 +9,12 @@
  * Usage:   See demonstration page: linkify.html
  */
 
- function tagChange (str, nolink) {
+ function tagChange (str, nolink, imgdiv) {
   var regex =/((\S*@\[[^\]]+\])|(\S*@\S+))/ig;
-  if(nolink)
-     return str.replace(regex, "<span onmouseover='inlineTool(this);'  href=''>$1</span>");
+  if(nolink) {
+     var newstr =  str.replace(regex, "<span onmouseover='inlineTool(this);'  href=''>$1</span>");
+      return newstr; 
+  }
     return str.replace(regex, "<span><a onmouseover='inlineTool(this);' href='' style='display:inline;padding:0;' class='directtotype'>$1</a></span>");
 }
 
@@ -35,9 +37,9 @@ function makeToolTipRemove(maindiv, classAdd, innerHTML, link, username, maindiv
 
 }
 
-function linkify(text, nolink) {
+function linkify(text, nolink, imgdiv) {
   text = (text);
-  text = tagChange(text, nolink);
+  text = tagChange(text, nolink, imgdiv);
     /* Here is a commented version of the regex (in PHP string format):
     $url_pattern = '/# Rev:20100913_0900 github.com\/jmrware\/LinkifyURL
     # Match http & ftp URL that is not already linkified.

@@ -225,8 +225,10 @@ function getPercentChanges(StockFollowing, x, res, avgarr, obj, parallelarray){
 			yahooFinance.snapshot({
 				symbol: tempobj.CompanyUsername
 			}, function (err, snapshot2) {
+				if (snapshot2 != null) {
 				percentstockchange = ((snapshot2.lastTradePriceOnly - tempobj.StockStart)/(tempobj.StockStart));
 				avgarr[parallelarray.indexOf(tempobj.CompanyUsername)].PercentChanges.push(percentstockchange);
+				}
 				getPercentChanges(StockFollowing, x+1, res, avgarr, obj, parallelarray);
 			});
 		}

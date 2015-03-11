@@ -5,17 +5,18 @@
 
 #menu {
 	height:50%;overflow:scroll;z-index:999;width:100%;
+	position:fixed;
 }
 .false-false {
 	background-color:#DADFE1 !IMPORTANT;
 }
 #menu a
 {
-	border-bottom:1px solid black;
+	border:1px solid black;
 	  display: block;
 	  background: #F8F8F8;
 	  width: 260px;
-  
+  	position: relative;
 	  padding: 0 0 0 10px;
 		padding-top:10px;
 		padding-bottom:10px;

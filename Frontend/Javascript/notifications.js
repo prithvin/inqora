@@ -12,69 +12,7 @@ function getNotifsLOOOOOOL(calledfirs) {
 	});
 }
 
-// Defaults to sessionStorage for storing the Facebook token
-     openFB.init({appId: '649452745161437'});
 
-    //  Uncomment the line below to store the Facebook token in localStorage instead of sessionStorage
-    //  openFB.init({appId: 'YOUR_FB_APP_ID', tokenStore: window.localStorage});
- 
-
-    function errorHandler(error) {
-        alert(error.message);
-    }
-
-
-    function login() {
-        openFB.login(function(response) {
-            if(response.status === 'connected') {
-                alert('Facebook login succeeded');
-                loginTry();
-            } else {
-                alert('Facebook login failed: ' + response.error);
-            }
-        }, {scope: 'email,public_profile'});
-    }
-    function loginTry() {
-        openFB.api({
-            path: '/me',
-            success: function(data) {
-                callAJAX ("POST", "/users/authenticate", {User: data.email, FBAuth:data.id}, function (data) {
-                    console.log(data);
-                    if (data == "Successfully authenticated") {
-                        if (window.location.href.indexOf("index.html") != -1)
-                            window.location = "newsfeed.html";
-                        else 
-                            window.location.replace(window.location.href);
-                    }
-                    else
-                        alert("No account connected to Facebook profile");
-                });
-            },
-            error: errorHandler
-        });
-         
-    }
-/*
- Notification.requestPermission(function (perm) {
-    if (perm == "granted") {
-      var notification = new Notification("<a href='http://www.google.com'>Hello! How are you today?</a>" , {
-        dir: "auto",
-        lang: "hi",
-        icon: "http://api.randomuser.me/0.2/portraits/women/31.jpg",
-        
-      });
-      notification.onshow = function(){
-        var self = this;
-        setTimeout(function(){
-          self.close();
-        }, 20000);
-      }
-       notification.onclick = function () {
-       	console.log("HEYHEYHEY");
-       }
-    }
-  })
-  */
 function createNotif (image, text, link) {
 	$("#audiocontrlonotif").get(0).currentTime=0;
 $("#audiocontrlonotif").get(0).play();
@@ -264,8 +202,7 @@ function isBreakpoint( alias ) {
 $( " #admin" ).on( "click", function() {
 	if( isBreakpoint('xs') ) {
 		$("#menu").css({
-			position: "absolute",
-			top: ($(this).offset().top+30) + "px",
+			top: $("#navsearchmainsearch").height() + "px",
 			left: "0px",
 			"z-index":9999,
 			width: "100% !IMPORTANT"
@@ -281,8 +218,7 @@ $( " #admin" ).on( "click", function() {
 			left = $(window).width()- 290;
 
 		$("#menu").css({
-			position: "absolute",
-			top: ($(this).offset().top+30) + "px",
+			top: $("#navsearchmainsearch").height() + "px",
 			left: left + "px",
 			"z-index":9999,
 			width: "260px !IMPORTANT"
@@ -315,3 +251,65 @@ $(document).on("click", ".notif",  function () {
 		});
 	});
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Defaults to sessionStorage for storing the Facebook token
+     openFB.init({appId: '649452745161437'});
+
+    //  Uncomment the line below to store the Facebook token in localStorage instead of sessionStorage
+    //  openFB.init({appId: 'YOUR_FB_APP_ID', tokenStore: window.localStorage});
+ 
+
+    function errorHandler(error) {
+        alert(error.message);
+    }
+
+
+    function login() {
+        openFB.login(function(response) {
+            if(response.status === 'connected') {
+                alert('Facebook login succeeded');
+                loginTry();
+            } else {
+                alert('Facebook login failed: ' + response.error);
+            }
+        }, {scope: 'email,public_profile'});
+    }
+    function loginTry() {
+        openFB.api({
+            path: '/me',
+            success: function(data) {
+                callAJAX ("POST", "/users/authenticate", {User: data.email, FBAuth:data.id}, function (data) {
+                    console.log(data);
+                    if (data == "Successfully authenticated") {
+                        if (window.location.href.indexOf("index.html") != -1)
+                            window.location = "newsfeed.html";
+                        else 
+                            window.location.replace(window.location.href);
+                    }
+                    else
+                        alert("No account connected to Facebook profile");
+                });
+            },
+            error: errorHandler
+        });
+         
+    }

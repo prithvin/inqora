@@ -144,34 +144,50 @@ router.get('/newcomment', function (req, res) {
 			        	TitleOfPost: xss(data.Title),
 						PostId:req.query.PostId,
 						NumCommentsLast: data.Comments.length + 1,
-						wasComment: true
+						wasComment: true,
+						CurrentLen: data.Comments.length + 1,
+						LastCreator: ""
 			        };
 
-			       users.update({_id: req.session.UserId}, {$push: {'Notifications.PostUserCommentedOrPosted' : notifobj}}, function (err, up) {});
+			       users.update({_id: req.session.UserId}, {$push: {'Notifications.PostUserCommentedOrPosted' : notifobj}}, function (err, up) {
+			       		if (data.Comments == null)
+							var comments = 0;
+						else
+							comments = data.Comments.length;
+						
+						var objnotif = {
+							CommentNum: xss(comments),
+							isNew: true,
+							TitleOfPost: xss(data.Title),
+							PostId: data._id,
+							WhoTagged: data2.Username
+						};
+						for (var x = 0; x < arr.length; x++) {
+				        	if (arr[x] != data2.Username) {
+				        		users.update({Username: arr[x]}, {$push: {'Notifications.TaggedInComment' : objnotif}}, function (err, up) {});
+				        	}
+				        }
+						
+						posts.update({_id: req.query.PostId}, {$push: {Comments: obj}}, function (err, up) {
+							users.update({"Notifications.PostUserCommentedOrPosted.PostId" : req.query.PostId}, {$set : {"Notifications.PostUserCommentedOrPosted.$.CurrentLen" : data.Comments.length + 1,  "Notifications.TaggedInComment.$.LastCreator" : data2.Username}} , function (err, up) {
+								console.log(up);
+								console.log("YOLO SAY NO NO ");
+								res.send(objsend);
+							});
+							users.find({"Notifications.PostUserCommentedOrPosted.PostId" : req.query.PostId}, "Username",  function (err, same) {
+								console.log("HEHEYSdfasfasdfadfasdfadfasdfadf");
+								var str = "";
+								for (var x = 0; x < same.length;x++) { 
+									str+= same[x].Username + " ";
+								}
+								console.log(str);
+							});
+						});
 
-					if (data.Comments == null)
-						var comments = 0;
-					else
-						comments = data.Comments.length;
+
+			       });
+
 					
-					var objnotif = {
-						CommentNum: xss(comments),
-						isNew: true,
-						TitleOfPost: xss(data.Title),
-						PostId: data._id,
-						WhoTagged: data2.Username
-					};
-					for (var x = 0; x < arr.length; x++) {
-			        	if (arr[x] != data2.Username) {
-			        		users.update({Username: arr[x]}, {$push: {'Notifications.TaggedInComment' : objnotif}}, function (err, up) {});
-			        	}
-			        }
-					
-					posts.update({_id: req.query.PostId}, {$push: {Comments: obj}}, function (err, up) {
-
-						res.send(objsend);
-
-					});
 				});
 			}
 		});
@@ -361,17 +377,21 @@ router.post('/create/new', function (req, res) {
 			        };
 			        var notifobj = {
 			        	TitleOfPost: xss(req.body.Title),
-						PostId:newpost._id,
+						PostId:newpost._id + '',
 						NumCommentsLast: 0,
-						wasComment: false
+						wasComment: false,
+						CurrentLen: 0,
+						LastCreator: ""
 			        };
-			        users.update({_id: req.session.UserId}, {$push: {'Notifications.PostUserCommentedOrPosted' : notifobj}}, function (err, up) {});
-			        for (var x = 0; x < arr.length; x++) {
-			        	if (arr[x] != data.Username) {
-			        		users.update({Username: arr[x]}, {$push: {'Notifications.TaggedInPost' : obj}}, function (err, up) {});
-			        	}
-			        }
-					return res.send(newpost._id)
+			        users.update({_id: req.session.UserId}, {$push: {'Notifications.PostUserCommentedOrPosted' : notifobj}}, function (err, up) {
+			        	 for (var x = 0; x < arr.length; x++) {
+				        	if (arr[x] != data.Username) {
+				        		users.update({Username: arr[x]}, {$push: {'Notifications.TaggedInPost' : obj}}, function (err, up) {});
+				        	}
+				        }
+						return res.send(newpost._id)
+			        });
+			       
 	           	}
 	        });
 	     }

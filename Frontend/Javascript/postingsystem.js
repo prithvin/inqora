@@ -58,6 +58,7 @@ function createCommentPanel(panel, postid) {
 				PostId: $(this).attr("name")
 			};
 			var button = this;
+			console.log(obj);
 			callAJAX("GET", "/posting/newcomment", obj, function (data) {
 				var comments = document.getElementsByClassName("commenttime");
 				newComment (data, $("#appendhere-" + $(button).attr("name")), $(button).attr("name"), comments.length);
@@ -117,7 +118,7 @@ function newComment (data, panel, postid, x) {
 			upvoteclass += " selected";
 		else if (data.Status == -1)
 			downvoteclass += " selected";
-
+		console.log(data);
 		var ul1 = $("<div>").css("margin-top", "5px").appendTo(divvy);
 			var lisecond = $("<span>").appendTo(ul1);
 				var linknet = $("<span>").addClass("votespan").html(data.NetVotes + " Votes").appendTo(lisecond).attr("id", "netvotecounter-" +  postid + "-" + x).attr("name", postid).attr("value", x);
@@ -170,6 +171,17 @@ function linkwithfontawesome (maindiv, fontawesomeclass, linkclass, innerHTML) {
 	$(a).append(" " + innerHTML);
 }
 
+function getIdYoutube(url) {
+    var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+    var match = url.match(regExp);
+
+    if (match && match[2].length == 11) {
+        return match[2];
+    } else {
+        return 'error';
+    }
+}
+
 
 function createPost(postid, maindiv, appendafter, callback) {
 	if (appendafter) {
@@ -195,7 +207,27 @@ function createPost(postid, maindiv, appendafter, callback) {
 			var timeposted = $("<span>").html("Posted " + msToTime((new Date).getTime() - data.TimePosted) + " by ").appendTo(h2);
 			makeToolTip(h2, "", "@" + data.PosterUsername + " (" + data.PosterName + ")","userpage.html?id=" + data.PosterUsername, data.PosterUsername);
 
-		var lol = $("<p>").html(linkify(data.Content)).appendTo(section).addClass("lol link");
+			
+
+		var lol = $("<p>").html(linkify(data.Content, null, img)).appendTo(section).addClass("lol link");
+		var semidiv = $("<div>").css("width", "100%").css("text-align", "center").appendTo(section);
+
+		var omg = $(lol).find("a");
+		for (var z =0; z < omg.length; z++) {
+			if($($(omg).get(z)).attr("href") != "" && $($(omg).get(z)).attr("href") != null) {
+				if ($($(omg).get(z)).attr("href").match(/\.(jpeg|jpg|gif|png)$/) != null) {
+					var img = $("<img>").css("max-width", "100%").css("text-align","center").css("max-height" ,"200px");
+					$(img).attr("src", $($(omg).get(z)).attr("href"));
+					img.appendTo(semidiv);
+				}
+				if($($(omg).get(z)).attr("href").match(/youtube\.com/) != null) {
+					var youtube = $("<iframe>").css("width", "100%").css("text-align","center").css("height" ,"300px").css("border" ,"0px")
+					$(youtube).attr("src", "https:////www.youtube.com/embed/" +  getIdYoutube($($(omg).get(z)).attr("href")));
+					youtube.appendTo(semidiv);
+				}
+			}
+		} 
+
 		var hr1 = $("<p>").addClass("hr1").appendTo(section);
 		var misc = $("<p>").addClass("lol data").appendTo(section).css("font-weight", "bold");
 			var commentvotespan = $("<span>").html(data.NumComments + " comments  / <span style='color:#2574A9' id='netvotecounter-" + postid + "'>" + data.NetVotes + " Votes </span>  / Tags: ").appendTo(misc);

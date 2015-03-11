@@ -64,13 +64,6 @@ usersch = new Schema ({
         BonusPoints: Number,
         NumPointsRedeemed: Number,
         DatesRedeemed: []
-        // 
-        //    [
-        //        {
-        //            DateRedeemed:
-        //            PointsRedeemed: 
-        //        }
-        //    ]
     },
     InvitesUsed: Number, 
     StockFollowing: [],

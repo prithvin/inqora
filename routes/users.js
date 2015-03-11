@@ -25,6 +25,48 @@ function emailsend (messagebody, messageattachment, toname, toemail) {
 	server.send(message, function(err, message) { console.log(err); console.log(message);  });
 }
 
+router.get('/newnotifications', function (req, res) {
+	var timer = setInterval(function(){
+		users.findOne({_id: req.session.UserId}, function (err, data2) {
+			if (data2 == null) {
+				res.send("Error. Not in session");
+				clearTimeout(timer);
+			}
+			else {
+				res.write
+			}
+		});
+	}, 1000);
+});
+
+function notifSocket(req, res, orignotifs) {
+	users.findOne({_id: req.session.UserId}, function (err, data2) {
+		if (data2 == null) {
+			res.send("Error. Not in session");
+		}
+		else {
+			var arr = JSON.parse(JSON.stringify(data.Notifications));
+			arr.NewMessages = [];
+
+			// Get messages
+			var messaging = data.MessagingSystem;
+			for (var key in messaging) {
+				if (messaging[key].isNew == true) {
+					arr.NewMessages.push(key)
+				}
+			}
+
+			// Compare everything
+				// Compare WhoJoined -- simple
+				// Compare Messages -- simple
+				// Compare TaggedInComment -- simple
+				// Compare TaggedInPost -- simple
+				// Compare NewFollowers -- simple
+				// Compare PostUserCommentedOrPosted -- choose first one of certain id and match 
+		}
+	});
+}
+
 router.get('/notifications', function(req, res) {
 	users.findOne({_id: req.session.UserId}, function (err, data) {
 		if (data == null) {
@@ -35,7 +77,6 @@ router.get('/notifications', function(req, res) {
 			arr.NewMessages = [];
 			var messaging = data.MessagingSystem;
 			for (var key in messaging) {
-				console.log(messaging[key].isNew);
 				if (messaging[key].isNew == true) {
 					arr.NewMessages.push(key)
 				}
