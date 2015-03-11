@@ -26,46 +26,104 @@ function emailsend (messagebody, messageattachment, toname, toemail) {
 }
 
 router.get('/newnotifications', function (req, res) {
-	var timer = setInterval(function(){
-		users.findOne({_id: req.session.UserId}, function (err, data2) {
-			if (data2 == null) {
-				res.send("Error. Not in session");
-				clearTimeout(timer);
-			}
-			else {
-				res.write
-			}
-		});
-	}, 1000);
+	users.findOne({_id: req.session.UserId}, function (err, data2) {
+		if (data2 == null) {
+			res.send("Error. Not in session");
+			clearTimeout(timer);
+		}
+		else {
+			res.write
+		}
+	});
 });
 
 function notifSocket(req, res, orignotifs) {
-	users.findOne({_id: req.session.UserId}, function (err, data2) {
+	users.findOne({_id: req.session.UserId}, function (err, data) {
 		if (data2 == null) {
 			res.send("Error. Not in session");
 		}
 		else {
-			var arr = JSON.parse(JSON.stringify(data.Notifications));
-			arr.NewMessages = [];
+			var arr = {};
 
 			// Get messages
+			var temparr = [];
 			var messaging = data.MessagingSystem;
 			for (var key in messaging) {
 				if (messaging[key].isNew == true) {
-					arr.NewMessages.push(key)
+					temparr.NewMessages.push(key)
 				}
 			}
+			arr.NewMessages = temparr;
+
+			for (var x = 0; x < data.WhoJoined.length; x++) {
+				if (orignotifs.WhoJoined.indexOf(data.WhoJoined[x]) == -1)
+					arr.WhoJoined.push(data.WhoJoined[x]);
+			}
+
+			for (var x = 0; x < data.NewFollowers.length; x++) {
+				if (orignotifs.NewFollowers.indexOf(data.NewFollowers[x]) == -1)
+					arr.NewFollowers.push(data.NewFollowers[x]);
+			}
+
+			for (var x = 0; x < data.TaggedInComment.length; x++) {
+				if (orignotifs.TaggedInComment.indexOf(data.TaggedInComment[x]) == -1)
+					arr.TaggedInComment.push(data.TaggedInComment[x]);
+			}
+
+			for (var x = 0; x < data.TaggedInPost.length; x++) {
+				if (orignotifs.TaggedInPost.indexOf(data.TaggedInPost[x]) == -1)
+					arr.TaggedInPost.push(data.TaggedInPost[x]);
+			}
+
+			arr.PostUserCommentedOrPosted = hashTableOldPosts(data);
+			
+
+
+
 
 			// Compare everything
-				// Compare WhoJoined -- simple
-				// Compare Messages -- simple
-				// Compare TaggedInComment -- simple
-				// Compare TaggedInPost -- simple
-				// Compare NewFollowers -- simple
-				// Compare PostUserCommentedOrPosted -- choose first one of certain id and match 
+				// 	Compare WhoJoined -- simple
+				// 	Compare NewMessages -- no comparision
+				// 	Compare TaggedInComment -- simple
+				// 	Compare TaggedInPost -- simple
+				// 	Compare NewFollowers -- simple
+				// Compare PostUserCommentedOrPosted -- choose first one of certain id and match
+						// In frontend, compare with current post vals and then reorg.. 
 		}
 	});
 }
+
+function hashTableOldPosts (data) {
+	var hasher = {};
+	for (var x =0; x < data.PostUserCommentedOrPosted.length; x++) {
+		var currentthing = data.PostUserCommentedOrPosted[x];
+		if (hasher[currentthing.PostId] == null) {
+			var obj = {
+				CurrentLen: currentthing.CurrentLen,
+				LastCreator: currentthing.LastCreator,
+				wasComment: currentthing.wasComment,
+				NumCommentsLast: currentthing.NumCommentsLast,
+				TitleOfPost: currentthing.TitleOfPost,
+			};
+			hasher[data.PostUserCommentedOrPosted[x].PostId] = obj;
+		}
+		else {
+			if (hasher[currentthing.PostId].CurrentLen < currentthing.CurrentLen)  {
+				hasher[currentthing.PostId].CurrentLen = currentthing.CurrentLen;
+				hasher[currentthing.PostId].LastCreator = currentthing.LastCreator;
+			}
+			if (currentthing.wasComment == false || currentthing.wasComment == "false") {
+				hasher[currentthing.PostId].wasComment = false;
+			}
+			if (hasher[currentthing.PostId].NumCommentsLast < currentthing.NumCommentsLast) {
+				hasher[currentthing.PostId].NumCommentsLast =  currentthing.NumCommentsLast;
+			}
+		}
+	}
+	return hasher;
+}
+
+
 
 router.get('/notifications', function(req, res) {
 	users.findOne({_id: req.session.UserId}, function (err, data) {

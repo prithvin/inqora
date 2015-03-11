@@ -22,6 +22,10 @@ function createCommentPanel(panel, postid) {
 				makeToolTip(minispan, "zeromargin", "@" + data[x].PosterUsername + " (" + data[x].PosterName + "): " , "userpage.html?id=" + data[x].PosterUsername, data[x].PosterUsername);
 				var content = $("<span>").html(linkify(data[x].Content)).appendTo(td2);
 
+		
+				getCommentMedia(td2, content);
+
+
 				var upvoteclass = "commentvotespan";
 				var downvoteclass = "commentvotespan";
 				if (data[x].Status == 1) 
@@ -112,6 +116,7 @@ function newComment (data, panel, postid, x) {
 		var td2 = $("<td>").appendTo(tably);
 		makeToolTip(td2, "zeromargin", "@" + data.PosterUsername + "(" + data.PosterName + "): " , "userpage.html?id=" + data.PosterUsername, data.PosterUsername);
 		var content = $("<span>").html(linkify(data.Content)).appendTo(td2);
+		getCommentMedia(td2, content);
 		var upvoteclass = "commentvotespan";
 		var downvoteclass = "commentvotespan";
 		if (data.Status == 1) 
@@ -137,7 +142,25 @@ function newComment (data, panel, postid, x) {
 
 }
 
+function getCommentMedia (maindiv, content) {
+		var semidiv = $("<div>").css("width", "100%").css("text-align", "center").appendTo(maindiv);
 
+	var omg = $(content).find("a");
+	for (var z =0; z < omg.length; z++) {
+		if($($(omg).get(z)).attr("href") != "" && $($(omg).get(z)).attr("href") != null) {
+			if ($($(omg).get(z)).attr("href").match(/\.(jpeg|jpg|gif|png)$/) != null) {
+				var img = $("<img>").css("max-width", "75%").css("text-align","center").css("max-height" ,"100px").css("margin-top", "10px");
+				$(img).attr("src", $($(omg).get(z)).attr("href"));
+				img.appendTo(semidiv);
+			}
+			if($($(omg).get(z)).attr("href").match(/youtube\.com/) != null) {
+				var youtube = $("<iframe>").css("width", "75%%").css("text-align","center").css("height" ,"200px").css("border" ,"0px").css("margin-top", "10px");
+				$(youtube).attr("src", "https:////www.youtube.com/embed/" +  getIdYoutube($($(omg).get(z)).attr("href")));
+				youtube.appendTo(semidiv);
+			}
+		}
+	} 
+}
 function updateVote(addthis, postid, noshowvotes) {
 	var numvotes =parseInt($("#netvotecounter-" + postid).html());
 	if (noshowvotes == true) 
