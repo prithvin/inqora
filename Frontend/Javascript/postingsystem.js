@@ -155,7 +155,7 @@ function getCommentMedia (maindiv, content) {
 			}
 			if($($(omg).get(z)).attr("href").match(/youtube\.com/) != null) {
 				var youtube = $("<iframe>").css("width", "75%%").css("text-align","center").css("height" ,"200px").css("border" ,"0px").css("margin-top", "10px");
-				$(youtube).attr("src", "https:////www.youtube.com/embed/" +  getIdYoutube($($(omg).get(z)).attr("href")));
+				$(youtube).attr("src", "https://www.youtube.com/embed/" +  getIdYoutube($($(omg).get(z)).attr("href")));
 				youtube.appendTo(semidiv);
 			}
 		}
@@ -245,7 +245,7 @@ function createPost(postid, maindiv, appendafter, callback) {
 				}
 				if($($(omg).get(z)).attr("href").match(/youtube\.com/) != null) {
 					var youtube = $("<iframe>").css("width", "100%").css("text-align","center").css("height" ,"300px").css("border" ,"0px")
-					$(youtube).attr("src", "https:////www.youtube.com/embed/" +  getIdYoutube($($(omg).get(z)).attr("href")));
+					$(youtube).attr("src", "https://www.youtube.com/embed/" +  getIdYoutube($($(omg).get(z)).attr("href")));
 					youtube.appendTo(semidiv);
 				}
 			}
