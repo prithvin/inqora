@@ -28,9 +28,9 @@ function makeLink (company, group, user) {
 		return "userpage.html?id=" + user;
 }
 function createUser(name, username, subbed, maindiv, link) {
-	var table = $("<table>").css("width", "100%");
-		var tr = $("<tr>").appendTo(table);
-			var td1 = $("<td>").css("font-size", "85%").appendTo(tr);
+	var table = $("<table>").css("width", "100%").addClass("link");
+		var tr = $("<tr>").appendTo(table).addClass("link");
+			var td1 = $("<td>").css("font-size", "85%").appendTo(tr).addClass("link");
 				var aperson = $("<a>").addClass("link").html(name + linkify(" ( " +  ("@" + username) + " )")).appendTo(td1).attr("href", link);
 			var td2 = $("<td>").css("font-size", "85%").appendTo(tr);
 				var button = $("<button>").addClass("badge pure-button pure-button-primary").css({'text-align': 'center', 'float': 'right', 'margin-right': '5px', 'padding': '3px 7px', 'margin-left' : '2px'}).html("<i class='fa fa-plus'></i>").appendTo(td2);

@@ -5,6 +5,8 @@ function showGroup (companyname, noposts, id) {
 
 		arr = [id];
 		console.log(data);
+		console.log(noposts);
+
 		subscribetext = "Subscribe";
 		if (data.isPrivate == true && data.isPrivate != null) {
 			arr.push("PRIVATE");
@@ -12,23 +14,23 @@ function showGroup (companyname, noposts, id) {
 			$("#privgroupnotif").show();
 			$(".companypanel").css("border-top" , "10px solid green");
 			$("#isprivategroup").show();
-
-			
-		}
-
-		console.log("LOL");
-		
-		if (!noposts && ((data.isPrivate == false || data.isPrivate == null) || (data.isPrivate == true && data.Subscribed == true))) {
-			showPostingSystem([id]);
-			$("#requesttojoinpanel").show();
-			var requests = data.Requests;
-			for (var x =0; x < requests.length; x++) {
-				var newuser = createRequestUser(companyname, requests[x].Name,requests[x].Username, false, $("#requesttojoin"), "userpage.html?id=" + requests[x].Username);
+			if (data.Subscribed == true) {
+				$("#requesttojoinpanel").show();
+				var requests = data.Requests;
+				for (var x =0; x < requests.length; x++) {
+					var newuser = createRequestUser(companyname, requests[x].Name,requests[x].Username, false, $("#requesttojoin"), "userpage.html?id=" + requests[x].Username);
+				}
+				if (!noposts)
+					showPostingSystem([id]);
 			}
+			else
+				$("#nopostsee").show();
 		}
-		else
-			$("#nopostsee").show();
-		
+		else if (!noposts) {
+			showPostingSystem([id]);
+		}
+
+		console.log(data.isPrivate);
 
 		$("#companymaindata").html(data.Name + " (@" + data.Username + ")");
 		$("title").html("Inqora - " + data.Name)

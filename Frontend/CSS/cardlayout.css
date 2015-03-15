@@ -141,6 +141,16 @@ hyphens: auto !IMPORTANT;
   font-weight:400;
 }
 
+.lol > p {
+    margin:0;
+    display:inline;
+    max-width:100%;
+}
+
+.lol > p > img { 
+  max-width:100%;
+}
+
 .leftof {
   float: left;
   padding: 0 15px 0 0;
