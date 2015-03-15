@@ -38,8 +38,10 @@ router.post('/webshot', function (req, res) {
 	webshot(req.body.URL, function(err, renderStream) {
 		 // var file = fs.createWriteStream('yahoo.png', {encoding: 'binary'});
 		 console.log(err);
-		 if (renderStream == null)
-		 	res.send("Error");
+		 if (renderStream == null) {
+		 	res.write("Error");
+		 	res.end();
+		 }
 		 else {
 		  var chunks = [];
 		  renderStream.on('data', function(data) {
@@ -47,7 +49,7 @@ router.post('/webshot', function (req, res) {
 		  //  file.write(data.toString('binary'), 'binary');
 		  });
 		  renderStream.on('end', function() {
-		  	var result = Buffer.concat(chunks);
+		  	var result = Buffer.concat(chunks); 
                console.log('final result:', result.length);
                res.write("data:image/PNG;base64," + result.toString('base64'));  
                res.end(); 
