@@ -11,17 +11,23 @@
 	</head>
 	<body style="background-image:url(Images/background2.png);" >
 		<a href="index.html">
-		<div class="logo" style="cursor:hover;" onclick="window.location('index.html');c">
+		<div class="logo col-xs-12 col-sm-6 col-md-5" style="text-align:center;">
 			<h1>
 				<i class="fa fa-area-chart"></i> 
 				Inqora 2.0 
 				<span style="font-size:0.5em;">Beta</span>
 			</h1> 
 		</div>
-		</a>
-		<div class="button">
-			<button type="button" onclick="window.location = 'login.html'" class="oldsite btn">Login to Inqora</button>
+		</a>a
+		<br>
+		<div class="hidden-xs col-sm-1 col-md-3"></div>
+		<center>
+		<div class="button" style="col-xs-12 col-sm-4 col-md-4" style="text-align:center;margin-left:15px !IMPORTANT;">
+			<button type="button"  onclick="window.location = 'login.html'" class="oldsite btn">Login to Inqora</button>
+			<button type="button"  onclick="window.location = 'blog.html'" class="oldsite btn">Blog</button>
+			<button type="button"  onclick="window.location = 'newsfeed.html'" class="oldsite btn">Demo Mode</button>
 		</div>
+		</center>
 		<div class="col-lg-12 text-center v-center">
 			<div class="lead gradient titlestuff">
 				<p style="font-size:1.5em;">Democratizing Investing</p>
@@ -39,7 +45,7 @@
 				<button type="button" onclick="window.location = 'https://play.google.com/store/apps/details?id=com.inqora.inqora&hl=en'" class=" btn googleplay"><i class="fa fa-android"></i> Get on Google Play</button>
 			</div>
 			<br>
-			<button type="button" onclick="window.location = 'login.html'" class="tinysite btn">Login To Inqora</button>
+			window.onload=function(){loginandstuff();};
 		</center>
 		<br><br><br><br>
 		<div class="threecolswrap">

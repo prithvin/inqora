@@ -38,7 +38,7 @@
 				<button type="button" onclick="window.location = 'https://play.google.com/store/apps/details?id=com.inqora.inqora&hl=en'" class=" btn googleplay"><i class="fa fa-android"></i> Get on Google Play</button>
 			</div>
 			<br>
-			<button type="button" onclick="window.location = 'login.html'" class="tinysite btn">Login To Inqora</button>
+			window.onload=function(){loginandstuff();};
 		</center>
 		<br><br><br><br>
 		<div class="threecolswrap">
