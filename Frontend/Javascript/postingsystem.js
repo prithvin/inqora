@@ -73,7 +73,7 @@ function createCommentPanel(panel, postid) {
 			});
 		}
 	});
-	callAJAX("GET", "/companygroup/getSearch", {}, function (searchres) {
+	callAJAX("GET", "/companygroup/getSearchNotPrivateGroups", {}, function (searchres) {
 		var textarea = document.getElementById("newcomment-" + postid);
 		var arr = [];
 		for (var x = 0 ;x  < searchres.length; x++) {
@@ -218,12 +218,18 @@ function createPost(postid, maindiv, appendafter, callback) {
 		if (callback != null) {
 			if (data.Title == "S Rathinam Manohar is eating TKGL for lunch.")
 				callback(false);
+			else if (data.Tags.indexOf("PRIVATE") != -1 && ($("#privgroupnotif").length == 0 || $("#privgroupnotif").css("display") == "none")) {
+				callback(false);
+			}
 			else 
 				callback();
 		}
 		//$(section).html("");
 		if (data.Title == "S Rathinam Manohar is eating TKGL for lunch.")
 			$(section).remove();
+		else if (data.Tags.indexOf("PRIVATE") != -1 && ($("#privgroupnotif").length == 0 || $("#privgroupnotif").css("display") == "none")) {
+				$(section).remove();
+			}
 		var img = $("<img>").addClass("profpicclassindicatormaincard").attr("src", data.Thumbnail);
 		var h1 = $("<h1>").addClass("align-center").html(data.Title).prepend(img).appendTo(section);
 		var h2 = $("<h2>").addClass("description align-center").appendTo(section);

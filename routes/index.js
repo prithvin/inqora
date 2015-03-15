@@ -104,79 +104,83 @@ function getPortfolioChang(StockFollowing, x, res, avgarr, percentgain, numberfo
 router.get('/getusertooltip', function (req, res) {
 	if (isSess(req)) {
 		var username = req.query.Username;
-		searchresmod.findOne({$or: [{Username: username}, {UserId: username}]}, "Type" , function (err, data1){
-			if (data1 == null)
-				res.send("ERROR. User does not exist");
-			else if (data1.Type == "User") {
-				users.findOne({Username: username}, "Name Username Picture Points Followers Thumbnail StockFollowing", function (err, data) {
-					var obj = {
-						Name: data.Name,
-						Username: data.Username,
-						Points: data.Points.NumPoints,
-						Followers: data.Followers.length + " Followers",
-						Thumbnail: data.Picture,
-						StockFollowing: 0
-					};
-					getPercentChanges(data.StockFollowing, 0, res, [], obj, []);
-				});
-			}
-			else if (data1.Type == "Company") {
-				companies.findOne({UserId: username}, function (err, data) {
-					var obj = {
-						Name: data.Name,
-						StockTicker: data.UserId,
-						isFollowed: "Not Following",
-						StockPriceAndPercent: 0,
-						Thumbnail: data.Picture,
-						NumFollowers: data.NumFollowers + " Followers",
-						Industry: data.Industry
-					};
-					users.findOne({_id: req.session.UserId}, "FollowingAccs" , function (err, data2) {
-						if (data2 == null)
-							res.send("Not in session");
-						else {
-							if (data2.FollowingAccs.Companies != null && data2.FollowingAccs.Companies.indexOf(username) != -1)
-								obj.isFollowed = "Following";
-							yahooFinance.snapshot({
-								symbol: username
-							}, function (err, snapshot2) {
-								if (snapshot2 != null) 
-									obj.StockPriceAndPercent = "$" + snapshot2.lastTradePriceOnly + " PE: " + snapshot2.peRatio;
+		if (username == "PRIVATE") 
+			res.send("<div class='mainspantool'>This post has been marked private. This means that the post was created in a private group, and is ONLY accessible from that private group.</div>")
+		else {
+			searchresmod.findOne({$or: [{Username: username}, {UserId: username}]}, "Type" , function (err, data1){
+				if (data1 == null)
+					res.send("ERROR. User does not exist");
+				else if (data1.Type == "User") {
+					users.findOne({Username: username}, "Name Username Picture Points Followers Thumbnail StockFollowing", function (err, data) {
+						var obj = {
+							Name: data.Name,
+							Username: data.Username,
+							Points: data.Points.NumPoints,
+							Followers: data.Followers.length + " Followers",
+							Thumbnail: data.Picture,
+							StockFollowing: 0
+						};
+						getPercentChanges(data.StockFollowing, 0, res, [], obj, []);
+					});
+				}
+				else if (data1.Type == "Company") {
+					companies.findOne({UserId: username}, function (err, data) {
+						var obj = {
+							Name: data.Name,
+							StockTicker: data.UserId,
+							isFollowed: "Not Following",
+							StockPriceAndPercent: 0,
+							Thumbnail: data.Picture,
+							NumFollowers: data.NumFollowers + " Followers",
+							Industry: data.Industry
+						};
+						users.findOne({_id: req.session.UserId}, "FollowingAccs" , function (err, data2) {
+							if (data2 == null)
+								res.send("Not in session");
+							else {
+								if (data2.FollowingAccs.Companies != null && data2.FollowingAccs.Companies.indexOf(username) != -1)
+									obj.isFollowed = "Following";
+								yahooFinance.snapshot({
+									symbol: username
+								}, function (err, snapshot2) {
+									if (snapshot2 != null) 
+										obj.StockPriceAndPercent = "$" + snapshot2.lastTradePriceOnly + " PE: " + snapshot2.peRatio;
+									var str = "<div class='mainspantool'><img class='imagetool' src='" + obj.Thumbnail + "'>";
+									str += "<div class='contenttool'>" + obj.Name + " (@" + obj.StockTicker + ")<br>";
+									str += "Industry: " + obj.Industry + "<br>" + obj.StockPriceAndPercent + " <br>" + obj.NumFollowers+ " (" + obj.isFollowed + ") ";
+									str += "</div></div>"
+									res.send(str);
+								});
+							}
+						});
+					});
+				}
+				else if (data1.Type == "Group") {
+					companies.findOne({UserId: username}, function (err, data) {
+						var obj = {
+							Name: data.Name,
+							Username: data.UserId,
+							isFollowed: "Not Following",
+							Thumbnail: data.Picture,
+							NumFollowers: data.NumFollowers + " Followers",
+						};
+						users.findOne({_id: req.session.UserId}, "FollowingAccs" , function (err, data2) {
+							if (data2 == null)
+								res.send("Not in session");
+							else {
+								if (data2.FollowingAccs.Groups != null && data2.FollowingAccs.Groups.indexOf(username) != -1)
+									obj.isFollowed = "Following";
 								var str = "<div class='mainspantool'><img class='imagetool' src='" + obj.Thumbnail + "'>";
-								str += "<div class='contenttool'>" + obj.Name + " (@" + obj.StockTicker + ")<br>";
-								str += "Industry: " + obj.Industry + "<br>" + obj.StockPriceAndPercent + " <br>" + obj.NumFollowers+ " (" + obj.isFollowed + ") ";
+								str += "<div class='contenttool'>" + obj.Name + " (@" + obj.Username + ")<br>";
+								str += "<br>" + obj.NumFollowers+ " (" + obj.isFollowed + ") ";
 								str += "</div></div>"
 								res.send(str);
-							});
-						}
+							}
+						});
 					});
-				});
-			}
-			else if (data1.Type == "Group") {
-				companies.findOne({UserId: username}, function (err, data) {
-					var obj = {
-						Name: data.Name,
-						Username: data.UserId,
-						isFollowed: "Not Following",
-						Thumbnail: data.Picture,
-						NumFollowers: data.NumFollowers + " Followers",
-					};
-					users.findOne({_id: req.session.UserId}, "FollowingAccs" , function (err, data2) {
-						if (data2 == null)
-							res.send("Not in session");
-						else {
-							if (data2.FollowingAccs.Groups != null && data2.FollowingAccs.Groups.indexOf(username) != -1)
-								obj.isFollowed = "Following";
-							var str = "<div class='mainspantool'><img class='imagetool' src='" + obj.Thumbnail + "'>";
-							str += "<div class='contenttool'>" + obj.Name + " (@" + obj.Username + ")<br>";
-							str += "<br>" + obj.NumFollowers+ " (" + obj.isFollowed + ") ";
-							str += "</div></div>"
-							res.send(str);
-						}
-					});
-				});
-			}
-		});
+				}
+			});
+		}
 	}
 	else
 		res.send("Error, not in session");

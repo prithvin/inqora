@@ -22,15 +22,16 @@
 		.tooltips {
 				display:inline;padding:0;
 			}
-		</style>
-		<title>Inqora - News Feed</title>
+
+  .picformat {
+    height:50px;
+    width:50px;
+  }
+</style>
+		<title>Inqora - Create Group</title>
 	</head>
 
 	<body style="background-color: #DADFE1;">
-		<div class="btn-group btn-group-lg bottombar col-xs-12 hidden-sm hidden-md hidden-lg" style="padding:0;margin:0;" role="group"  class=""> <br><br><br><br>
-			<button type="button" onclick="$('#mydatapanel').removeClass('hidden-xs');$('#mydatapanel').addClass('col-xs-12');$('#postingsystemdiv').addClass('hidden-xs');$('#postingsystemdiv').removeClass('col-xs-12');"  style="width: 50%;border-radius: 0;"class="btn btn-default">My Network</button>
-			<button type="button" onclick="$('#postingsystemdiv').removeClass('hidden-xs');$('#postingsystemdiv').addClass('col-xs-12');$('#mydatapanel').addClass('hidden-xs');$('#mydatapanel').removeClass('col-xs-12');" style="width: 50%;border-radius: 0;"class="btn btn-default">Posts</button>
-		</div>
 		<div id="navsearchmainsearch" class="regularfluff row  navbar-fixed-top navbar" style="">
 		<p></p>
 		<div class="col-md-3 col-sm-3 hidden-xs" style="text-align:center;">
@@ -61,85 +62,40 @@
 			<a id="verifyemailbar" href="loginpage.html" class="col-xs-12 col-md-12 col-sm-12 link pure-button" style="display:none;color:white;background-color:rgba(113, 255, 0, 0.5);">Please verify your email to access full functionality. Click here to resend email</a>
 	</div>
 			<div class="fixedtop" style="margin-top:10px;">
-				<div id="mydatapanel" class="col-xs-12 col-sm-4 col-md-4" style="margin-top:25px;" >
-					<div class="pure-menu pure-menu-open panel" style="box-shadow: 1px 1px 3px #888888;padding:10;text-align:center;">
-						<button onclick="window.location='newgroup.html'" class="pure-button pure-button-primary" style="margin-bottom:10px;">Create New Group</button>
-						<button class="pure-button pure-button-primary">Trending Companies, Groups and Users</button>
-					</div>
-					<div class="pure-menu pure-menu-open panel" style="box-shadow: 1px 1px 3px #888888;">
-						<a class="link headertiny pure-menu-heading">Invites</a>
-						<ul style="padding:0 20px;padding-bottom:10px;">
-							
-							20 Points Per Invited User<br>
-							Copy URL: <a style="margin:0;padding:0;display:inline;" id="copyurl" href=""></a><hr>
-							<center><b>People You Invited:</b></center>
-							<li style="" id="whodidinvitepanel">
-							</li>
-						</ul>
-					</div>
-					<div class="pure-menu pure-menu-open panel companypanel" id="subscriptionspanel" style="box-shadow: 1px 1px 3px #888888;">
-						<a class="link headertiny pure-menu-heading">Subscriptions</a>
-						<ul style="padding:0 20px;padding-bottom:10px;">
-							<li class="pure-menu-heading">Users</li>
-							<li style="" id="usersubs">
-							</li>
-							<li class="pure-menu-heading" >Companies</li>
-							<li style="" id="companysubs">
-							</li>
-							<li class="pure-menu-heading">Groups</li>
-							<li style="" id="groupsubs">	
-							</li>
-						</ul>
-					</div>
-					<div class="pure-menu pure-menu-open panel" style="box-shadow: 1px 1px 3px #888888;">
-						<a class="link headertiny pure-menu-heading">Followers</a>
-						<ul style="padding:0 20px;padding-bottom:10px;">
-							<li style="" id="followerpanel">
-							</li>
-						</ul>
-					</div>
-					<div class="pure-menu pure-menu-open panel" style="box-shadow: 1px 1px 3px #888888;">
-						<a class="link headertiny pure-menu-heading">Portfolio Information</a>
-						<ul style="padding:0 20px;padding-bottom:10px;" id="portfolioviewport">
-							<p style="border:black solid 1px;margin:5px 0;padding:0px;"></p>
-						</ul>
-					</div>
-					<div class="pure-menu pure-menu-open panel" style="box-shadow: 1px 1px 3px #888888;">
-						<a class="link headertiny pure-menu-heading">My Points</a>
-						<ul style="padding:0 20px;padding-left:50px;padding-bottom:10px;">
-							To redeem points, contact prithvi@inqora.com. 1 point = $0.015. 
-							<hr>
-							<center><b>Your Points:</b></center>
-							<li class="" style="line-height:1.9em;" id="whodidinvitepanel">
-								(x20) # of Invites: <span id="pts-numinvites"></span><br>
-								(x3) Followers: <span id="pts-numfollowers"></span> <br>
-								(x0) Number of Posts: <span id="pts-numposts"></span> <br>
-								<span style="padding-left:30px;">(x1)Total Likes on Posts: <span id="pts-numtotlikes"></span></span><br>
-								<span style="padding-left:30px;">(x2)Total Comments on Your Posts: <span id="pts-numtotcomments"></span></span><br>
-								(x0)Number of Comments Made: <span id="pts-numymcomments"></span><br>
-								<span style="padding-left:30px;">(x1)Total Likes on Comments: <span id="pts-numlikecom"></span></span><br>
-								(x3)Average Stock Percentage Gain: <span id="pts-gainstock"></span>%<br>
-								<b>Total Points:</b> <span id="totpointsto"></span>
-							</li>
-						</ul>
-					</div>
-					<div class="sm-hidden md-hidden lg-hidden col-xs-12 "><br><br><Br><br></div>
-				</div>
-					
+				
 		
-				<div style="margin-top:10px;" id="postingsystemdiv" class="hidden-xs col-sm-8 col-md-6">
-					<div id="regfeed">
-						<div id="posts">
-						</div>
-						<div id="checkdiv">
-						</div>
-						<div class="sm-hidden md-hidden lg-hidden col-xs-12 "><br><br><Br><br></div>
-					</div>
-					<div id="sharedpost" style="display:none;">
-						<button class="pure-button pure-button-primary" style="width:100%;margin-top:18px;" id="backshared">Go Back</button>
-						<div id="sharedpostdiv"></div>
-						<div class="sm-hidden md-hidden lg-hidden col-xs-12 "><br><br><Br><br></div>
-					</div>
+				<div style="margin-top:10px;" id="postingsystemdiv" class="col-xs-12 col-md-8 col-md-offset-2">
+					<section class="post bordercard head card viewpost">
+						<h1 class="align-center">Create a New Group</h1>
+						<hr>
+						<form id="creategroup" class="pure-form" style="width:100%;">
+
+
+
+						<input style="width:100%;" type="text" id="Name" placeholder="Name" required><br><br>
+						<input style="width:100%;" type="text" id="UserId" placeholder="Username" required><br><br>
+						<textarea style="width:100%;" type="text" id="Description" placeholder="Description"></textarea><br><br>
+
+						      Choose Below:
+						  <img src="Icons/ava1.png"  class="picformat"></img>
+						  <img src="Icons/ava2.png" class="picformat"></img>
+						  <img src="Icons/ava3.png"  class="picformat"></img>
+						  <img src="Icons/ava4.png" class="picformat"></img>
+						  <img src="Icons/ava5.png"  class="picformat"></img>
+						  <img id="facebookupload" class="picformat" style="display:none;"></img>
+						  <img id="myupload"  class="picformat" style="display:none;"></img><br><br>
+						  <div class="group" style="margin-bottom:0px;">
+						      <input accept="image/*"  type="file" id="profilepic"><span ></span><span></span>
+						    </div>
+						  <br>
+						<input type="text" id="Industry" placeholder="Industry"><br>
+						<br>Make Private Group (Only Invited People Can View Posts / Content) :
+						<input type="checkbox" id="isPrivate" style="font-size:2em;"><br><br>
+						  <img id="thumbnail" hidden></img>
+						  <img id="lolimage" hidden></img><br>
+						  <input type="submit" style="width:100%;" class="pure-button pure-button-primary" value="Create Group"></input>
+						</form>
+					</section>
 				</div>
 			</div>
 		</div>
@@ -297,122 +253,133 @@
 		<script src="Javascript/search.js"></script>
 		<script src="Javascript/loginmodal.js"></script>
 		<script src="Javascript/subscriptions.js"></script>
-		<script>
-		proper();
-		function proper () {
-			getMyInvited();
-			if (getQueryVariable("userpostid") != false) {
-				showPost(getQueryVariable("userpostid"));
-			
+<script>
+$("#creategroup").on("submit", function (ev) {
+	ev.preventDefault();
+	var username = document.getElementById("UserId").value;
+	username = username.trim();
+	if (/\s/.test(username)) {
+		alert("Username cannot contain spaces");
+	}
+	else {
+		getImageSelected (function (picdata, thumbdata, isgood) {
+			if (isgood != false) {
+				var request = {
+					Name: document.getElementById("Name").value.trim(),
+					UserID: document.getElementById("UserId").value.trim().toUpperCase(),
+					Picture: picdata,
+					Thumbnail: thumbdata,
+					isPrivate: $("#isPrivate").get(0).checked,
+					Industry: $("#Industry").val().trim(),
+					Description: $("#Description").val().trim()
+				};
+				callAJAX("POST", "/companygroup/group/create", request, function (data) {
+					alert(data);
+					window.location = "grouppage.html?id=" + request.UserID;
+				});
 			}
-			else {
-				getNewsFeed();
-			}
-			
-		}
-
-
-		function showPost (id) {
-			$("#sharedpostdiv").html("");
-			$("#checkdiv").html("");
-			$("#posts").html("");
-			createPost(id, $("#sharedpostdiv"), false);
-			history.pushState('', 'Inqora', updateURLParameter(window.location.href, "userpostid", id));
-			$("#regfeed").hide();
-			$("#sharedpost").show();
-			postButton();
-		}
-		
-
-		$("#backshared").on("click", function (ev) {
-			ev.preventDefault();
-			$("#regfeed").show();
-			$("#sharedpost").hide();
-			$("#sharedpostdiv").html("");
-			$("#checkdiv").html("");
-			$("#posts").html("");
-			showPostingSystem();
-			history.pushState('', 'Inqora', removeParam("userpostid", window.location.href));
 		});
+	}
+});
 
-		function getNewsFeed (id, noposts) {
-			showUser();
-			if (!noposts)
-				showPostingSystem();
-		}
-		function showPostingSystem () {
-			$("#posts").html("");
-			$("#checkdiv").html("");
-			newPostNewsFeed([], $("#posts"));
-			callAJAX("GET", "/loadingpostfeeds/loadnewsfeed/", {}, function (data) {
-				displayAll (data, $("#posts"), $("#checkdiv"));
-			});
-		}
 
-		function getMyInvited () {
-			callAJAX ("GET", "/users/whoinvited/", {} , function (data) {
-				$("#copyurl").html(data.URL).attr("href", data.URL);
-				for (var x =0; x < data.Invited.length; x++) {
-					var newuser = createUser(data.Invited[x].Name,data.Invited[x].Username, data.Invited[x].Subbed, $("#whodidinvitepanel"), makeLink(null, null, data.Invited[x].Username));
-				}
-			});
-		}
-try
-{
-    var pushNotification = window.plugins.pushNotification;
-    if (window.device.platform == 'android' || device.platform == 'Android') {
-        // Register for Android:
-        pushNotification.register(
-            pushSuccessHandler,
-            pushErrorHandler, {
-                "senderID":"334877110646", // Project number from Google Developer Console
-                "ecb":"onNotificationGCM"
-            }
-        );
-    }
-}
-catch(err)
-{
-    // For this example, we'll fail silently ...
-    console.log(err);
-}
- 
-/**
- * Success handler for when connected to push server
- * @param result
- */
-var pushSuccessHandler = function(result)
-{
-    console.log(result);
-};
- 
-/**
- * Error handler for when not connected to push server
- * @param error
- */
-var pushErrorHandler = function(error)
-{
-    console.log(error);
-};
- 
-/**
- * Notification from Android GCM
- * @param e
- */
-var onNotificationGCM = function(e)
-{
-    // Check which event:
-    switch(e.event)
-    {
-        case 'registered' :
-        {
-            console.log('android reg id: ' + e.regid);
-            break;
+  $(".picformat").on("click", function (ev) {
+    $(".picformat").css("border", "0px");
+    $(this).css("border", "5px solid black");
+  });
+  function imageToDataUri(img1, width, height, callback) {
+    var img = new Image;
+    img.src = img1;
+    $(img).on("load", function () {
+      var canvas = document.createElement('canvas'),
+      ctx = canvas.getContext('2d');
+      canvas.width = width;
+      canvas.height = height;
+      ctx.drawImage(img, 0, 0, width, height);
+      if (width == 30) {
+        $("#thumbnail").attr("src" ,canvas.toDataURL());
+        callback ();
+      }
+      else {
+        $("#lolimage").attr("src" ,canvas.toDataURL());
+         imageToDataUri(img1, 30, 30, callback);
+      }
+    });
+  }
+
+  function isImage(filename) {
+      var ext = filename.substring(filename.length - 3);
+      switch (ext.toLowerCase()) {
+        case 'jpg':
+        case 'gif':
+        case 'bmp':
+        case 'png':
+            return true;
+      }
+      return false;
+  }
+  function getURL(image, callback) {
+    var src = $(image)[0].src;
+    console.log(src);
+    $.ajax({
+      type: "GET",
+      url: getLocalhost() + "/marketing/image",
+      data: {
+        url: src
+      },
+      success:function(data) {
+        imageToDataUri(data, 150, 150, callback);
+      },
+      xhrFields: {withCredentials: true},
+      error:function(){
+      console.log("ERROR");
+      }
+    });
+  }
+
+  $("#profilepic").on("change", function () {
+    var filesSelected = document.getElementById("profilepic").files;
+    if (filesSelected.length > 0) {
+      var fileToLoad = filesSelected[0];
+      var fileReader = new FileReader();
+    
+      if( isImage(fileToLoad.name) == false) {
+        alert("Please upload an image");
+      }
+      else {
+        fileReader.onload = function(fileLoadedEvent) {
+          var srcData = fileLoadedEvent.target.result; // <--- data: base64
+          alert("Image uploaded");
+          $("#myupload").attr("src", srcData)
+          $("#myupload").show();
         }
+      }
+      fileReader.readAsDataURL(fileToLoad);
     }
-};
+  });
 
-		</script>
+  function getImageSelected (callback) {
+  	   var arr = document.getElementsByClassName("picformat");
+      var image = -1;
+      for (var x =0; x < arr.length; x++) {
+        if ($(arr[x]).css("border").indexOf("5px") != -1) 
+          image = arr[x];
+      }
+      if (image == -1) {
+        alert("Must select or upload profile image");
+        callback(null, null, false);
+       }
+      else {
+        getURL(image, function () {
+          canvas = document.getElementById("lolimage")
+          thumbnail = document.getElementById("thumbnail");
+          pictdata = canvas.src;
+          thumbdata = thumbnail.src;
+        	callback(pictdata, thumbdata, true);
+		}); 
+    } 
+  }
+  </script>
 	</footer>
 	
 </html>

@@ -10,7 +10,10 @@ $(document).on("click", "a", function (ev) {
 		case "page2": 
 			window.location = "postinginfo.html";
 			break;
+		case "page3": 
+			window.location = "pageinfo.html";
+			break;
 		default:
-			window.location = "index.html";
+			window.location = "login.html";
 	}
 });

@@ -1,0 +1,91 @@
+<form id="creategroup">
+
+
+		Picture: req.body.Picture,
+		Thumbnail: req.body.Thumbnail,
+
+		Industry: req.body.Industry,
+		Private: req.body.isPrivate
+
+<input type="text" id="Name" placeholder="Name"><br><br>
+<input type="text" id="UserId" placeholder="Username"><br><br>
+<input type="text" id="Description" placeholder="Description"><br><br>
+
+
+      Choose Below:
+  <img src="Icons/ava1.png"  class="picformat"></img>
+  <img src="Icons/ava2.png" class="picformat"></img>
+  <img src="Icons/ava3.png"  class="picformat"></img>
+  <img src="Icons/ava4.png" class="picformat"></img>
+  <img src="Icons/ava5.png"  class="picformat"></img>
+  <img id="facebookupload" class="picformat" style="display:none;"></img>
+  <img id="myupload"  class="picformat" style="display:none;"></img>
+  <div class="group">
+      <input class="myinput" accept="image/*"  type="file" id="profilepic"><span class="highlight"></span><span class="bar"></span>
+    </div>
+  
+
+
+</form>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script>
+
+  $(".picformat").on("click", function (ev) {
+    $(".picformat").css("border", "0px");
+    $(this).css("border", "5px solid black");
+  });
+  function imageToDataUri(img1, width, height, callback) {
+    var img = new Image;
+    img.src = img1;
+    $(img).on("load", function () {
+      var canvas = document.createElement('canvas'),
+      ctx = canvas.getContext('2d');
+      canvas.width = width;
+      canvas.height = height;
+      ctx.drawImage(img, 0, 0, width, height);
+      if (width == 30) {
+        $("#thumbnail").attr("src" ,canvas.toDataURL());
+        callback ();
+      }
+      else {
+        $("#lolimage").attr("src" ,canvas.toDataURL());
+         imageToDataUri(img1, 30, 30, callback);
+      }
+    });
+  }
+
+  function isImage(filename) {
+      var ext = filename.substring(filename.length - 3);
+      switch (ext.toLowerCase()) {
+        case 'jpg':
+        case 'gif':
+        case 'bmp':
+        case 'png':
+            return true;
+      }
+      return false;
+  }
+
+
+  $("#profilepic").on("change", function () {
+    var filesSelected = document.getElementById("profilepic").files;
+    if (filesSelected.length > 0) {
+      var fileToLoad = filesSelected[0];
+      var fileReader = new FileReader();
+    
+      if( isImage(fileToLoad.name) == false) {
+        alert("Please upload an image");
+      }
+      else {
+        fileReader.onload = function(fileLoadedEvent) {
+          var srcData = fileLoadedEvent.target.result; // <--- data: base64
+          alert("Image uploaded");
+          $("#myupload").attr("src", srcData)
+          $("#myupload").show();
+        }
+      }
+      fileReader.readAsDataURL(fileToLoad);
+    }
+  });
+
+  </script>

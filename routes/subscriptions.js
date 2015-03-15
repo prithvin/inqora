@@ -12,6 +12,28 @@ function isSess (req) {
         return false;
 }
 
+
+router.post('/addreq', function (req, res) {
+	var newmember = req.body.newmember;
+	var groupname = req.body.groupname;
+	users.findOne({Username: newmember}, function (err, data) {
+		if (data == null)
+			res.send("Error. User does not exist");
+		else {
+			groups.update({UserId: groupname}, {$pull: {Requests : { Username: newmember }}}, function (err, up) {
+				console.log(groupname);
+				console.log(newmember);
+				console.log("GROUP updated");
+				console.log(up);
+				users.update({Username: newmember},{$push: {"FollowingAccs.Groups" : groupname}}, function (err, up) {
+					res.send("User added!");
+				});
+			});
+		}
+	});
+});
+
+
 router.post('/addsub', function (req, res){
 	var newsub = req.body.newsub;
 	if(isSess(req)) {

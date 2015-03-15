@@ -57,18 +57,30 @@
 		<div class="fixedtop" style="margin-top:10px;">
 			<div id="mydatapanel" class="col-xs-12 col-sm-4 col-md-4" style="margin-top:15px;" >
 			<div class="pure-menu pure-menu-open panel companypanel">
+				<center id="privgroupnotif" style="display:none;"><b>This is a  Private Group</b></center>
 				<a class="link header pure-menu-heading" id="companymaindata"></a>
 				<ul >
+
 					  <li><a  class="link profilepicwrapper" ><img src="" id="profilepic" style="height:2em;max-width:100%;"></a></li>
 					  <li class="link"> <a class="link">Description:<span id="description"></span></a></li>
 					  <li> <a class="link"><span id="numfollowers"></span> Followers</a></li>
 					  <li style="text-align:center;"><button id="subscribe" class="link pure-button pure-button-primary subnow" style="margin-bottom:5px;"></button></li>
 				</ul>
 			</div>
+			<div class="pure-menu pure-menu-open panel" id="requesttojoinpanel" style="box-shadow: 1px 1px 3px #888888;display:none;">
+				<a class="link headertiny pure-menu-heading">Users Who Requested Access</a>
+				<ul style="padding:0 20px;padding-bottom:10px;">
+					<li style="" id="requesttojoin">
+					</li>
+				</ul>
+			</div>
 			<div class="sm-hidden md-hidden lg-hidden col-xs-12 "><br><br><Br><br></div>
 		</div>
 		<div style="margin-top:10px;" id="postingsystemdiv" class="hidden-xs col-sm-8 col-md-6">
 			<div id="regfeed">
+			<section id="nopostsee" class="post bordercard head card viewpost" style="border-top:5px solid orange !IMPORTANT;display:none;">Sorry, the posts in this group are private. <br> In order to access this group's content, request an invite to this group. Any group member can reply to your invite, allowing you to join the group</section>
+				<section id="isprivategroup" class="post bordercard head card viewpost" style="border-top:5px solid green !IMPORTANT;display:none;">This is a private group. All posts within a private group will <b>only</b> be accessible within the private group and your personal news feed. <br><br>In order to see the content within a private group, you must request access to the group. Any member within the group can then add you to the group.<br><br>Private groups cannot be tagged on any other page.<br><br></section>
+
 				<div id="posts">
 				</div>
 				<div id="checkdiv">
@@ -297,10 +309,8 @@
 		});
 
 		function getGroupPageMain (id, noposts) {
-			showGroup(id);
-			arr = [id];
-			if (!noposts)
-				showPostingSystem(arr);
+			showGroup(id, noposts, id);
+	
 		}
 		function showPostingSystem (arr) {
 			newPost(arr, $("#posts"));

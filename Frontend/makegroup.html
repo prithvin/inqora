@@ -1,0 +1,176 @@
+<style>
+  .picformat {
+    height:50px;
+    width:50px;
+  }
+</style>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/pure/0.5.0/pure-min.css">
+    <link rel="stylesheet" type="text/css" href="CSS/cardlayout.css">
+    <link rel="stylesheet" type="text/css" href="CSS/post.css">
+    <link rel="stylesheet" type="text/css" href="CSS/tooltips.css">
+    <link rel="stylesheet" type="text/css" href="CSS/alert.css">
+    <link rel="stylesheet" type="text/css" href="CSS/companypage.css">
+    <link rel="stylesheet" type="text/css" href="CSS/notifications.css">
+    <link rel="stylesheet" type="text/css" href="CSS/search.css">
+    <link rel="stylesheet" type="text/css" href="CSS/messaging.css">
+    <link rel="icon" href="favicon.png" type="image/x-icon" />
+    <body  style="background-color: #DADFE1;">
+<form id="creategroup">
+
+
+
+<input type="text" id="Name" placeholder="Name"><br><br>
+<input type="text" id="UserId" placeholder="Username"><br><br>
+<input type="text" id="Description" placeholder="Description"><br><br>
+
+      Choose Below:
+  <img src="Icons/ava1.png"  class="picformat"></img>
+  <img src="Icons/ava2.png" class="picformat"></img>
+  <img src="Icons/ava3.png"  class="picformat"></img>
+  <img src="Icons/ava4.png" class="picformat"></img>
+  <img src="Icons/ava5.png"  class="picformat"></img>
+  <img id="facebookupload" class="picformat" style="display:none;"></img>
+  <img id="myupload"  class="picformat" style="display:none;"></img>
+  <div class="group">
+      <input class="myinput" accept="image/*"  type="file" id="profilepic"><span class="highlight"></span><span class="bar"></span>
+    </div>
+  
+<input type="text" id="Industry" placeholder="Industry">
+<br>Private Group (Only Invited People Can View Posts / Content)
+<input type="checkbox" id="isPrivate">
+
+  <img id="thumbnail" hidden></img>
+  <img id="lolimage" hidden></img>
+  <input type="submit" value="Create Group"></input>
+</form>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="manager.js"></script>
+<script>
+$("#creategroup").on("submit", function (ev) {
+	ev.preventDefault();
+	var username = document.getElementById("UserId").value;
+	username = username.trim();
+	if (/\s/.test(username)) {
+		alert("Username cannot contain spaces");
+	}
+	else {
+		getImageSelected (function (picdata, thumbdata, isgood) {
+			if (isgood != false) {
+				var request = {
+					Name: document.getElementById("Name").value.trim(),
+					UserID: document.getElementById("UserId").value.trim(),
+					Picture: picdata,
+					Thumbnail: thumbdata,
+					isPrivate: $("#isPrivate").get(0).checked,
+					Industry: $("#Industry").val().trim(),
+					Description: $("#Description").val().trim()
+				};
+				callAJAX("POST", "/companygroup/group/create", request, function (data) {
+					alert(data);
+				});
+			}
+		});
+	}
+});
+
+
+  $(".picformat").on("click", function (ev) {
+    $(".picformat").css("border", "0px");
+    $(this).css("border", "5px solid black");
+  });
+  function imageToDataUri(img1, width, height, callback) {
+    var img = new Image;
+    img.src = img1;
+    $(img).on("load", function () {
+      var canvas = document.createElement('canvas'),
+      ctx = canvas.getContext('2d');
+      canvas.width = width;
+      canvas.height = height;
+      ctx.drawImage(img, 0, 0, width, height);
+      if (width == 30) {
+        $("#thumbnail").attr("src" ,canvas.toDataURL());
+        callback ();
+      }
+      else {
+        $("#lolimage").attr("src" ,canvas.toDataURL());
+         imageToDataUri(img1, 30, 30, callback);
+      }
+    });
+  }
+
+  function isImage(filename) {
+      var ext = filename.substring(filename.length - 3);
+      switch (ext.toLowerCase()) {
+        case 'jpg':
+        case 'gif':
+        case 'bmp':
+        case 'png':
+            return true;
+      }
+      return false;
+  }
+  function getURL(image, callback) {
+    var src = $(image)[0].src;
+    console.log(src);
+    $.ajax({
+      type: "GET",
+      url: getLocalhost() + "/marketing/image",
+      data: {
+        url: src
+      },
+      success:function(data) {
+        imageToDataUri(data, 150, 150, callback);
+      },
+      xhrFields: {withCredentials: true},
+      error:function(){
+      console.log("ERROR");
+      }
+    });
+  }
+
+  $("#profilepic").on("change", function () {
+    var filesSelected = document.getElementById("profilepic").files;
+    if (filesSelected.length > 0) {
+      var fileToLoad = filesSelected[0];
+      var fileReader = new FileReader();
+    
+      if( isImage(fileToLoad.name) == false) {
+        alert("Please upload an image");
+      }
+      else {
+        fileReader.onload = function(fileLoadedEvent) {
+          var srcData = fileLoadedEvent.target.result; // <--- data: base64
+          alert("Image uploaded");
+          $("#myupload").attr("src", srcData)
+          $("#myupload").show();
+        }
+      }
+      fileReader.readAsDataURL(fileToLoad);
+    }
+  });
+
+  function getImageSelected (callback) {
+  	   var arr = document.getElementsByClassName("picformat");
+      var image = -1;
+      for (var x =0; x < arr.length; x++) {
+        if ($(arr[x]).css("border").indexOf("5px") != -1) 
+          image = arr[x];
+      }
+      if (image == -1) {
+        alert("Must select or upload profile image");
+        callback(null, null, false);
+       }
+      else {
+        getURL(image, function () {
+          canvas = document.getElementById("lolimage")
+          thumbnail = document.getElementById("thumbnail");
+          pictdata = canvas.src;
+          thumbdata = thumbnail.src;
+        	callback(pictdata, thumbdata, true);
+		}); 
+    } 
+  }
+  </script>

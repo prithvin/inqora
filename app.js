@@ -112,7 +112,9 @@ group = new Schema ({
     Picture: String,
     Industry: String,
     NumFollowers: Number,
-    NumOwnStock: Number
+    NumOwnStock: Number,
+    Private: Boolean,
+    Requests: []
 });
 groups = mongoose.model('Group', group, 'usercol');
 
@@ -122,7 +124,8 @@ searchres = new Schema ({
     UserId: String,
     Picture: String,
     Thumbnail: String,
-    Username: String
+    Username: String,
+    Private: Boolean
 });
 searchresmod = mongoose.model('Search', searchres, 'usercol');
 

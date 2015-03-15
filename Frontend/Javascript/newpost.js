@@ -1,5 +1,5 @@
 function taggingEnableThing () {
-	callAJAX("GET", "/companygroup/getSearch", {}, function (searchres) {
+	callAJAX("GET", "/companygroup/getSearchNotPrivateGroups", {}, function (searchres) {
 		var textarea = document.getElementById("newpost");
 		var arr = [];
 		for (var x = 0 ;x  < searchres.length; x++) {
@@ -47,7 +47,7 @@ function newPost (autotag, maindiv) {
 	$(form).on("submit", function (ev) {
 		ev.preventDefault();
 		if ($("#newpost").val().trim() == "") {
-			alert("Oops! Looks lie you forgot to write a post");
+			alert("Oops! Looks like you forgot to write a post");
 		}
 		else if ($(".newposttitle").val().trim() == "") {
 			alert("Please title your post");
@@ -70,17 +70,15 @@ function newPost (autotag, maindiv) {
 }
 
 function getTags (words) {
-	words = words.replace('\n' , ' ');
-    var tmplist = words.split(' ');
-    var hashlist = [];
-    var nonhashlist = [];
-    for(var w in tmplist){
-        if(tmplist[ w ].indexOf('@') == 0)
-            hashlist.push(tmplist[ w ].substring(1));
-        else
-            nonhashlist.push(tmplist[ w ]);
-    }
-    return hashlist;
+	if ( words.match(/@[\w]+(?=\s|$)/g) == null)
+		return [];
+	else {
+		var arr = words.match(/@[\w]+(?=\s|$)/g);
+		for (var x =0; x < arr.length; x++) {
+			arr[x] = arr[x].substring(1);
+		}
+		return arr;
+	}
 }
 
 $(document).on("keypress", "#newpost" ,  function (e) {
@@ -117,9 +115,9 @@ function newPostNewsFeed (autotag, maindiv) {
 				Tags: [],
 				Title: $(".newposttitle").val()
 			};
+			$(".newposttitle").val("");
+			$("#newpost").val("")
 			callAJAX("POST", "/posting/create/new", obj, function (data) {
-				$(".newposttitle").val("");
-				$("#newpost").val("")
 				createPost(data, section, true);
 				alert("Post created");
 			});

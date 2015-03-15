@@ -24,30 +24,7 @@ function showCompany (companyname) {
 		else
 			$("#subscribe").html("Subscribe");
 		$("#numfollowers").html(data.NumFollowers);
-		$("#subscribe").on("click", function (ev) {
-			ev.preventDefault();
-			var button = this;
-			if ($(this).html() == "Subscribe") {
-				callAJAX("POST", "/subscriptions/addsub", {newsub: companyname}, function (data) {
-					if (data.trim() == "Success") {
-						$(button).html("Unsubscribe");
-						$("#numfollowers").html(parseInt($("#numfollowers").html()) + 1);
-					}
-					else 
-						alert(data);
-				});
-			}
-			else if ($(this).html() == "Unsubscribe") {
-				callAJAX("POST", "/subscriptions/removesub", {newsub: companyname}, function (data) {
-					if (data == "Success") {
-						button.innerHTML = "Subscribe";
-						$("#numfollowers").html(parseInt($("#numfollowers").html()) -1);
-					}
-					else 
-						alert(data);
-				});
-			}
-		});
+		subclick(data, companyname, "Subscribe");
 		if (data.OwnPortfolio == false) 
 			$("#virtport").html("Add to Virtual Portfolio");
 		else 
@@ -85,6 +62,63 @@ function showCompany (companyname) {
 		$("#DividendYield").html(data.DividendYield);
 		$("#MarketCap").html("$" + data.MarketCap);
 		updatePortfolio(companyname);
+	});
+}
+
+function subclick (data, companyname, subscribetext) {
+	$("#subscribe").one("click", function (ev) {
+		ev.preventDefault();
+		var button = this;
+		if ($(this).html() == subscribetext) {
+			callAJAX("POST", "/subscriptions/addsub", {newsub: companyname}, function (data) {
+				if (data.trim() == "Success") {
+					$(button).html("Unsubscribe");
+					$("#numfollowers").html(parseInt($("#numfollowers").html()) + 1);
+				}
+				else 
+					alert(data);
+				subclick(data, companyname, subscribetext);
+			});
+		}
+		else if ($(this).html() == "Unsubscribe") {
+			callAJAX("POST", "/subscriptions/removesub", {newsub: companyname}, function (data) {
+				if (data == "Success") {
+					button.innerHTML = subscribetext;
+					$("#numfollowers").html(parseInt($("#numfollowers").html()) -1);
+				}
+				else 
+					alert(data);
+				subclick(data, companyname, subscribetext);
+			});
+		}
+	});
+}
+function subclick (data, companyname, subscribetext) {
+	$("#subscribe").one("click", function (ev) {
+		ev.preventDefault();
+		var button = this;
+		if ($(this).html() == subscribetext) {
+			callAJAX("POST", "/subscriptions/addsub", {newsub: companyname}, function (data) {
+				if (data.trim() == "Success") {
+					$(button).html("Unsubscribe");
+					$("#numfollowers").html(parseInt($("#numfollowers").html()) + 1);
+				}
+				else 
+					alert(data);
+				subclick(data, companyname, subscribetext);
+			});
+		}
+		else if ($(this).html() == "Unsubscribe") {
+			callAJAX("POST", "/subscriptions/removesub", {newsub: companyname}, function (data) {
+				if (data == "Success") {
+					button.innerHTML = subscribetext;
+					$("#numfollowers").html(parseInt($("#numfollowers").html()) -1);
+				}
+				else 
+					alert(data);
+				subclick(data, companyname, subscribetext);
+			});
+		}
 	});
 }
 

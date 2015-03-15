@@ -9,34 +9,7 @@ function showUser(id) {
 			$("#subscribe").html("Unsubscribe");
 		else
 			$("#subscribe").html("Subscribe");
-		$("#subscribe").on("click", function (ev) {
-			ev.preventDefault();
-			var button = this;
-			if ($(this).html() == "Subscribe") {
-				callAJAX("POST", "/subscriptions/addsub", {newsub: id}, function (data) {
-					if (data.trim() == "Success") {
-						$(button).html("Unsubscribe");
-						$("#numfollowers").html(parseInt($("#numfollowers").html()) + 1);
-						$("#followerpanel").html("");
-						getFollowers(id);
-					}
-					else 
-						alert(data);
-				});
-			}
-			else if ($(this).html() == "Unsubscribe") {
-				callAJAX("POST", "/subscriptions/removesub", {newsub: id}, function (data) {
-					if (data == "Success") {
-						button.innerHTML = "Subscribe";
-						$("#numfollowers").html(parseInt($("#numfollowers").html()) -1);
-						$("#followerpanel").html("");
-						getFollowers(id);
-					}
-					else 
-						alert(data);
-				});
-			}
-		});
+		subclick(data, id, "Subscribe");
 		$("#messageuser").attr("name", id);
 		$("#messageuser").on("click", function (ev) {
 			ev.preventDefault();
@@ -54,6 +27,34 @@ $(".menutabbar").on("click", function (ev) {
 	$(this).addClass("pure-menu-selected");
 });
 
+function subclick (data, companyname, subscribetext) {
+	$("#subscribe").one("click", function (ev) {
+		ev.preventDefault();
+		var button = this;
+		if ($(this).html() == subscribetext) {
+			callAJAX("POST", "/subscriptions/addsub", {newsub: companyname}, function (data) {
+				if (data.trim() == "Success") {
+					$(button).html("Unsubscribe");
+					$("#numfollowers").html(parseInt($("#numfollowers").html()) + 1);
+				}
+				else 
+					alert(data);
+				subclick(data, companyname, subscribetext);
+			});
+		}
+		else if ($(this).html() == "Unsubscribe") {
+			callAJAX("POST", "/subscriptions/removesub", {newsub: companyname}, function (data) {
+				if (data == "Success") {
+					button.innerHTML = subscribetext;
+					$("#numfollowers").html(parseInt($("#numfollowers").html()) -1);
+				}
+				else 
+					alert(data);
+				subclick(data, companyname, subscribetext);
+			});
+		}
+	});
+}
 
 function showUserLikes (id) {
 	$("#posts").html("");

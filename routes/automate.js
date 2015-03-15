@@ -221,5 +221,15 @@ router.get('/getindustry', function (req, res) {
 });
 
 
+router.get('/automateagain', function (req, res) {
+	var content = req.query.content;
+	SummaryTool.getSortedSentences(content, 5, function(err, sorted_sentences) {
+	    if(err) {
+	        console.log(err); // Need better error reporting
+	    }
+	    res.send(sorted_sentences);
+	});
+});
+
 
 module.exports = router;

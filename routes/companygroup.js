@@ -17,6 +17,28 @@ function isSess (req) {
         return false;
 }
 
+router.post('/addrequest', function (req, res) {
+	var groupname = req.body.GroupUsername;
+	if (isSess(req)) {
+		users.findOne({_id: req.session.UserId}, function (err, data) {
+			if (data == null)
+				res.send("Error. Not in session");
+			else {
+				var obj = {
+					Username: data.Username,
+					Name: data.Name
+				};
+				groups.update({UserId: groupname}, {$addToSet: {Requests : obj}}, function (err, up) {
+					res.send("Requested Invite");
+				});
+			}
+		});
+	}
+	else {
+		res.send("Error. Not in session");
+	}
+});
+
 
 router.get('/getCompsGroupsNewPost', function(req,res) {
 	if (isSess(req)) {
@@ -83,6 +105,33 @@ router.get('/getSearch', function(req,res) {
 
 });
 
+router.get('/getSearchNotPrivateGroups', function(req,res) {
+		var arr = [];
+		searchresmod.find({}, "Name Type UserId Private Username", function(err,results) {
+			for (var x = 0; x < results.length; x++) {
+				var temp = {};
+				temp.id = x;
+				
+				if (results[x].Type == "Group") {
+					console.log(results[x].Name);
+					console.log(results[x].Private);
+				}
+				temp.Type = results[x].Type;
+				temp.Name = results[x].Name;
+				if (temp.Type == "Company" || temp.Type == "Group")
+					temp.Username = results[x].UserId;
+				else if (temp.Type == "User") 
+					temp.Username = results[x].Username;
+				
+				if (results[x].Private == true);
+				else
+					arr.push(temp);
+			}
+			res.send(arr);
+		});
+});
+
+
 router.get('/getType', function(req,res) {
 	var newsub = req.query.Username;
 	searchresmod.findOne({$or: [{'Username' : newsub},{'UserId' : newsub}]}, "Type UserId Username", function(err,results) {
@@ -135,7 +184,8 @@ router.get('/getThumbnailAct' ,function (req, res) {
 });
 
 router.post('/group/create', function(req, res) {
-	var newuser = new groups ({
+	console.log("HERE??");
+	var obj = {
 		Type: "Group",
 		Name: req.body.Name,
 		UserId: req.body.UserID.toUpperCase(),
@@ -144,15 +194,29 @@ router.post('/group/create', function(req, res) {
 		Thumbnail: req.body.Thumbnail,
 		Industry: req.body.Industry,
 		NumFollowers: 0,
-		NumOwnStock: 0
-	});
+		NumOwnStock: 0,
+		Private: req.body.isPrivate
+	}
+	console.log(obj);
+	var newuser = new groups (obj);
+	console.log(newuser);
 	newuser.pre("save", function(next) {
 		groups.findOne({UserId: req.body.UserID.toUpperCase()}, function (err,results) {
 			if  (results)  {
 				res.send("Unique User ID already in use");
 			}
-			else
-				next();
+			else {
+				users.findOne({_id: req.session.UserId}, function (err, data) {
+					if (data == null)
+						res.send("Error. Not in session");
+					else {
+						users.update({_id: req.session.UserId}, {$push: {"FollowingAccs.Groups" : req.body.UserID.toUpperCase()}}, function (err, up) {
+							next();
+						});
+					}
+				});
+				
+			}
 		});
 	});
 	newuser.save(function (err) {
@@ -205,7 +269,9 @@ router.get('/group/get/:username', function(req,res) {
 				Description: result.Description,
 				Picture: result.Picture,
 				NumFollowers: result.NumFollowers,
-				Subscribed: false
+				Subscribed: false,
+				isPrivate: result.Private,
+				Requests: result.Requests
 			};
 			users.findOne({_id: req.session.UserId}, "FollowingAccs", function (err, data) {
 				if (data == null)

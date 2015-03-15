@@ -98,16 +98,15 @@ router.get('/getcomments', function (req, res) {
 });
 
 function getTags (words) {
-    var tmplist = words.split(' ');
-    var hashlist = [];
-    var nonhashlist = [];
-    for(var w in tmplist){
-        if(tmplist[ w ].indexOf('@') == 0)
-            hashlist.push(tmplist[ w ].substring(1));
-        else
-            nonhashlist.push(tmplist[ w ]);
-    }
-    return hashlist;
+	if ( words.match(/@[\w]+(?=\s|$)/g) == null)
+		return [];
+	else {
+		var arr = words.match(/@[\w]+(?=\s|$)/g);
+		for (var x =0; x < arr.length; x++) {
+			arr[x] = arr[x].substring(1);
+		}
+		return arr;
+	}
 }
 router.get('/newcomment', function (req, res) {
 	if(isSess (req)) {
