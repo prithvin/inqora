@@ -26,6 +26,8 @@
     "session": "^0.1.0",
     "sessions": "0.0.2-7",
     "unfluff": "^0.10.0",
+    "url-to-screenshot": "^0.6.0",
+    "webshot": "^0.15.4",
     "yahoo-finance": "^0.2.10"
   },
   "description": "New Inqora!",

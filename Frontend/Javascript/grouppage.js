@@ -6,7 +6,7 @@ function showGroup (companyname, noposts, id) {
 		arr = [id];
 		console.log(data);
 		subscribetext = "Subscribe";
-		if (data.isPrivate == true) {
+		if (data.isPrivate == true && data.isPrivate != null) {
 			arr.push("PRIVATE");
 			subscribetext = "Request Access";
 			$("#privgroupnotif").show();
@@ -18,7 +18,7 @@ function showGroup (companyname, noposts, id) {
 
 		console.log("LOL");
 		
-		if (!noposts && ((data.isPrivate == false) || (data.isPrivate == true && data.Subscribed == true))) {
+		if (!noposts && ((data.isPrivate == false || data.isPrivate == null) || (data.isPrivate == true && data.Subscribed == true))) {
 			showPostingSystem([id]);
 			$("#requesttojoinpanel").show();
 			var requests = data.Requests;
@@ -39,8 +39,11 @@ function showGroup (companyname, noposts, id) {
 			$("#subscribe").html(subscribetext);
 		$("#description").html(" " + linkify(data.Description));
 		$("#numfollowers").html(data.NumFollowers);
-		if ((data.isPrivate == true && data.Subscribed == true) || (data.isPrivate == false))
+		if ((data.isPrivate == true && data.Subscribed == true))
 			subclick(data, companyname, "Re-Subscribe");
+		else if ((data.isPrivate == false || data.isPrivate == null)) {
+			subclick(data, companyname, "Subscribe");
+		}
 		else {
 			requestAccess(companyname);
 		}

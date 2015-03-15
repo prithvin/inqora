@@ -25,6 +25,39 @@ function emailsend (messagebody, messageattachment, toname, toemail) {
 }
 
 
+var webshot = require('webshot');
+var fs      = require('fs');
+
+
+
+router.post('/webshot', function (req, res) {
+	if (req.body.URL == null || req.body.URL.length < 5) {
+		res.send("Error");
+	}
+	else {
+	webshot(req.body.URL, function(err, renderStream) {
+		 // var file = fs.createWriteStream('yahoo.png', {encoding: 'binary'});
+		 console.log(err);
+		 if (renderStream == null)
+		 	res.send("Error");
+		 else {
+		  var chunks = [];
+		  renderStream.on('data', function(data) {
+		  	 chunks.push(data);
+		  //  file.write(data.toString('binary'), 'binary');
+		  });
+		  renderStream.on('end', function() {
+		  	var result = Buffer.concat(chunks);
+               console.log('final result:', result.length);
+               res.write("data:image/PNG;base64," + result.toString('base64'));  
+               res.end(); 
+		  });
+		}
+	});
+}
+});
+
+
 
 router.get('/user/:Username', function (req, res) {
 	users.findOne({Username: req.params.Username}, function (err, data) {
