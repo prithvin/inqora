@@ -146,7 +146,7 @@ router.get('/getusertooltip', function (req, res) {
 									if (snapshot2 != null) 
 										obj.StockPriceAndPercent = "$" + snapshot2.lastTradePriceOnly + " PE: " + snapshot2.peRatio;
 									var str = "<div class='mainspantool'><img class='imagetool' src='" + obj.Thumbnail + "'>";
-									str += "<div class='contenttool'>" + obj.Name + " (@" + obj.StockTicker + ")<br>";
+									str += "<div class='contenttool link'>" + obj.Name + " (@" + obj.StockTicker + ")<br>";
 									str += "Industry: " + obj.Industry + "<br>" + obj.StockPriceAndPercent + " <br>" + obj.NumFollowers+ " (" + obj.isFollowed + ") ";
 									str += "</div></div>"
 									res.send(str);
@@ -171,7 +171,7 @@ router.get('/getusertooltip', function (req, res) {
 								if (data2.FollowingAccs.Groups != null && data2.FollowingAccs.Groups.indexOf(username) != -1)
 									obj.isFollowed = "Following";
 								var str = "<div class='mainspantool'><img class='imagetool' src='" + obj.Thumbnail + "'>";
-								str += "<div class='contenttool'>" + obj.Name + " (@" + obj.Username + ")<br>";
+								str += "<div class='contenttool link'>" + obj.Name + " (@" + obj.Username + ")<br>";
 								str += "<br>" + obj.NumFollowers+ " (" + obj.isFollowed + ") ";
 								str += "</div></div>"
 								res.send(str);
@@ -205,7 +205,7 @@ function getPercentChanges(StockFollowing, x, res, avgarr, obj, parallelarray){
 		if (isNaN(obj.StockFollowing) )
 			obj.StockFollowing = 0;
 		var str = "<div class='mainspantool'><img class='imagetool' src='" + obj.Thumbnail + "'>";
-		str += "<div class='contenttool'>" + obj.Name + " (@" + obj.Username + ")<br>";
+		str += "<div class='contenttool link'>" + obj.Name + " (@" + obj.Username + ")<br>";
 		str += obj.Followers + "<br>" + obj.StockFollowing + "% overall returns <br>" + obj.Points + " points";
 		str += "</div></div>"
 		res.send(str);
