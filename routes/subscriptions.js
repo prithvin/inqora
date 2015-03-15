@@ -26,7 +26,9 @@ router.post('/addreq', function (req, res) {
 				console.log("GROUP updated");
 				console.log(up);
 				users.update({Username: newmember},{$push: {"FollowingAccs.Groups" : groupname}}, function (err, up) {
-					res.send("User added!");
+					companies.update({'UserId': groupname} , {$inc: {NumFollowers: 1}}, function (err, up){
+						res.send("User added!");
+					});
 				});
 			});
 		}
