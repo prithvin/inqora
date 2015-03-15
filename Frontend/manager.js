@@ -18,14 +18,16 @@ $.ajax ({
 			callAJAX ("POST", "/users/authenticate", {User: "demo", Password:"demo"}, function (data) {
 				semiProp();
 				disableLinks();
-				$("#notloggedin").show();
+				if (filename != "blog.html")
+					$("#notloggedin").show();
 			});
 			
 		}
 		else if (data == "demo") {
 			semiProp();
 			disableLinks();
-			$("#notloggedin").show();
+			if (filename != "blog.html")
+					$("#notloggedin").show();
 		}
 	},
 	xhrFields: {withCredentials: true},

@@ -1,0 +1,225 @@
+<html>
+	<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+ 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/pure/0.5.0/pure-min.css">
+		<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css" />
+		<link rel="stylesheet" type="text/css" href="CSS/cardlayout.css">
+		<link rel="stylesheet" type="text/css" href="CSS/post.css">
+		<link rel="stylesheet" type="text/css" href="CSS/tooltips.css">
+		<link rel="stylesheet" type="text/css" href="CSS/alert.css">
+		<link rel="stylesheet" type="text/css" href="CSS/companypage.css">
+		<link rel="stylesheet" type="text/css" href="CSS/notifications.css">
+		<link rel="stylesheet" type="text/css" href="CSS/search.css">
+		<link rel="stylesheet" type="text/css" href="CSS/loginmodal.css">
+		<link rel="stylesheet" type="text/css" href="CSS/messaging.css">
+		<link rel="stylesheet" type="text/css" href="CSS/viewstocks.css">
+		<link rel="icon" href="favicon.png" type="image/x-icon" />
+		<script type="text/javascript" src="https://w.sharethis.com/button/buttons.js "></script>
+		<script type="text/javascript">var switchTo5x=true;stLight.options({publisher: "3b51f3e7-db26-4944-a02f-89bcecc33f19", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>
+		<style>
+		.tooltips {
+				display:inline;padding:0;
+			}
+		</style>
+		<title>Inqora Blog</title>
+	</head>
+
+	<body style="background-color: #DADFE1;">
+			<div id="navsearchmainsearch" class="regularfluff row  navbar-fixed-top navbar" style="">
+			<p></p>
+			<div class="col-md-3 col-sm-3 " style="text-align:center;">
+				<a href="newsfeed.html"><span class="col-xs-10 col-sm-10 col-md-offset-2 col-md-10 col-md-offset-2" style="margin-left:20px;font-size:2em;top:-2px;color:white;height:50px;"><i class="fa fa-area-chart"></i> Inqora</span></a>
+			</div>
+			<p style="color:white;">Blog</p>
+			
+		</div>
+
+		<div class="fixedtop" style="margin-top:10px;">
+		
+
+
+
+		<div style="margin-top:20px;" id="postingsystemdiv" class="col-sm-10 col-sm-offset-1">
+			<div id="regfeed">
+			
+				<div id="posts">
+				</div>
+				<div id="checkdiv">
+				</div>
+				<div class="sm-hidden md-hidden lg-hidden col-xs-12 "><br><br><Br><br></div>
+			</div>
+			<div id="sharedpost" style="display:none;">
+				<button class="pure-button pure-button-primary" style="width:100%;margin-top:18px;" id="backshared">Go Back</button>
+				<div id="sharedpostdiv"></div>
+				<div class="sm-hidden md-hidden lg-hidden col-xs-12 "><br><br><Br><br></div>
+			</div>
+		</div>
+	</div>
+	</body>
+
+   <modalwindows>
+
+     		<input id="sharethismodal" value="" style="display:none;" type="button" data-toggle="modal" data-target="#sharethis">
+		<div class="modal fade" id="sharethis" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		  <div  class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" id="sharethismodalclose" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+		            <center><h1 class="modal-title" id="myModalLabel"><font color="black" id="thistitleformodal">Share Post</h1></center>
+		          </div>
+		          <div class="modal-body" >
+		          	<iframe id="sharethisframe" style="height:75%;width:75%"></iframe>
+		          </div>
+		      </div>
+		  </div>
+		</div>
+
+		
+  		<input id="messagingmodalbutton" value="" style="display:none;" type="button" data-toggle="modal" data-target="#messagingmodal" onclick="getList();">
+		<div class="modal fade" id="messagingmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		  <div  class="modal-dialog" style="width:95%;">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" id="messagingbutton" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+		            <center><h1 class="modal-title" id="myModalLabel"><font color="black" id="thistitleformodalmessaging">Messaging</h1></center>
+		          </div>
+		          <div class="modal-body" style="width:100%;height:550 ;background-color:white;">
+		          		<table style="max-height:100%;overflow-y:hidden;">
+	<td class="messagingmaintd" >
+		<div style="max-height:525px;overflow:auto;overflow-y:scroll" id="messagelist">
+		</div>
+	</td>
+	<td style="width:100%;">
+		<div style="height:100%;display:inline-block;width:100%;">
+			<section id="messages"></section>
+			<form id="messager" class="pure-form">
+				<textarea  id="textinputm" type="textarea" placeholder="Send a message..." style="width:100%;"></textarea>
+				<button id="buttonsubmit" class="pure-button pure-button-primary" style="width:100%;">Send Message</button>
+			</form>
+		</div>
+	</td>
+</table>
+		          </div>
+		      </div>
+		  </div>
+		</div>
+
+		<input id="loginmodalbutton" value="" style="display:none;" type="button" data-toggle="modal" 		<input id="loginmodalbutton" value="" style="display:none;" type="button" data-toggle="modal" data-target="#loginmodal">
+				<div class="modal fade" id="loginmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		  <div  class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" id="loginmodal" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+		            <center><h1 class="modal-title" id="myModalLabel"><font color="black" id="thistitleformodal">Please Log In</h1></center>
+		          </div>
+		          <div class="modal-body" >
+		          <div class="loginform">
+		           <button id="fblogin" class="pure-button pure-button-primary" onclick="login()">Login with Facebook</button><br><br>
+		          	<form id="loginform-modal-window">
+<center>		          	
+					  <div class="group">
+					    <input class="myinput" placeholder="Username/ Email" id="username-modal-window" type="text"><span class="highlight"></span><span class="bar"></span>
+		
+					  </div>
+					  <div class="group">
+					    <input placeholder="password" class="myinput" id="password-modal-window" type="password"><span class="highlight"></span><span class="bar"></span>
+					   
+					  </div>
+					  <button type="submit" class="loginbutton buttonBlue">Login
+					    <div class="ripples buttonRipples"><span class="ripplesCircle"></span></div>
+					  </button>
+					</form></div>
+		          </div>
+		      </div>
+		  </div>
+		</div>
+
+	
+		<div class="device-xs visible-xs"></div>
+<div class="device-sm visible-sm"></div>
+<div class="device-md visible-md"></div>
+<div class="device-lg visible-lg"></div>
+<a href="" id="bobbbb" target="_blank"></a>
+	</modalwindows>
+	<footer>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
+		<script src="manager.js"></script>
+		<script src="tooltips.js"></script>	
+		<script src="Javascript/fb.js"></script>
+		<script src="Javascript/postingsystem.js"></script>
+		<script src="Javascript/postinglisteners.js"></script>
+		<script src="Javascript/contentparsing/linkify.js"></script>
+		<script src="Javascript/contentparsing/textcomplete.js"></script>
+		<script src="Javascript/contentparsing/textcompleteoverlay.js"></script>
+		<script src="Javascript/newpost.js"></script>
+		<script src="Javascript/displayfeed.js"></script>
+		<script src="Javascript/messaging.js"></script>
+		<script src="Javascript/notifications.js"></script>
+		<script src="Javascript/accountsettings.js"></script>
+		<script src="Javascript/totalstock.js"></script>
+		<script src="Javascript/search.js"></script>
+		<script src="Javascript/loginmodal.js"></script>
+		<script src="Javascript/subscriptions.js"></script>
+		<script>
+		proper();
+		function proper () {
+			if (getQueryVariable("userpostid") != false) {
+				showPost(getQueryVariable("userpostid"));
+				getUserPage("inqorablog", true);
+			}
+			else {
+				getUserPage("inqorablog");
+			}
+			
+		}
+
+
+		function showPost (id) {
+			$("#sharedpostdiv").html("");
+			$("#checkdiv").html("");
+			$("#posts").html("");
+			createPost(id, $("#sharedpostdiv"), false);
+			history.pushState('', 'Inqora', updateURLParameter(window.location.href, "userpostid", id));
+			$("#regfeed").hide();
+			$("#sharedpost").show();
+			postButton();
+		}
+		
+
+		$("#backshared").on("click", function (ev) {
+			ev.preventDefault();
+			$("#regfeed").show();
+			$("#sharedpost").hide();
+			$("#sharedpostdiv").html("");
+			$("#checkdiv").html("");
+			$("#posts").html("");
+			var arr = [getQueryVariable("id")];
+			showPostingSystem(arr);
+			history.pushState('', 'Inqora', removeParam("userpostid", window.location.href));
+		});
+
+		function getUserPage (id, noposts) {
+			arr = [id];
+			if (!noposts)
+				showPostingSystem(arr);
+		}
+		function showPostingSystem (arr) {
+				$("#posts").html("");
+	$("#checkdiv").html("")
+			callAJAX("GET", "/loadingpostfeeds/postscreated/", {Username: arr[0]}, function (data) {
+				displayAll (data, $("#posts"), $("#checkdiv"));
+			});
+		}
+
+
+
+
+		</script>
+	</footer>
+	
+</html>
