@@ -30,13 +30,11 @@ var app = express();
 
 email = require('emailjs');
 server  = email.server.connect({
-    user: "prithvi@inqora.com",
-    password:"earth2412",
+    user: "dale@inqora.com",
+    password:"cashierking",
    host:    "mail.inqora.com",
    port:26
 });
-
-
 
 //mongodump --host alcatraz.0.mongolayer.com:10033 --db InqoraDB -u inqora -pinqora -o /var/lib/mongodb
 //mongoose.connect('mongodb://inqora:inqora@alcatraz.0.mongolayer.com:10033,alcatraz.1.mongolayer.com:10033/InqoraDB');

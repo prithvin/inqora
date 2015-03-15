@@ -7,8 +7,8 @@ var xss = require('xss');
 
 email = require('emailjs');
 server  = email.server.connect({
-    user: "prithvi@inqora.com",
-    password:"earth2412",
+    user: "dale@inqora.com",
+    password:"cashierking",
    host:    "mail.inqora.com",
    port:26
 });
