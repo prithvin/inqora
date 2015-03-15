@@ -221,8 +221,9 @@ app.use(logger('dev'));
 app.use(compression())
 app.use(cookieParser());
 app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({limit: '50mb'}));
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser({limit: '5mb'}));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(methodOverride());
 app.use(express.static(path.join(__dirname, 'public')));
@@ -237,8 +238,6 @@ app.use('/accounts', accounts);
 app.use('/companygroup', companygroup);
 app.use('/marketing', marketing);
 app.use('/automate', automate);
-app.use(bodyParser.json({limit: '50mb'}));
-app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 
 
 // catch 404 and forward to error handler
