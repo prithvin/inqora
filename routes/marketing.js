@@ -37,12 +37,8 @@ router.post('/webshot', function (req, res) {
 	else {
 	webshot(req.body.URL, function(err, renderStream) {
 		 // var file = fs.createWriteStream('yahoo.png', {encoding: 'binary'});
-		 console.log(err);
-		 if (renderStream == null) {
-		 	res.write("Error");
-		 	res.end();
-		 }
-		 else {
+
+
 		  var chunks = [];
 		  renderStream.on('data', function(data) {
 		  	 chunks.push(data);
@@ -54,7 +50,6 @@ router.post('/webshot', function (req, res) {
                res.write("data:image/PNG;base64," + result.toString('base64'));  
                res.end(); 
 		  });
-		}
 	});
 }
 });
