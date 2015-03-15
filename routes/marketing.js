@@ -38,7 +38,7 @@ router.post('/webshot', function (req, res) {
 	webshot(req.body.URL, function(err, renderStream) {
 		 // var file = fs.createWriteStream('yahoo.png', {encoding: 'binary'});
 		 console.log(err);
-		 if (err == null) {
+		 if (err != null) {
 		 	res.write("Uhoh");
 		 	res.end();
 		 }

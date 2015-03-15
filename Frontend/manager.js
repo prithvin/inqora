@@ -54,9 +54,9 @@ window.setInterval(function () {
 
 console.log("\n\n\nHey there! We could really use your help in developing the Inqora community. \nIf you see any bugs, please contact narasimhan.prithvi@gmail.com.\nHope you are enjoying Inqora as much as we enjoyed building it! Keep investing!! #inqora ")
 		function getLocalhost() {
-			//return "http://localhost:3000";
+			return "http://localhost:3000";
 			//return "https://inqora2.herokuapp.com"
-			return inqoraPage()
+			//return inqoraPage()
 		}
 		function inqoraPage () {
 			if (window.location.href.indexOf("https") != -1)
