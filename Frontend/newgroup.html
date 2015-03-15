@@ -322,7 +322,7 @@ $("#creategroup").on("submit", function (ev) {
     var src = $(image)[0].src;
     console.log(src);
     $.ajax({
-      type: "POST",
+      type: "GET",
       url: getLocalhost() + "/marketing/image",
       data: {
         url: src

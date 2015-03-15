@@ -86,17 +86,6 @@ router.get('/image', function (req, res) {
 	}
 });
 
-router.post('/image', function (req, res) {
-	if (req.body.url.indexOf("data:image/") == 0)
-		res.send(req.body.url);
-	else {
-		loadBase64Image(req.body.url, function (image, prefix) {
-			res.send(prefix + image);
-			console.log(image + prefix);
-
-		});
-	}
-});
 
 
 var loadBase64Image = function (url, callback) {
