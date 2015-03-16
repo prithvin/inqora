@@ -76,7 +76,11 @@ usersch = new Schema ({
         PostUserCommentedOrPosted: []
     },
     Messaging: [],
-    MessagingSystem: {}
+    MessagingSystem: {},
+    NotifsClean: {
+        NewUpdatesPosts: {},
+        OtherUpdates: []
+    }
 });
 users = mongoose.model('User', usersch, 'usercol');
 

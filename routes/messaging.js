@@ -107,7 +107,7 @@ router.get('/getmessagesforuser/:username', function (req, res) {
 	users.findOne({_id: req.session.UserId}, function (err, data) {
 		if (data == null)
 			res.send("Error. Not in session");
-		else if (data.MessagingSystem[otheruser] == null) {
+		else if (data.MessagingSystem == null || data.MessagingSystem[otheruser] == null) {
 			res.send([])
 		}
 		else {
