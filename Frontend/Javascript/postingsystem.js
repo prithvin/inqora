@@ -1,4 +1,4 @@
-
+ 
 function createCommentPanel(panel, postid) {
 	callAJAX ("GET", "/posting/getcomments", {PostId: postid}, function (data) {
 		panel.innerHTML = "";
