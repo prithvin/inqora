@@ -62,7 +62,7 @@ console.log("\n\n\nHey there! We could really use your help in developing the In
 			if (window.location.href.indexOf("https") != -1)
 				return "https://inqora.com/api";
 			else
-				return "http://inqora.com/api";
+				return "https://inqora.com/api";
 		}
 function callAJAX (mytype, url, datastruct, callback) {
 	$.ajax({
