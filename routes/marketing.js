@@ -7,8 +7,8 @@ var router = express.Router();
 
 email = require('emailjs');
 server  = email.server.connect({
-    user: "dale@inqora.com",
-    password:"cashierking",
+    user: "prithvi@inqora.com",
+    password:"earth2412",
    host:    "mail.inqora.com",
    port:26
 });
