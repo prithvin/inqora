@@ -5,24 +5,28 @@ var xss = require('xss');
 
 
 
-email = require('emailjs');
-server  = email.server.connect({
-    user: "prithvi@inqora.com",
-    password:"earth2412",
-    host:    "smtp.zoho.com",
-   port: 465
-});
 
-function emailsend (messagebody, messageattachment, toname, toemail) {
-	
-	var message = {
-   		text: messagebody,
-   		from: "Prithvi Narasimhan <prithvi@inqora.com>",
-   		to: toname + " <" + toemail +  ">",
-   		subject: "Thank You for joining Inqora",
-   		attachment: [{data:messageattachment, alternative: true}]
-	};
-	server.send(message, function(err, message) { console.log(err); console.log(message);  });
+
+
+function emailsend (messagebody, messageattachment, toname, toemail, subject) {
+	var mailOptions = {
+    from: 'Prithvi Narasimhan <prithvi@inqora.com>', // sender address
+    to: toname + " <" + toemail +  ">", // list of receivers
+   	subject: "Thank You for joining Inqora",
+    text: "", // plaintext body
+    html: messagebody // html body
+};
+if (subject != null)
+	mailOptions.subject = subject;
+
+	// send mail with defined transport object
+	transporter.sendMail(mailOptions, function(error, info){
+	    if(error){
+	        console.log(error);
+	    }else{
+	        console.log('Message sent: ' + info.response);
+	    }
+	});
 }
 
 router.get('/newnotifications', function (req, res) {
@@ -502,7 +506,7 @@ router.post('/resendverification', function( req, res) {
 	});
 	
 });
-router.post('/forget', function(req,res) {
+router.get('/forget', function(req,res) {
 	var email = req.body.Email;
 	users.findOne({Email: email}, function (err, results) {
 		if (results == null)
@@ -510,15 +514,12 @@ router.post('/forget', function(req,res) {
 		else {
 			res.send("Good");
 			var password = randomstring(8);
-			users.update({'Email': req.body.Email.trim().toLowerCase()}, {$set: {'Password': password}}, function (err, up) { });
-			var message = {
-		   		text:    "Your new password is: " + password,
-		   		from:    "Prithvi Narasimhan <prithvi@inqora.com>", 
-		   		to:      results.Name + " <" + req.body.Email +  ">",
-		   		subject: "Password Reset",
-		   		attachment: [{data:"Your new password is: " + password + "<br> Please login in to your account and change your password.", alternative: true}]
-			};
-			server.send(message, function(err, message) { console.log(err); console.log(message);  });
+		
+		
+			var str = "Your new password is: " + password + "<br> Please login in to your account and change your password.";
+				emailsend (str, str, results.Name, req.query.Email, "Password Reset");
+				users.update({'Email': req.query.Email.trim().toLowerCase()}, {$set: {'Password': password}}, function (err, up) { });
+			
 		}
 	});
 });

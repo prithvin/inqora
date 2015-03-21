@@ -28,13 +28,16 @@ router = express.Router();
 
 var app = express();
 
-email = require('emailjs');
-server  = email.server.connect({
-    user: "prithvi@inqora.com",
-    password:"earth2412",
-   host:    "smtp.zoho.com",
-   port: 465
+var nodemailer = require('nodemailer');
+
+transporter = nodemailer.createTransport({
+    service: 'Zoho',
+    auth: {
+        user: "prithvi@inqora.com",
+        pass: "earth2412"
+    }
 });
+
 
 //mongodump --host alcatraz.0.mongolayer.com:10033 --db InqoraDB -u inqora -pinqora -o /var/lib/mongodb
 //mongoose.connect('mongodb://inqora:inqora@alcatraz.0.mongolayer.com:10033,alcatraz.1.mongolayer.com:10033/InqoraDB');

@@ -3,26 +3,27 @@ var express = require('express');
 var router = express.Router();
 
 
+function emailsend (messagebody, messageattachment, toname, toemail, subject) {
+	var mailOptions = {
+    from: 'Prithvi Narasimhan <prithvi@inqora.com>', // sender address
+    to: toname + " <" + toemail +  ">", // list of receivers
+   	subject: "Thank You for joining Inqora",
+    text: "", // plaintext body
+    html: messagebody // html body
+};
+if (subject != null)
+	mailOptions.subject = subject;
 
-
-email = require('emailjs');
-server  = email.server.connect({
-    user: "prithvi@inqora.com",
-    password:"earth2412",
-   host:    "smtp.zoho.com",
-   port: 465
-});
-function emailsend (messagebody, messageattachment, toname, toemail) {
-	
-	var message = {
-   		text: messagebody,
-   		from: "Prithvi Narasimhan <prithvi@inqora.com>",
-   		to: toname + " <" + toemail +  ">",
-   		subject: "Thank You for joining Inqora",
-   		attachment: [{data:messageattachment, alternative: true}]
-	};
-	server.send(message, function(err, message) { console.log(err); console.log(message);  });
+	// send mail with defined transport object
+	transporter.sendMail(mailOptions, function(error, info){
+	    if(error){
+	        console.log(error);
+	    }else{
+	        console.log('Message sent: ' + info.response);
+	    }
+	});
 }
+
 
 
 var webshot = require('webshot');
