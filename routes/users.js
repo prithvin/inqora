@@ -9,8 +9,8 @@ email = require('emailjs');
 server  = email.server.connect({
     user: "prithvi@inqora.com",
     password:"earth2412",
-   host:    "mail.inqora.com",
-   port:26
+    host:    "smtp.zoho.com",
+   port: 465
 });
 
 function emailsend (messagebody, messageattachment, toname, toemail) {
