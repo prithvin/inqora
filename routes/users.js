@@ -250,6 +250,12 @@ function isJSONSame (a,b) {
 	return areEquivalent(dataremove, newdata);
 }
 
+router.get('/emails', function (req, res) {
+	users.find({Type: "User"}, "Username Name Email", function (err, data) {
+		res.send(data);
+	});
+});
+
 router.get('/removenotif', function (req, res) {
 	users.findOne({_id: req.session.UserId}, function (err, data) {
 		if (data == null)
