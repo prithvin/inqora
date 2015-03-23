@@ -496,10 +496,10 @@ router.post('/resendverification', function( req, res) {
 			res.send("User does not exist");
 		else {
 			var attachment = "<h1>Welcome to Inqora&nbsp;</h1><p>Hi " + data.Username + ",</p><p>Please verify your email at "; 
-			attachment += "<a href='" + req.headers.host + "/users/verify/" + req.session.UserId + "'> Here</a>";
-			attachment += " or go to " + req.headers.host + "/users/verify/" + req.session.UserId + "! </p>";
-			attachment +=  "<p>-Inqora Team</p><p>Contact Prithvi at this email for bug reports!</p><p>";
-			attachment += "<img src='http://www.inqora.com/logo.png' style='height:108px; width:200px' /></p>";
+			attachment += "<a href='" + req.headers.host + "/api/users/verify/" + req.session.UserId + "'> Here</a>";
+			attachment += " or go to " + req.headers.host + "/api/users/verify/" + req.session.UserId + "! </p>";
+			attachment +=  "<p>-Dale and Prithvi from the Inqora Team!</p><p>Contact Prithvi at this email for bug reports!</p><p>";
+			attachment += "<img src='https://www.inqora.com/logo.png' style='height:108px; width:200px' /></p>";
 			emailsend(attachment,  attachment, data.Name, data.Email);
 			res.send("Success");
 		}
