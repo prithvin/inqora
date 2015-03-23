@@ -1,23 +1,52 @@
-
+function createAds (callback) {
+	$.getScript( "//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js", function () {
+		var ins1 = $("<ins>").addClass("adsbygoogle");
+			$(ins1).css("display", "block");
+			$(ins1).attr("data-ad-client", "ca-pub-9677727304103774");
+			$(ins1).attr("data-ad-slot", "8172632649");
+			$(ins1).attr("data-ad-format", "auto");
+		var ins2 = $("<ins>").addClass("adsbygoogle");
+			$(ins2).css("display", "block");
+			$(ins2).attr("data-ad-client", "ca-pub-9677727304103774");
+			$(ins2).attr("data-ad-slot", "8033031840");
+			$(ins2).attr("data-ad-format", "auto");
+		$("body").append(ins1).append(ins2);
+		(adsbygoogle = window.adsbygoogle || []).push({})
+		callback(ins1, ins2);
+	});
+}
 
 function displayAll(data, maindiv, adddiv) {
 	var checkspan = startIt(adddiv);
-	recursiveDisplay(data, maindiv, checkspan, 0, true);
+	(adsbygoogle = window.adsbygoogle || []).push({});
+	createAds(function (ins1, ins2) {
+		recursiveDisplay(data, maindiv, checkspan, 0, true, ins1, ins2);
+	});
+	
 }
 
-function recursiveDisplay(data, maindiv, checkspan, x, booltr){ 
+function recursiveDisplay(data, maindiv, checkspan, x, booltr, ins1, ins2){ 
+
 	if (x == data.length)
 		setFinished(checkspan);
 	else if (isElementInViewport($("#checkspan")) || booltr == false) {
 		createPost(data[x], maindiv, null, function (booltr) {
-			recursiveDisplay(data, maindiv, checkspan, x+1, booltr);
+			if (x%3 == 0) {
+				console.log("Appending");
+				$(maindiv).append(ins1);
+			}
+			else if (x%5 == 0) {
+				$(maindiv).append(ins2);
+
+			}
+			recursiveDisplay(data, maindiv, checkspan, x+1, booltr, ins1, ins2);
 			
 			
 		});
 	}
 	else {
 		$(window).one("scroll", function(ev) {
-			recursiveDisplay(data, maindiv, checkspan, x, true);
+			recursiveDisplay(data, maindiv, checkspan, x, true, ins1, ins2);
 		});
 	}
 }
