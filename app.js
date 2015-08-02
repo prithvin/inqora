@@ -86,7 +86,7 @@ usersch = new Schema ({
         OtherUpdates: []
     }
 });
-users = mongoose.model('User', usersch, 'usercol');
+users = mongoose.model('User', usersch, 'users');
 
 emailschema = new Schema ({
     Email: []
@@ -107,7 +107,7 @@ company = new Schema ({
     NumFollowers: Number,
     NumOwnStock: Number
 });
-companies = mongoose.model('Company', company, 'usercol');
+companies = mongoose.model('Company', company, 'users');
 
 group = new Schema ({
     Type: String,
@@ -122,7 +122,7 @@ group = new Schema ({
     Private: Boolean,
     Requests: []
 });
-groups = mongoose.model('Group', group, 'usercol');
+groups = mongoose.model('Group', group, 'users');
 
 searchres = new Schema ({
     Type: String,
@@ -133,7 +133,7 @@ searchres = new Schema ({
     Username: String,
     Private: Boolean
 });
-searchresmod = mongoose.model('Search', searchres, 'usercol');
+searchresmod = mongoose.model('Search', searchres, 'users');
 
 
 post = new Schema ({
@@ -161,7 +161,7 @@ post = new Schema ({
       Content: String
     }]
 });
-posts = mongoose.model('Post', post, 'postcol');
+posts = mongoose.model('Post', post, 'posts');
 
 
 // Development 
