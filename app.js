@@ -41,7 +41,8 @@ transporter = nodemailer.createTransport({
 
 //mongodump --host alcatraz.0.mongolayer.com:10033 --db InqoraDB -u inqora -pinqora -o /var/lib/mongodb
 //mongoose.connect('mongodb://inqora:inqora@alcatraz.0.mongolayer.com:10033,alcatraz.1.mongolayer.com:10033/InqoraDB');
-mongoose.connect('mongodb://104.131.30.72:27017/InqoraDB');
+//mongoose.connect('mongodb://104.131.30.72:27017/InqoraDB');
+mongoose.connect('mongodb://mishel:zavala@kahana.mongohq.com:10047/Inqora')
 db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function callback () {});
